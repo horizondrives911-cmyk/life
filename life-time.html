@@ -36,6 +36,7 @@ h1 .c,h1 svg{color:var(--acc)}
 .card h2{font:620 13px/1.1 var(--display);letter-spacing:.07em;text-transform:uppercase;color:var(--mut);margin:0 0 12px}
 .ind{--c:var(--mut);display:grid;grid-template-columns:44px 1fr;gap:14px;align-items:start}
 .s-g{--c:var(--g)}.s-y{--c:var(--y)}.s-r{--c:var(--r)}
+.mini.s-g{--c:var(--g)}.mini.s-y{--c:var(--y)}.mini.s-r{--c:var(--r)}
 .ico{width:44px;height:44px;border-radius:14px;border:1px solid var(--c);color:var(--c);display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.03)}
 .lab{font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--mut);font-weight:550}
 .big{font:650 30px/1.1 var(--display);letter-spacing:-.03em;color:var(--c)}
@@ -49,6 +50,7 @@ h1 .c,h1 svg{color:var(--acc)}
 .mini{--c:var(--txt);background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;min-width:0}
 .card .mini{background:var(--bg2)}
 .mini .lab{display:block}
+.mini .lab .q{margin-left:4px;text-transform:none;width:20px;height:20px}
 .mini b{display:block;white-space:nowrap;font:650 clamp(15px,4.6vw,21px)/1.25 var(--display);letter-spacing:-.03em;color:var(--c)}
 .mini .s2{font-size:12.5px;color:var(--mut)}
 .deb{border-color:rgba(169,139,255,.35)}
@@ -71,7 +73,9 @@ input[readonly]{opacity:.7}
 .item .r2 select{flex:1.2}.item .n{width:64px;flex:none}
 .item .r2 .mo{flex:1;color:var(--mut);font-size:13px;text-align:right}
 .item .r2 .ir{display:flex;align-items:center;gap:6px;flex:1;color:var(--mut);font-size:13px;text-transform:none;letter-spacing:0;font-weight:400}.item .r2 .ir input{width:80px}
-.pips{flex:1;display:flex;gap:4px}.pips i{width:24px;height:8px;border-radius:99px;background:var(--bg2);border:1px solid var(--line)}.pips i.f{background:var(--acc);border-color:var(--acc)}
+.sk{display:flex;align-items:center;gap:12px;padding:7px 0}.sk b{flex:1;font-weight:500;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.sk .lv{color:var(--mut);font-size:13px;width:96px;text-align:right}.sk .pips{flex:none}.sk-more{color:var(--mut);font-size:13px;padding-top:4px}
+.item .r2 .pips i{flex:1;width:auto}
+.pips{flex:1;display:flex;gap:4px}.pips i{width:24px;height:8px;border-radius:0;background:var(--bg2);border:1px solid var(--line)}.pips i.f{background:var(--acc);border-color:var(--acc)}
 .x{background:none;border:1px solid var(--line);color:var(--mut);border-radius:10px;padding:9px 13px;cursor:pointer}
 .x:hover{border-color:var(--r);color:var(--r)}
 .add{background:none;border:1px dashed rgba(163,170,183,.35);color:var(--acc);border-radius:12px;padding:0 16px;min-height:42px;cursor:pointer;font:600 14px var(--body);margin-bottom:14px}
@@ -127,8 +131,13 @@ h2 .q{margin-left:8px;text-transform:none}
   <div id="inds"></div>
 
   <div class="grid2">
-    <div class="mini" id="m-nw"><span class="lab">Net worth</span><b>-</b><span class="s2"></span></div>
+    <div class="mini" id="m-nw"><span class="lab">Net worth <button class="q" onclick="tgl('hint-nw')" aria-label="Hint">?</button></span><b>-</b><span class="s2"></span><div class="hint hide" id="hint-nw"></div></div>
     <div class="mini" id="m-df"><span class="lab">Debt-free in</span><b>-</b><span class="s2"></span></div>
+  </div>
+
+  <div class="card hide" id="skillsCard" style="margin-top:12px;cursor:pointer" onclick="goSkills()">
+    <h2>Skills</h2>
+    <div id="skillsRows"></div>
   </div>
 
   <div class="card deb" id="debuff" style="margin-top:12px">
@@ -306,7 +315,20 @@ try{
  else{const o=localStorage.getItem(OLD);if(o){S=clean(JSON.parse(o));S.updated=new Date().toISOString()}}
 }catch(e){}
 if(!S)S=DEFAULT();
-const save=touch=>{if(touch)S.updated=new Date().toISOString();try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
+const save=touch=>{if(touch)S.updated=new Date().toISOString();try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}try{renderSkillsCard()}catch(e){}};
+function renderSkillsCard(){
+ const box=$('skillsRows'),card=$('skillsCard');if(!box)return;
+ const L=S.skills.filter(s=>s.n.trim()||true);
+ card.classList.toggle('hide',!L.length);box.innerHTML='';
+ L.slice(0,4).forEach(s=>{
+  const r=document.createElement('div');r.className='sk';
+  const b=document.createElement('b');b.textContent=s.n||'Untitled';
+  const p=document.createElement('span');p.className='pips';p.innerHTML=[0,1,2,3].map(j=>`<i class="${j<=s.l?'f':''}"></i>`).join('');
+  const v=document.createElement('span');v.className='lv';v.textContent=LEVELS[s.l];
+  r.append(b,p,v);box.appendChild(r)});
+ if(L.length>4){const m=document.createElement('div');m.className='sk-more';m.textContent='+'+(L.length-4)+' more';box.appendChild(m)}
+}
+function goSkills(){tab(4);$('tabs').scrollIntoView({behavior:'smooth',block:'start'})}
 
 /* ---------- helpers ---------- */
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -361,6 +383,7 @@ function setMini(id,text,st,sub){
 }
 
 function calc(){
+ renderSkillsCard();
  const I=sumM(S.income),E=expTotal(),A=sumV(S.assets),D=sumV(S.debts),th=S.settings.th,st=S.settings;
  LAST.I=I;LAST.E=E;LAST.A=A;LAST.D=D;
  const lk=S.debts.filter(d=>d.p>0);
@@ -402,6 +425,8 @@ function calc(){
  const tgt=E?E*12*(100/st.growth):0,nwp=tgt?nw/tgt*100:(nw<0?-1:100);
  const nws=nwp<th.nw[0]?'r':nwp<th.nw[1]?'y':'g';
  setMini('nw',sg(nw),nws,tgt?`${nwp.toFixed(nwp>=10?1:2)}% of freedom target · ${fmt(A)} − ${fmt(D)}`:`assets ${fmt(A)} − debts ${fmt(D)}`);
+ $('m-nw').querySelector('.s2').textContent='assets − debts';
+ $('hint-nw').textContent=`Assets minus debts: ${fmt(A)} − ${fmt(D)}.`+(tgt?` That is ${nwp.toFixed(nwp>=10?1:2)}% of your Financial Freedom target. Red below ${th.nw[0]}%, yellow below ${th.nw[1]}%, green above.`:'');
  if(D<=0)setMini('df','No debt','g','');
  else{
   const m=debtMonths(S.debts,sp),P=sumP(S.debts);
@@ -647,7 +672,8 @@ function recordHistory(){
 function rr(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath()}
 function clip(c,t,mw){t=String(t);if(c.measureText(t).width<=mw)return t;while(t.length>1&&c.measureText(t+'…').width>mw)t=t.slice(0,-1);return t+'…'}
 function drawSnap(prev){
- const W=1080,H=2050,cv=document.createElement('canvas');cv.width=W;cv.height=H;const c=cv.getContext('2d');
+ const SKN=S.skills.length,SKH=SKN?64+Math.min(SKN,6)*46+(SKN>6?36:0)+24:0;
+ const W=1080,H=2050+SKH,cv=document.createElement('canvas');cv.width=W;cv.height=H;const c=cv.getContext('2d');
  const F='"Bricolage Grotesque","Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif';
  const COL={g:'#5BE3A0',y:'#F5B14C',r:'#FF7A66',n:'#A3AAB7'},TXT='#F3F5F7',MUT='#A3AAB7',ACC='#71E6F2',PANEL='#151922',LINE='rgba(163,170,183,.22)',DEB='#A98BFF';
  c.fillStyle='#0B0D12';c.fillRect(0,0,W,H);
@@ -683,6 +709,18 @@ function drawSnap(prev){
   if(q[3]){c.fillStyle=MUT;c.font=`500 21px ${F}`;c.fillText(clip(c,String(q[3]).split(' · ')[0],420),x+32,yy+134)}
  });
  y+=3*174+6;
+
+ if(SKN){
+  panel(48,y,984,SKH-24);
+  c.fillStyle=MUT;c.font=`600 23px ${F}`;c.fillText('SKILLS',88,y+46);
+  S.skills.slice(0,6).forEach((s,i)=>{
+   const yy=y+92+i*46;
+   c.fillStyle=TXT;c.font=`500 27px ${F}`;c.textAlign='left';c.fillText(clip(c,s.n||'Untitled',420),88,yy);
+   for(let j=0;j<4;j++){c.beginPath();c.rect(520+j*52,yy-18,44,14);c.fillStyle=j<=s.l?ACC:'#0e1118';c.fill();c.strokeStyle=j<=s.l?ACC:LINE;c.lineWidth=1.5;c.stroke()}
+   c.fillStyle=MUT;c.font=`500 24px ${F}`;c.textAlign='right';c.fillText(LEVELS[s.l],992,yy);c.textAlign='left'});
+  if(SKN>6){c.fillStyle=MUT;c.font=`500 22px ${F}`;c.fillText('+'+(SKN-6)+' more',88,y+92+6*46-8)}
+  y+=SKH;
+ }
 
  if(LAST.deb){
   panel(48,y,984,200,'rgba(169,139,255,.55)');
