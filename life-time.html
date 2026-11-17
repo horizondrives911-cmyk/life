@@ -69,6 +69,10 @@ h1 .c,h1 svg{color:var(--acc)}
 .drow.open .rchev{transform:rotate(180deg)}
 .drow .dx{margin-top:8px;font-size:13.5px;color:var(--mut);line-height:1.5}
 .open .sk-more{display:none}
+.icard .rt .lab{padding-right:18px;letter-spacing:0!important;font-size:10.5px!important;white-space:nowrap}
+.icard .chev{right:10px}
+.deb [data-acc],.deb .closer,.deb h2,.deb .drow{-webkit-user-select:none;user-select:none}
+.deb .closer{cursor:pointer}
 .icard{margin:0;padding:14px;min-width:0}
 .icard .rt{display:flex;align-items:flex-start;gap:6px;justify-content:space-between;min-height:30px}
 .icard .rt .lab{letter-spacing:.04em;font-size:11.5px;line-height:1.25}
@@ -215,9 +219,9 @@ h2 .q{margin-left:8px;text-transform:none}
     <h2 style="display:flex;align-items:center;gap:6px"><span id="flameIco"></span>Debuffs<span class="chev" style="margin-left:auto">▾</span></h2>
     <div class="chips" id="debChips"><span class="chip" id="chipL"></span><span class="chip" id="chipG"></span><span class="chip" id="chipC"></span><span class="chip" id="chipT"></span><span class="chip" id="chipK"></span><span class="chip" id="chipA">AI race: Exponential</span></div>
     <div id="debBody" class="hide" onclick="event.stopPropagation()">
-      <div class="note" id="debMode" style="margin:0 0 6px"></div>
+      <div class="note closer" id="debMode" style="margin:0 0 6px" onclick="acc('debBody')"></div>
       <div id="debList"></div>
-      <div class="note" style="margin-top:8px">Projection only. Inflation, corruption, tax and crime set the Mode under your avatar. Global inflation, AI race and distraction do not. The numbers above stay untouched.</div>
+      <div class="note closer" style="margin-top:8px" onclick="acc('debBody')">Projection only. Inflation, corruption, tax and crime set the Mode under your avatar. Global inflation, AI race and distraction do not. The numbers above stay untouched.</div>
     </div>
   </div>
 
