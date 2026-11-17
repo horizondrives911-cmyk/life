@@ -51,6 +51,24 @@ h1 .c,h1 svg{color:var(--acc)}
 .diff.d-g{--c:var(--g)}.diff.d-y{--c:var(--y)}.diff.d-r{--c:var(--r)}.diff.d-a{--c:var(--acc)}.diff.d-o{--c:#FF9A5C}
 .diff.hell{background:var(--c);color:#0B0D12}
 .tt{margin:8px 0 6px}
+[data-acc]{cursor:pointer;-webkit-tap-highlight-color:transparent}
+.chev{color:var(--mut);font-size:12px;line-height:1;transition:transform .2s;display:inline-flex}
+.open .chev{transform:rotate(180deg)}
+.mini,.icard,.irow{position:relative}
+.mini .chev,.icard .chev{position:absolute;top:14px;right:14px}
+.irow .chev{position:absolute;top:12px;right:0}
+.card h2 .chev,.av .chev{position:static}
+.av .nm{font:650 16px var(--display);color:var(--txt);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dpanel{background:var(--bg);border:1px solid var(--line2);border-radius:10px;padding:10px;margin-top:8px}
+.drow{border-top:1px solid var(--line2);padding:10px 0;cursor:pointer}
+.drow:first-child{border-top:0}
+.drow .dh{display:flex;align-items:center;gap:8px}
+.drow .dn{font-weight:550;flex:1}
+.drow .dv{color:#A98BFF;font-size:13.5px}
+.drow .rchev{color:var(--mut);font-size:12px;transition:transform .2s;display:inline-flex}
+.drow.open .rchev{transform:rotate(180deg)}
+.drow .dx{margin-top:8px;font-size:13.5px;color:var(--mut);line-height:1.5}
+.open .sk-more{display:none}
 .icard{margin:0;padding:14px;min-width:0}
 .icard .rt{display:flex;align-items:flex-start;gap:6px;justify-content:space-between;min-height:30px}
 .icard .rt .lab{letter-spacing:.04em;font-size:11.5px;line-height:1.25}
@@ -155,41 +173,51 @@ h2 .q{margin-left:8px;text-transform:none}
   </div>
 
   <div class="card hero" id="hero">
-    <div class="av" id="av">
+    <div class="av" id="av" data-acc="hint-av" onclick="acc('hint-av')">
       <div class="face" id="avFace"></div>
-      <div class="rk"><b id="avRank">-</b><button class="q" onclick="tgl('hint-av')" aria-label="Hint">?</button></div>
+      <div class="nm" id="avName"></div>
+      <div class="rk"><b id="avRank">-</b><span class="chev">▾</span></div>
       <div><span class="s2" style="display:block;margin-bottom:3px;font-size:11px">Mode</span><span class="diff d-g" id="diff">-</span></div>
     </div>
     <div id="inds"></div>
   </div>
   <div class="hint hide" id="hint-av" style="margin:-4px 0 14px"></div>
+  <div class="hint hide" id="ih-lt" style="margin:-4px 0 14px"><span id="ltUnit"></span><br><span id="ltNote"></span></div>
 
   <div class="pair" id="pair"></div>
   <div id="pairHints"></div>
 
   <div class="grid2">
-    <div class="mini" id="m-nw"><span class="lab">Net worth <button class="q" onclick="tgl('hint-nw')" aria-label="Hint">?</button></span><b>-</b><span class="s2"></span><div class="hint hide" id="hint-nw"></div></div>
-    <div class="mini" id="m-df"><span class="lab">Debt-free in</span><b>-</b><span class="s2"></span></div>
+    <div class="mini" id="m-nw" data-acc="hint-nw" onclick="acc('hint-nw')"><span class="lab">Net worth</span><span class="chev">▾</span><b>-</b><span class="s2"></span></div>
+    <div class="mini" id="m-df" data-acc="hint-df" onclick="acc('hint-df')"><span class="lab">Debt-free in</span><span class="chev">▾</span><b>-</b><span class="s2"></span></div>
   </div>
+  <div class="hint hide" id="hint-nw" style="margin-top:8px"></div>
+  <div class="hint hide" id="hint-df" style="margin-top:8px">Months until every debt is gone. Each debt gets its own installment, and your surplus goes to the highest interest first. "Never" means your Saving Power is not positive and no installments are set.</div>
 
   <div class="grid2" style="margin-top:12px">
-    <div class="mini" id="m-dis"><span class="lab">Distraction <button class="q" onclick="tgl('hint-dis')" aria-label="Hint">?</button></span><b>-</b><span class="pips"></span><span class="s2"></span></div>
-    <div class="mini s-p" id="m-ai"><span class="lab">AI Doomsday <button class="q" onclick="tgl('hint-ai')" aria-label="Hint">?</button></span><b>-</b><span class="s2"></span></div>
+    <div class="mini" id="m-dis" data-acc="disBody" onclick="acc('disBody')"><span class="lab">Distraction</span><span class="chev">▾</span><b>-</b><span class="pips"></span><span class="s2"></span></div>
+    <div class="mini s-p" id="m-ai" data-acc="hint-ai" onclick="acc('hint-ai')"><span class="lab">AI Doomsday</span><span class="chev">▾</span><b>-</b><span class="s2"></span></div>
   </div>
-  <div class="hint hide" id="hint-dis" style="margin-top:8px"></div>
   <div class="hint hide" id="hint-ai" style="margin-top:8px"></div>
-
-  <div class="card hide" id="skillsCard" style="margin-top:12px;cursor:pointer" onclick="goSkills()">
-    <h2>Skills</h2>
-    <div id="skillsRows"></div>
+  <div class="dpanel hide" id="disBody">
+    <div class="note" style="margin:0 0 8px">How hooked are you? 0 Focused, 1 Distracted, 2 Hooked, 3 Brain-rotted, 4 Zombie. Your worst one sets the level. It does not change the Mode.</div>
+    <div id="sDis"></div>
+    <button class="btn" onclick="addDis()" style="min-height:40px;margin-top:8px">+ Add your own (game, etc.)</button>
   </div>
 
-  <div class="card deb" id="debuff" style="margin-top:12px">
-    <h2 id="debHead" onclick="toggleDeb()" style="cursor:pointer;display:flex;align-items:center;gap:6px" role="button" aria-expanded="false"><span id="flameIco"></span>Debuffs<span id="debChev" style="margin-left:auto;transition:transform .2s;display:inline-flex">▾</span></h2>
-    <div class="chips"><span class="chip" id="chipL"></span><span class="chip" id="chipG"></span><span class="chip" id="chipC"></span><span class="chip" id="chipT"></span><span class="chip" id="chipK"></span><span class="chip" id="chipA">AI race: Exponential</span></div>
-    <div id="debBody" class="hide">
-    <ul id="debList"></ul>
-    <div class="note" style="margin-top:8px">Projection only. Inflation, corruption, tax and crime set the Mode under your avatar. AI race and distraction do not. The numbers above stay untouched.</div>
+  <div class="card hide" id="skillsCard" style="margin-top:12px" data-acc="skillsMore" onclick="acc('skillsMore')">
+    <h2 style="display:flex;align-items:center;gap:6px">Skills<span class="chev" style="margin-left:auto">▾</span></h2>
+    <div id="skillsRows"></div>
+    <div id="skillsMore" class="hide"></div>
+  </div>
+
+  <div class="card deb" id="debuff" style="margin-top:12px" data-acc="debBody" onclick="acc('debBody')">
+    <h2 style="display:flex;align-items:center;gap:6px"><span id="flameIco"></span>Debuffs<span class="chev" style="margin-left:auto">▾</span></h2>
+    <div class="chips" id="debChips"><span class="chip" id="chipL"></span><span class="chip" id="chipG"></span><span class="chip" id="chipC"></span><span class="chip" id="chipT"></span><span class="chip" id="chipK"></span><span class="chip" id="chipA">AI race: Exponential</span></div>
+    <div id="debBody" class="hide" onclick="event.stopPropagation()">
+      <div class="note" id="debMode" style="margin:0 0 6px"></div>
+      <div id="debList"></div>
+      <div class="note" style="margin-top:8px">Projection only. Inflation, corruption, tax and crime set the Mode under your avatar. Global inflation, AI race and distraction do not. The numbers above stay untouched.</div>
     </div>
   </div>
 
@@ -264,6 +292,11 @@ h2 .q{margin-left:8px;text-transform:none}
     <h2>Settings</h2>
     <div class="note">Everything is stored only in this browser.</div>
 
+    <div class="sec"><h3>Profile</h3>
+      <div class="fld"><span class="t">Your name</span><div class="in"><input id="sName" type="text" maxlength="24" placeholder="Optional" style="width:170px;text-align:left"></div></div>
+      <div class="note">Shown under your avatar and on the snapshot.</div>
+    </div>
+
     <div class="sec"><h3>Currency</h3>
       <div class="fld"><span class="t">1 USD = Rp</span><div class="in"><input id="sRate" type="text" inputmode="decimal" style="width:110px"></div></div>
       <div class="note">Rate is manual. USD view only changes how numbers are shown.</div>
@@ -291,14 +324,8 @@ h2 .q{margin-left:8px;text-transform:none}
       <div class="fld" style="flex-wrap:wrap"><span class="t" style="flex-basis:100%">Inflation points (%): each debuff gets 0-5 points. Easy up to, Normal up to, Hard up to, Very Hard up to, Nightmare up to</span><div class="in"><input id="sIn0" type="text" inputmode="decimal" style="width:48px"><input id="sIn1" type="text" inputmode="decimal" style="width:48px"><input id="sIn2" type="text" inputmode="decimal" style="width:48px"><input id="sIn3" type="text" inputmode="decimal" style="width:48px"><input id="sIn4" type="text" inputmode="decimal" style="width:48px"></div></div>
       <div class="fld" style="flex-wrap:wrap"><span class="t" style="flex-basis:100%">Tax points (%): same steps</span><div class="in"><input id="sTa0" type="text" inputmode="decimal" style="width:48px"><input id="sTa1" type="text" inputmode="decimal" style="width:48px"><input id="sTa2" type="text" inputmode="decimal" style="width:48px"><input id="sTa3" type="text" inputmode="decimal" style="width:48px"><input id="sTa4" type="text" inputmode="decimal" style="width:48px"></div></div>
       <div class="fld" style="flex-wrap:wrap"><span class="t" style="flex-basis:100%">Mode by pressure (% of the maximum): Easy up to, Normal up to, Hard up to, Very Hard up to, Nightmare up to (Hell above)</span><div class="in"><input id="sLv0" type="text" inputmode="decimal" style="width:48px"><input id="sLv1" type="text" inputmode="decimal" style="width:48px"><input id="sLv2" type="text" inputmode="decimal" style="width:48px"><input id="sLv3" type="text" inputmode="decimal" style="width:48px"><input id="sLv4" type="text" inputmode="decimal" style="width:48px"></div></div>
-      <div class="fld" style="flex-wrap:wrap"><span class="t" style="flex-basis:100%">Debuff weights: local inflation, global inflation, corruption, tax, crime (1 each = equal)</span><div class="in"><input id="sW0" type="text" inputmode="decimal" style="width:48px"><input id="sW1" type="text" inputmode="decimal" style="width:48px"><input id="sW2" type="text" inputmode="decimal" style="width:48px"><input id="sW3" type="text" inputmode="decimal" style="width:48px"><input id="sW4" type="text" inputmode="decimal" style="width:48px"></div></div>
+      <div class="fld" style="flex-wrap:wrap"><span class="t" style="flex-basis:100%">Debuff weights: local inflation, corruption, tax, crime (1 each = equal)</span><div class="in"><input id="sW0" type="text" inputmode="decimal" style="width:48px"><input id="sW1" type="text" inputmode="decimal" style="width:48px"><input id="sW2" type="text" inputmode="decimal" style="width:48px"><input id="sW3" type="text" inputmode="decimal" style="width:48px"></div></div>
       <div class="note">Above the last buy limit, an item is LOCKED. Keep numbers ascending.</div>
-    </div>
-
-    <div class="sec"><h3>Distraction</h3>
-      <div class="note">Rate how hooked you are on each. 0 Focused, 1 Distracted, 2 Hooked, 3 Brain-rotted, 4 Zombie. Your worst one sets the level.</div>
-      <div id="sDis"></div>
-      <button class="btn" onclick="addDis()" style="min-height:40px;margin-top:8px">+ Add your own (game, etc.)</button>
     </div>
 
     <div class="sec"><h3>AI Doomsday</h3>
@@ -336,10 +363,10 @@ const CRIME=[
 const pts=(v,t)=>t.reduce((a,x)=>a+(v>x?1:0),0);
 function modeCalc(){
  const s=S.settings,th=s.th,cr=CORR[s.corr]||CORR[1],ck=CRIME[s.crime]||CRIME[1];
- const p={loc:pts(s.infLocal,th.inf),glo:pts(s.infIntl,th.inf),cor:cr[1],tax:pts(s.tax||0,th.tax),cri:ck[1]};
- const a=[p.loc,p.glo,p.cor,p.tax,p.cri],w=th.w,sw=w.reduce((x,y)=>x+y,0)||1;
+ const p={loc:pts(s.infLocal,th.inf),cor:cr[1],tax:pts(s.tax||0,th.tax),cri:ck[1]};
+ const a=[p.loc,p.cor,p.tax,p.cri],w=th.w,sw=w.reduce((x,y)=>x+y,0)||1;
  const total=a.reduce((x,y)=>x+y,0),pct=a.reduce((x,y,k)=>x+y*w[k],0)/(5*sw)*100;
- return {p,total,pct,level:pts(pct,th.lvlp),max:25};
+ return {p,total,pct,level:pts(pct,th.lvlp),max:20};
 }
 
 /* ---------- icons ---------- */
@@ -365,8 +392,8 @@ const svg=(n,s=20)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="n
 
 /* ---------- state ---------- */
 const DEFAULT=()=>({app:'life-time',version:3,cur:'IDR',
- settings:{rate:16000,growth:4,infLocal:15,infIntl:3,corr:1,corrV:2,tax:0,theme:'dungeon',th:{sp:10,lt:[6,12],ff:[10,50],nw:[0,50],buy:[10,15,20],inf:[3,5,9,12,14],tax:[0,10,20,30,39],lvl:[1,4,7,10,14],lvlp:[10,30,50,70,90],w:[1,1,1,1,1]},crime:1,doom:'2030-01-01'},
- dis:{yt:0,ig:0,tt:0,extra:[]},income:[],expenses:[],assets:[],debts:[],skills:[],wishlist:[],history:[],updated:null});
+ settings:{rate:16000,growth:4,infLocal:15,infIntl:3,corr:1,corrV:2,tax:0,theme:'dungeon',th:{sp:10,lt:[6,12],ff:[10,50],nw:[0,50],buy:[10,15,20],inf:[3,5,9,12,14],tax:[0,10,20,30,39],lvl:[1,4,7,10,14],lvlp:[10,30,50,70,90],w:[1,1,1,1]},crime:1,doom:'2030-01-01'},
+ name:'',dis:{yt:0,ig:0,tt:0,extra:[]},income:[],expenses:[],assets:[],debts:[],skills:[],wishlist:[],history:[],updated:null});
 
 function clean(r){
  r=r&&typeof r==='object'?r:{};
@@ -384,7 +411,8 @@ function clean(r){
   cur:r.cur==='USD'?'USD':'IDR',
   settings:{rate,growth,corr:(()=>{const v=Number(s.corr);return Number(s.corrV)===2?([0,1,2,3].includes(v)?v:1):([0,1,2].includes(v)?v+1:1)})(),corrV:2,tax:pc(s.tax,0,100),infLocal:pc(s.infLocal,15,1000),infIntl:pc(s.infIntl,3,1000),
    theme:'dungeon',
-   th:{sp:pc(th.sp,10,1000),lt:pair(th.lt,[6,12]),ff:pair(th.ff,[10,50]),nw:pair(th.nw,[0,50]),buy:pair(th.buy,[10,15,20]),inf:pair(th.inf,[3,5,9,12,14]),tax:pair(th.tax,[0,10,20,30,39]),lvl:pair(th.lvl,[1,4,7,10,14]),lvlp:pair(th.lvlp,[10,30,50,70,90]),w:pair(th.w,[1,1,1,1,1])},crime:[0,1,2,3].includes(Number(s.crime))?Number(s.crime):1,doom:/^\d{4}-\d{2}-\d{2}$/.test(String(s.doom))?String(s.doom):'2030-01-01'},
+   th:{sp:pc(th.sp,10,1000),lt:pair(th.lt,[6,12]),ff:pair(th.ff,[10,50]),nw:pair(th.nw,[0,50]),buy:pair(th.buy,[10,15,20]),inf:pair(th.inf,[3,5,9,12,14]),tax:pair(th.tax,[0,10,20,30,39]),lvl:pair(th.lvl,[1,4,7,10,14]),lvlp:pair(th.lvlp,[10,30,50,70,90]),w:pair(th.w,[1,1,1,1])},crime:[0,1,2,3].includes(Number(s.crime))?Number(s.crime):1,doom:/^\d{4}-\d{2}-\d{2}$/.test(String(s.doom))?String(s.doom):'2030-01-01'},
+  name:String(r.name==null?'':r.name).slice(0,24),
   dis:(()=>{const d=r.dis&&typeof r.dis==='object'?r.dis:{},lv=v=>Math.max(0,Math.min(4,parseInt(v)||0));return {yt:lv(d.yt),ig:lv(d.ig),tt:lv(d.tt),extra:arr(d.extra).slice(0,10).map(i=>({n:nm(i.n),l:lv(i.l)}))}})(),
   income:fr(r.income),expenses:fr(r.expenses),
   assets:arr(r.assets).map(i=>({n:nm(i.n),v:nv(i.v),t:['g','c','l'].includes(i.t)?i.t:'g'})),
@@ -404,21 +432,19 @@ try{
 if(!S)S=DEFAULT();
 const save=touch=>{if(touch)S.updated=new Date().toISOString();try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}try{renderSkillsCard()}catch(e){}};
 function renderSkillsCard(){
- const box=$('skillsRows'),card=$('skillsCard');if(!box)return;
+ const box=$('skillsRows'),more=$('skillsMore'),card=$('skillsCard');if(!box)return;
  const L=S.skills.slice().sort((a,b)=>b.l-a.l);
- card.classList.toggle('hide',!L.length);box.innerHTML='';
- L.slice(0,4).forEach(s=>{
-  const r=document.createElement('div');r.className='sk';
+ card.classList.toggle('hide',!L.length);box.innerHTML='';more.innerHTML='';
+ const row=s=>{const r=document.createElement('div');r.className='sk';
   const b=document.createElement('b');b.textContent=s.n||'Untitled';
   const p=document.createElement('span');p.className='pips';p.innerHTML=[0,1,2,3].map(j=>`<i class="${j<=s.l?'f':''}"></i>`).join('');
   const v=document.createElement('span');v.className='lv';v.textContent=LEVELS[s.l];
-  r.append(b,p,v);box.appendChild(r)});
+  r.append(b,p,v);return r};
+ L.slice(0,4).forEach(s=>box.appendChild(row(s)));
  if(L.length>4){const m=document.createElement('div');m.className='sk-more';m.textContent='+'+(L.length-4)+' more';box.appendChild(m)}
+ L.slice(4).forEach(s=>more.appendChild(row(s)));
+ const eb=document.createElement('button');eb.className='btn';eb.style.cssText='min-height:40px;margin-top:8px';eb.textContent='Edit skills';eb.onclick=e=>{e.stopPropagation();goSkills()};more.appendChild(eb);
 }
-function setDeb(open){
- $('debBody').classList.toggle('hide',!open);$('debChev').style.transform=open?'rotate(180deg)':'';$('debHead').setAttribute('aria-expanded',open);
-}
-function toggleDeb(){const o=$('debBody').classList.contains('hide');setDeb(o);try{localStorage.setItem('lt-deb-open',o?'1':'0')}catch(e){}}
 function goSkills(){tab(4);$('tabs').scrollIntoView({behavior:'smooth',block:'start'})}
 
 /* ---------- helpers ---------- */
@@ -530,24 +556,26 @@ function calc(){
  const L=st.infLocal/100;
  const cr=CORR[st.corr]||CORR[1],ck=CRIME[st.crime]||CRIME[1],tx=st.tax||0,md=modeCalc(),pp=md.p,tn=MODES[pp.tax][0],mnm=MODES[md.level][0];
  LAST.deb={e1:E*(1+L),L:st.infLocal,G:st.infIntl,E,C:cr[0],K:ck[0],T:tx,TN:tn,P:pp,total:md.total,max:md.max,pct:md.pct};
- $('chipL').textContent=`Local ${st.infLocal}% · ${pp.loc} pt`;$('chipG').textContent=`Global ${st.infIntl}% · ${pp.glo} pt`;$('chipC').textContent=`Corruption: ${cr[0]} · ${pp.cor} pt`;$('chipT').textContent=`Tax ${tx}% · ${pp.tax} pt`;$('chipK').textContent=`Crime: ${ck[0]} · ${pp.cri} pt`;$('chipA').textContent='AI race: Exponential';
- const rows=[];
- rows.push(`<b>Mode: ${mnm}.</b> Every debuff scores 0-5 points with equal weight: local inflation ${pp.loc}, global inflation ${pp.glo}, corruption ${pp.cor}, tax ${pp.tax}, crime ${pp.cri}. Pressure is ${Math.round(md.pct)}% of the maximum.`);
- rows.push(`Prices rise about <b>${st.infLocal}%</b> a year locally and <b>${st.infIntl}%</b> globally.`);
- rows.push(`Corruption is <b>${cr[0]}</b> (${pp.cor} pt). ${cr[2]}`);
- $('sCorrDef').textContent=cr[2];
- rows.push(`Crime Pressure is <b>${ck[0]}</b> (${pp.cri} pt). ${ck[2]}`);
- $('sCrimeDef').textContent=ck[2];
- rows.push(tx>0?`Tax takes about <b>${tx}%</b> of income${I>0?` (about <b>${fmt(I*tx/100)}</b> of ${fmt(I)} per month)`:''}. That is <b>${tn}</b> level (${pp.tax} pt).`:`Tax is 0%: no tax, or the government gives back what it takes (0 pt).`);
+ $('chipL').textContent=`Local ${st.infLocal}%`;$('chipG').textContent=`Global ${st.infIntl}%`;$('chipC').textContent=`Corruption: ${cr[0]}`;$('chipT').textContent=`Tax ${tx}%`;$('chipK').textContent=`Crime: ${ck[0]}`;$('chipA').textContent='AI race: Exponential';
+ $('sCorrDef').textContent=cr[2];$('sCrimeDef').textContent=ck[2];
+ $('debMode').innerHTML=`<b>Mode: ${mnm}.</b> Pressure is ${Math.round(md.pct)}% of the maximum. Points out of 5: local inflation ${pp.loc}, corruption ${pp.cor}, tax ${pp.tax}, crime ${pp.cri}. Tap a debuff for details.`;
+ let infl=`Prices rise about <b>${st.infLocal}%</b> a year locally. That scores <b>${pp.loc}</b> of 5 (${MODES[pp.loc][0]}).`;
  if(E){
-  rows.push(`Expenses in 1 year: <b>${fmt(E*(1+L))}</b> per month. Your income must grow ${st.infLocal}% just to stay even.`);
-  rows.push(`Expenses in 3 years: <b>${fmt(E*Math.pow(1+L,3))}</b> per month.`);
-  if(A>0)rows.push(`If assets stay flat, Life Time drops to ${dur(A/(E*(1+L)))} in 1 year and ${dur(A/(E*Math.pow(1+L,3)))} in 3 years.`);
+  infl+=` Expenses in 1 year: <b>${fmt(E*(1+L))}</b> per month, and in 3 years <b>${fmt(E*Math.pow(1+L,3))}</b>. Your income must grow ${st.infLocal}% just to stay even.`;
+  if(A>0)infl+=` If assets stay flat, Life Time drops to ${dur(A/(E*(1+L)))} in 1 year and ${dur(A/(E*Math.pow(1+L,3)))} in 3 years.`;
  }
- if(A>0)rows.push(`Your assets lose about ${fmt(A*L/(1+L))} of buying power every year.`);
- rows.push(`Local inflation runs ${(st.infLocal-st.infIntl).toFixed(1)} points above global.`);
- rows.push(`<b>AI race: Exponential.</b> AI capability and adoption compound, so change speeds up every year instead of moving at a steady pace. Skills that feel safe today can lose value quickly. This debuff is semi-permanent and does not go away, so keep upgrading your Skills. It does not add Mode points.`);
- $('debList').innerHTML=rows.map(r=>`<li>${r}</li>`).join('');
+ if(A>0)infl+=` Your assets lose about ${fmt(A*L/(1+L))} of buying power every year.`;
+ const taxT=tx>0?`Tax takes about <b>${tx}%</b> of income${I>0?` (about <b>${fmt(I*tx/100)}</b> of ${fmt(I)} per month)`:''}. That is <b>${tn}</b> level, <b>${pp.tax}</b> of 5.`:`Tax is 0%: no tax, or the government gives back what it takes. <b>0</b> of 5.`;
+ const DR=(k,name,val,body)=>`<div class="drow" data-k="${k}" onclick="drow('${k}',event)"><div class="dh"><span class="dn">${name}</span><span class="dv">${val}</span><span class="rchev">▾</span></div><div class="dx hide">${body}</div></div>`;
+ $('debList').innerHTML=[
+  DR('loc','Local inflation',`${st.infLocal}%`,infl),
+  DR('glo','Global inflation',`${st.infIntl}%`,`Prices rise about <b>${st.infIntl}%</b> a year globally. Local inflation runs ${(st.infLocal-st.infIntl).toFixed(1)} points above global. Shown for reference only: it adds no Mode points.`),
+  DR('cor','Corruption',cr[0],`${cr[2]} Scores <b>${pp.cor}</b> of 5.`),
+  DR('cri','Crime Pressure',ck[0],`${ck[2]} Scores <b>${pp.cri}</b> of 5.`),
+  DR('tax','Tax',`${tx}%`,taxT),
+  DR('ai','AI race','Exponential',`AI capability and adoption compound, so change speeds up every year instead of moving at a steady pace. Skills that feel safe today can lose value quickly. This debuff is semi-permanent and does not go away, so keep upgrading your Skills. It adds no Mode points.`)
+ ].join('');
+ applyDrow();
 
  updateTiers();
  updateWish();
@@ -710,11 +738,22 @@ function tab(n){TABS.forEach((_,i)=>{$('p'+i).classList.toggle('hide',i!==n);$('
 
 /* ---------- indicator cards ---------- */
 const INDS=[['lt','Life Time'],['sp','Saving Power'],['ff','Financial Freedom']];
-const hintH=id=>`<div class="hint hide" id="ih-${id}"><span id="${id}Unit"></span><br><span id="${id}Note"></span></div>`;
-const headH=(id,l)=>`<div class="rt"><span class="lab">${l}</span><button class="q" onclick="tgl('ih-${id}')" aria-label="Hint">?</button></div><div class="big" id="${id}Num">-</div><div class="bar"><i id="${id}Bar" style="width:0"></i></div>`;
-$('inds').innerHTML=`<div class="irow" id="i-lt" data-b="irow">${headH('lt','Life Time')}<div class="cur">Time is your currency. Price every purchase in it.</div>${hintH('lt')}</div>`;
-$('pair').innerHTML=[['sp','Saving Power'],['ff','Financial Freedom']].map(([id,l])=>`<div class="card icard" id="i-${id}" data-b="card icard">${headH(id,l)}</div>`).join('');
+const hintH=id=>`<div class="hint hide" id="ih-${id}" style="margin:-4px 0 12px"><span id="${id}Unit"></span><br><span id="${id}Note"></span></div>`;
+const headH=(id,l)=>`<div class="rt"><span class="lab">${l}</span></div><div class="big" id="${id}Num">-</div><div class="bar"><i id="${id}Bar" style="width:0"></i></div>`;
+$('inds').innerHTML=`<div class="irow" id="i-lt" data-b="irow" data-acc="ih-lt" onclick="acc('ih-lt')">${headH('lt','Life Time')}<span class="chev">▾</span><div class="cur">Time is your currency. Price every purchase in it.</div></div>`;
+$('pair').innerHTML=[['sp','Saving Power'],['ff','Financial Freedom']].map(([id,l])=>`<div class="card icard" id="i-${id}" data-b="card icard" data-acc="ih-${id}" onclick="acc('ih-${id}')">${headH(id,l)}<span class="chev">▾</span></div>`).join('');
 $('pairHints').innerHTML=hintH('sp')+hintH('ff');
+const ACC_IDS=['hint-av','ih-lt','ih-sp','ih-ff','hint-nw','hint-df','hint-ai','disBody','skillsMore','debBody'];
+function acc(id){
+ const el=$(id),willOpen=el.classList.contains('hide');
+ ACC_IDS.forEach(x=>$(x).classList.add('hide'));
+ if(willOpen)el.classList.remove('hide');
+ document.querySelectorAll('[data-acc]').forEach(t=>t.classList.toggle('open',!$(t.dataset.acc).classList.contains('hide')));
+ $('debChips').classList.toggle('hide',!$('debBody').classList.contains('hide'));
+}
+let DROW=null;
+function applyDrow(){document.querySelectorAll('.drow').forEach(r=>{const o=r.dataset.k===DROW;r.classList.toggle('open',o);r.querySelector('.dx').classList.toggle('hide',!o)})}
+function drow(k,ev){ev.stopPropagation();DROW=DROW===k?null:k;applyDrow()}
 /* ---------- avatar + mode ---------- */
 const AV={s:['M12 3c-3 0-5 2.4-5 5.2 0 1.5.6 2.6 1.4 3.4L6 21h12l-2.4-9.4c.8-.8 1.4-1.9 1.4-3.4C17 5.4 15 3 12 3z','M10 9.5h4'],
  w:['M12 3a3 3 0 1 0 0 6 3 3 0 0 0 0-6z','M6 21v-4a6 6 0 0 1 12 0v4','M19 4v17'],
@@ -726,10 +765,11 @@ function updateHero(){
  const ri=sc<=1?0:sc<=3?1:sc<=5?2:3,[ak,rn,rc]=RANKS[ri];
  $('avFace').innerHTML=`<svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${AV[ak].map(d=>`<path d="${d}"/>`).join('')}</svg>`;
  $('av').style.setProperty('--c',`var(--${rc})`);$('avRank').textContent=rn;
+ $('avName').textContent=S.name||'';$('avName').style.display=S.name?'':'none';
  const md=modeCalc(),mi=md.level,[mn,mc]=MODES[mi],df=$('diff'),th=S.settings.th,pp=md.p;
  df.textContent=mn;df.className='diff d-'+mc+(mi===5?' hell':'');
  LAST.hero={rank:ri,score:sc,mode:mi,pts:md.total,max:md.max};
- $('hint-av').textContent=`Rank comes from your three indicators: red 0, yellow 1, green 2 points. Survivor 0-1, Wanderer 2-3, Knight 4-5, Sovereign 6 (you have ${sc}/6). Mode comes from five debuffs, each scored 0-5 points: local inflation ${pp.loc}, global inflation ${pp.glo}, corruption ${pp.cor}, tax ${pp.tax}, crime ${pp.cri}. That is ${Math.round(md.pct)}% of the maximum. Easy up to ${th.lvlp[0]}%, Normal up to ${th.lvlp[1]}%, Hard up to ${th.lvlp[2]}%, Very Hard up to ${th.lvlp[3]}%, Nightmare up to ${th.lvlp[4]}%, Hell above.`;
+ $('hint-av').textContent=`Rank comes from your three indicators: red 0, yellow 1, green 2 points. Survivor 0-1, Wanderer 2-3, Knight 4-5, Sovereign 6 (you have ${sc}/6). Mode comes from four debuffs, each scored 0-5 points: local inflation ${pp.loc}, corruption ${pp.cor}, tax ${pp.tax}, crime ${pp.cri}. That is ${Math.round(md.pct)}% of the maximum. Easy up to ${th.lvlp[0]}%, Normal up to ${th.lvlp[1]}%, Hard up to ${th.lvlp[2]}%, Very Hard up to ${th.lvlp[3]}%, Nightmare up to ${th.lvlp[4]}%, Hell above.`;
 }
 $('snapBtn').innerHTML=svg('camera',20);$('logo').innerHTML=svg('sword',24);$('flameIco').innerHTML=svg('flame',16);
 
@@ -743,7 +783,6 @@ const FIELDS=[
  ['sW1',()=>S.settings.th.w[1],v=>{S.settings.th.w[1]=v}],
  ['sW2',()=>S.settings.th.w[2],v=>{S.settings.th.w[2]=v}],
  ['sW3',()=>S.settings.th.w[3],v=>{S.settings.th.w[3]=v}],
- ['sW4',()=>S.settings.th.w[4],v=>{S.settings.th.w[4]=v}],
  ['sCorr',()=>S.settings.corr,v=>{S.settings.corr=[0,1,2,3].includes(v)?v:1}],
  ['sIn0',()=>S.settings.th.inf[0],v=>{S.settings.th.inf[0]=v}],['sTa0',()=>S.settings.th.tax[0],v=>{S.settings.th.tax[0]=v}],['sLv0',()=>S.settings.th.lvlp[0],v=>{S.settings.th.lvlp[0]=v}],
  ['sIn1',()=>S.settings.th.inf[1],v=>{S.settings.th.inf[1]=v}],['sTa1',()=>S.settings.th.tax[1],v=>{S.settings.th.tax[1]=v}],['sLv1',()=>S.settings.th.lvlp[1],v=>{S.settings.th.lvlp[1]=v}],
@@ -759,7 +798,8 @@ const FIELDS=[
  ['sNw0',()=>S.settings.th.nw[0],v=>{S.settings.th.nw[0]=v}],['sNw1',()=>S.settings.th.nw[1],v=>{S.settings.th.nw[1]=v}],
  ['sB0',()=>S.settings.th.buy[0],v=>{S.settings.th.buy[0]=v}],['sB1',()=>S.settings.th.buy[1],v=>{S.settings.th.buy[1]=v}],['sB2',()=>S.settings.th.buy[2],v=>{S.settings.th.buy[2]=v}]
 ];
-function syncSettings(){FIELDS.forEach(([id,get])=>{$(id).value=get()});$('sDoom').value=S.settings.doom;renderDisSettings()}
+function syncSettings(){FIELDS.forEach(([id,get])=>{$(id).value=get()});$('sDoom').value=S.settings.doom;$('sName').value=S.name||''}
+$('sName').oninput=()=>{S.name=$('sName').value.slice(0,24);save(false);calc()};
 $('sDoom').oninput=()=>{const v=$('sDoom').value;if(/^\d{4}-\d{2}-\d{2}$/.test(v)){S.settings.doom=v;save(false);calc()}};
 const DIS_L=['Focused','Distracted','Hooked','Brain-rotted','Zombie'];
 const DIS_SRC=[['yt','YouTube Shorts'],['ig','Instagram Reels'],['tt','TikTok']];
@@ -793,7 +833,6 @@ function updateDis(){
  const sub=d.src.length?d.src.slice(0,2).map(x=>`${x.n} ${x.l}`).join(' · ')+(d.src.length>2?` +${d.src.length-2}`:''):'No distraction';
  el.querySelector('.s2').textContent=sub;
  LAST.dis={lv:d.lv,text:DIS_L[d.lv],sub};
- $('hint-dis').textContent='Your worst distraction sets the level: 0 Focused, 1 Distracted, 2 Hooked, 3 Brain-rotted, 4 Zombie. It does not change the Mode. Every hour you scroll is time you cannot buy back.';
 }
 function updateDoom(){
  const [y,m,d]=S.settings.doom.split('-').map(Number),t=new Date(y,m-1,d).getTime();
@@ -858,13 +897,18 @@ function recordHistory(){
 function rr(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath()}
 function clip(c,t,mw){t=String(t);if(c.measureText(t).width<=mw)return t;while(t.length>1&&c.measureText(t+'…').width>mw)t=t.slice(0,-1);return t+'…'}
 function drawSnap(prev){
- const SKN=S.skills.length,SKH=SKN?64+Math.min(SKN,6)*46+(SKN>6?36:0)+24:0;
- const W=1080,H=2050+SKH+244+140+174+40,cv=document.createElement('canvas');cv.width=W;cv.height=H;const c=cv.getContext('2d');
  const F='"Bricolage Grotesque","Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif';
+ const SKN=S.skills.length,SKH=SKN?64+Math.min(SKN,6)*46+(SKN>6?36:0)+24:0;
+ const dbc=LAST.deb?[`Local ${LAST.deb.L}%`,`Global ${LAST.deb.G}%`,`Corruption: ${LAST.deb.C}`,`Crime: ${LAST.deb.K}`,`Tax ${LAST.deb.T}%`,'AI race: Exponential']:[];
+ const mc2=document.createElement('canvas').getContext('2d');mc2.font=`600 24px ${F}`;
+ let cx=0,cr0=0;const chipPos=dbc.map(t=>{const w=mc2.measureText(t).width+40;if(cx+w>904&&cx>0){cx=0;cr0++}const p={t,x:cx,r:cr0,w};cx+=w+14;return p});
+ const CHR=dbc.length?cr0+1:0,DEBH=LAST.deb?(80+CHR*62+70+24):0;
+ const W=1080,H=160+404+250+702+SKH+DEBH+224+70,cv=document.createElement('canvas');cv.width=W;cv.height=H;const c=cv.getContext('2d');
  const COL={g:'#5BE3A0',y:'#F5B14C',r:'#FF7A66',n:'#A3AAB7',a:'#71E6F2',o:'#FF9A5C'},TXT='#F3F5F7',MUT='#A3AAB7',ACC='#71E6F2',PANEL='#151922',LINE='rgba(163,170,183,.22)',DEB='#A98BFF';
  c.fillStyle='#0B0D12';c.fillRect(0,0,W,H);
  const g=c.createRadialGradient(W,0,0,W,0,760);g.addColorStop(0,'rgba(113,230,242,.12)');g.addColorStop(1,'rgba(113,230,242,0)');c.fillStyle=g;c.fillRect(0,0,W,H);
  const panel=(x,y,w,h,stroke)=>{rr(c,x,y,w,h,28);c.fillStyle=PANEL;c.fill();c.strokeStyle=stroke||LINE;c.lineWidth=2;c.stroke()};
+ const bar=(x,y,w,h,p,col)=>{rr(c,x,y,w,h,h/2);c.fillStyle='#0e1118';c.fill();c.strokeStyle=LINE;c.lineWidth=1.5;c.stroke();const fw=Math.max(0,Math.min(1,p||0))*w;if(fw>0){rr(c,x,y,Math.max(fw,h),h,h/2);c.fillStyle=col;c.fill()}};
  c.textBaseline='alphabetic';c.textAlign='left';
  c.font=`700 62px ${F}`;c.fillStyle=TXT;c.fillText('Life ',56,114);const lw=c.measureText('Life ').width;c.fillStyle=ACC;c.fillText('Time',56+lw,114);
  c.font=`500 30px ${F}`;c.fillStyle=MUT;c.textAlign='right';
@@ -872,42 +916,49 @@ function drawSnap(prev){
 
  let y=160;
  {
-  const hh=LAST.hero||{rank:0,score:0,mode:0},[ak,rn]=RANKS[hh.rank],rcol=[COL.r,COL.y,COL.g,ACC][hh.rank];
-  panel(48,y,984,220);
-  rr(c,88,y+30,160,160,34);c.fillStyle='rgba(255,255,255,.03)';c.fill();c.strokeStyle=rcol;c.lineWidth=3;c.stroke();
-  c.save();c.translate(88+24,y+30+24);c.scale(112/24,112/24);c.strokeStyle=rcol;c.lineWidth=1.6;c.lineCap='round';c.lineJoin='round';
+  const hh=LAST.hero||{rank:0,score:0,mode:0},[ak,rn]=RANKS[hh.rank],rcol=[COL.r,COL.y,COL.g,ACC][hh.rank],nm=(S.name||'').trim();
+  const lt=LAST.ind.lt||{num:'-'},lcol=COL[lt.st]||COL.n,cxm=213;
+  panel(48,y,984,380);
+  rr(c,cxm-80,y+32,160,160,34);c.fillStyle='rgba(255,255,255,.03)';c.fill();c.strokeStyle=rcol;c.lineWidth=3;c.stroke();
+  c.save();c.translate(cxm-56,y+32+24);c.scale(112/24,112/24);c.strokeStyle=rcol;c.lineWidth=1.6;c.lineCap='round';c.lineJoin='round';
   AV[ak].forEach(d=>c.stroke(new Path2D(d)));c.restore();
-  c.fillStyle=MUT;c.font=`600 24px ${F}`;c.fillText('RANK  '+hh.score+' / 6',290,y+74);
-  c.fillStyle=rcol;c.font=`700 72px ${F}`;c.fillText(rn,290,y+152);
+  c.textAlign='center';
+  let ty=y+246;
+  if(nm){c.fillStyle=TXT;c.font=`700 36px ${F}`;c.fillText(clip(c,nm,250),cxm,ty);ty+=46}
+  c.fillStyle=rcol;c.font=`700 40px ${F}`;c.fillText(rn,cxm,ty);
   const [mn,mc]=MODES[hh.mode],mcol=COL[mc],mt=mn.toUpperCase()+' MODE';
-  c.font=`700 25px ${F}`;const mw=c.measureText(mt).width+44;
-  rr(c,992-mw,y+30,mw,48,24);if(hh.mode===5){c.fillStyle=mcol;c.fill()}else{c.strokeStyle=mcol;c.lineWidth=2;c.stroke()}
-  c.fillStyle=hh.mode===5?'#0B0D12':mcol;c.textAlign='center';c.fillText(mt,992-mw/2,y+63);c.textAlign='left';
-  y+=244;
+  c.font=`700 24px ${F}`;const mw=c.measureText(mt).width+40,my=y+380-24-44;
+  rr(c,cxm-mw/2,my,mw,44,22);if(hh.mode===5){c.fillStyle=mcol;c.fill()}else{c.strokeStyle=mcol;c.lineWidth=2;c.stroke()}
+  c.fillStyle=hh.mode===5?'#0B0D12':mcol;c.fillText(mt,cxm,my+30);c.textAlign='left';
+  c.strokeStyle=LINE;c.lineWidth=2;c.beginPath();c.moveTo(350,y+32);c.lineTo(350,y+348);c.stroke();
+  const x0=392;
+  c.fillStyle=MUT;c.font=`600 26px ${F}`;c.fillText('LIFE TIME',x0,y+62);
+  c.fillStyle=lcol;c.font=`700 92px ${F}`;c.fillText(clip(c,lt.num,600),x0,y+170);
+  bar(x0,y+204,600,18,lt.pct,lcol);
+  c.fillStyle=MUT;c.font=`500 24px ${F}`;c.fillText(clip(c,lt.unit||'',600),x0,y+262);
+  c.fillStyle=ACC;c.font=`500 26px ${F}`;c.fillText('Time is your currency.',x0,y+312);c.fillText('Price every purchase in it.',x0,y+346);
+  y+=404;
  }
- [['lt','LIFE TIME'],['sp','SAVING POWER'],['ff','FINANCIAL FREEDOM']].forEach(([id,lab])=>{
+ [['sp','SAVING POWER',48],['ff','FINANCIAL FREEDOM',548]].forEach(([id,lab,x])=>{
   const o=LAST.ind[id]||{num:'-'},col=COL[o.st]||COL.n;
-  panel(48,y,984,250);
-  c.fillStyle=MUT;c.font=`600 26px ${F}`;c.fillText(lab,88,y+56);
-  c.fillStyle=col;c.font=`700 86px ${F}`;c.fillText(o.num,88,y+144);
-  if(o.st){const bt={g:'SAFE',y:'CAUTION',r:'DANGER'}[o.st];c.font=`700 25px ${F}`;const bw=c.measureText(bt).width+44;
-   rr(c,992-bw,y+30,bw,48,24);c.strokeStyle=col;c.lineWidth=2;c.stroke();c.fillStyle=col;c.textAlign='center';c.fillText(bt,992-bw/2,y+63);c.textAlign='left'}
-  rr(c,88,y+170,904,18,9);c.fillStyle='#0e1118';c.fill();c.strokeStyle=LINE;c.lineWidth=1.5;c.stroke();
-  const fw=Math.max(0,Math.min(1,o.pct||0))*904;if(fw>0){rr(c,88,y+170,Math.max(fw,18),18,9);c.fillStyle=col;c.fill()}
-  c.fillStyle=MUT;c.font=`500 25px ${F}`;c.fillText(clip(c,o.unit||'',904),88,y+226);
-  y+=274;
+  panel(x,y,484,230);
+  c.fillStyle=MUT;c.font=`600 23px ${F}`;c.fillText(lab,x+32,y+46);
+  c.fillStyle=col;c.font=`700 56px ${F}`;c.fillText(clip(c,o.num,420),x+32,y+118);
+  bar(x+32,y+146,420,14,o.pct,col);
+  c.fillStyle=MUT;c.font=`500 21px ${F}`;c.fillText(clip(c,o.unit||'',420),x+32,y+198);
  });
+ y+=250;
 
  const nw=LAST.mini.nw||{text:'-'},df=LAST.mini.df||{text:'-'};
  const cells=[['NET WORTH',nw.text,nw.st,nw.sub],['DEBT-FREE IN',df.text,df.st,df.sub],
-  ['INCOME / MONTH',fmt(LAST.I),null,''],['EXPENSES / MONTH',fmt(LAST.E),null,''],['ASSETS',fmt(LAST.A),null,''],['DEBTS',fmt(LAST.D),null,''],
-  ['DISTRACTION',(LAST.dis||{}).text||'-',['g','y','r','r','r'][(LAST.dis||{lv:0}).lv],(LAST.dis||{}).sub||''],['AI DOOMSDAY',(LAST.doom||{}).text||'-',null,(LAST.doom||{}).sub||'']];
+  ['DISTRACTION',(LAST.dis||{}).text||'-',['g','y','r','r','r'][(LAST.dis||{lv:0}).lv],(LAST.dis||{}).sub||''],['AI DOOMSDAY',(LAST.doom||{}).text||'-',null,(LAST.doom||{}).sub||''],
+  ['INCOME / MONTH',fmt(LAST.I),null,''],['EXPENSES / MONTH',fmt(LAST.E),null,''],['ASSETS',fmt(LAST.A),null,''],['DEBTS',fmt(LAST.D),null,'']];
  cells.forEach((q,i)=>{
   const x=48+(i%2)*500,yy=y+Math.floor(i/2)*174;
   panel(x,yy,484,154);
   c.fillStyle=MUT;c.font=`600 23px ${F}`;c.fillText(q[0],x+32,yy+44);
   c.fillStyle=COL[q[2]]||TXT;c.font=`700 46px ${F}`;c.fillText(clip(c,q[1],420),x+32,yy+98);
-  if(q[3]){c.fillStyle=MUT;c.font=`500 21px ${F}`;c.fillText(clip(c,String(q[3]).split(' · ')[0],420),x+32,yy+134)}
+  if(q[3]){c.fillStyle=MUT;c.font=`500 21px ${F}`;c.fillText(clip(c,String(q[3]),420),x+32,yy+134)}
  });
  y+=4*174+6;
 
@@ -924,17 +975,12 @@ function drawSnap(prev){
  }
 
  if(LAST.deb){
-  panel(48,y,984,380,'rgba(169,139,255,.55)');
+  panel(48,y,984,DEBH-24,'rgba(169,139,255,.55)');
   c.fillStyle=DEB;c.font=`700 24px ${F}`;c.fillText('DEBUFFS',88,y+50);
+  chipPos.forEach(p=>{const px=88+p.x,py=y+76+p.r*62;rr(c,px,py,p.w,48,24);c.strokeStyle='rgba(169,139,255,.6)';c.lineWidth=2;c.stroke();c.fillStyle=DEB;c.font=`600 24px ${F}`;c.textAlign='left';c.fillText(p.t,px+20,py+32)});
   c.fillStyle=TXT;c.font=`500 27px ${F}`;
-  c.fillText(`Local -${LAST.deb.L}% / yr   ·   Global -${LAST.deb.G}% / yr`,88,y+96);
-  c.fillText(clip(c,`Corruption: ${LAST.deb.C} (${LAST.deb.P.cor} pt)`,880),88,y+136);
-  c.fillText(clip(c,`Crime Pressure: ${LAST.deb.K} (${LAST.deb.P.cri} pt)`,880),88,y+176);
-  c.fillText(clip(c,`Tax: ${LAST.deb.T}% (${LAST.deb.TN})`,880),88,y+216);
-  if(LAST.deb.E)c.fillText(clip(c,`Expenses in 1 year: ${fmt(LAST.deb.e1)} per month`,880),88,y+256);
-  c.fillStyle=MUT;c.fillText('AI race: exponential, semi-permanent',88,y+296);c.fillStyle=TXT;
-  c.fillText(`Pressure: ${Math.round(LAST.deb.pct)}% of maximum`,88,y+336);
-  y+=404;
+  c.fillText(clip(c,`Mode: ${MODES[(LAST.hero||{mode:0}).mode][0]}  ·  Pressure ${Math.round(LAST.deb.pct)}% of maximum`,880),88,y+76+CHR*62+40);
+  y+=DEBH;
  }
 
  panel(48,y,984,200);
@@ -991,7 +1037,7 @@ async function shareSnap(){
 
 /* ---------- init ---------- */
 applyTheme();renderAll();calc();
-try{setDeb(localStorage.getItem('lt-deb-open')==='1')}catch(e){setDeb(false)}
+renderDisSettings();
 (function(){const q=new URLSearchParams(location.search).get('tab'),m={income:0,expenses:1,assets:2,debts:3,skills:4,wishlist:5};tab(q&&q in m?m[q]:0)})();
 if('serviceWorker' in navigator&&location.protocol.startsWith('http')){window.addEventListener('load',()=>{navigator.serviceWorker.register('life-time-sw.js',{scope:'./life-time.html'}).catch(()=>{})})}
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeSettings();closeSnap()}});
