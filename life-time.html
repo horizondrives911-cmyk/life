@@ -62,7 +62,7 @@ h1 .c,h1 svg{color:var(--acc)}
 @keyframes sheen{0%,55%{transform:translateX(0) skewX(-20deg);opacity:0}60%{opacity:1}85%,100%{transform:translateX(480%) skewX(-20deg);opacity:0}}
 @keyframes mpulse{50%{box-shadow:0 0 26px 4px rgba(194,107,255,.75),0 0 52px 8px rgba(194,107,255,.38)}}
 @keyframes mrise{0%{transform:translateY(8px);opacity:0}25%{opacity:.9}100%{transform:translateY(-70px);opacity:0}}
-@media (prefers-reduced-motion:reduce){.face,.face::before,.face::after{animation:none!important}}
+@media (prefers-reduced-motion:reduce){.face,.face::before,.face::after,.ab,.ab::before,.ab::after,.toast{animation:none!important}}
 .rg{display:flex;align-items:center;gap:12px;padding:8px 6px;border-radius:12px;border:1px solid transparent}
 .rg.cur{border-color:var(--c);background:rgba(255,255,255,.04)}
 .rg.lock .rt2{opacity:.6}
@@ -73,6 +73,49 @@ h1 .c,h1 svg{color:var(--acc)}
 .rg .rt2{min-width:0;flex:1}.rg .rn{font:650 14px var(--display);color:var(--c)}
 .rg .rq{font-size:12.5px;color:var(--mut);line-height:1.4;margin-top:1px}
 .rg .st{font-size:11px;color:var(--c);white-space:nowrap;font-weight:600}
+.ab{--s:44px;--c:#5BE3A0;--c2:rgba(91,227,160,.22);--c3:rgba(91,227,160,.42);width:var(--s);height:var(--s);border-radius:30%;display:inline-flex;align-items:center;justify-content:center;color:var(--c);border:1.5px solid var(--c);position:relative;overflow:hidden;isolation:isolate;flex:none;background:rgba(255,255,255,.02);margin:4px}
+.ab>svg{width:56%;height:56%;position:relative;z-index:2;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ab::before,.ab::after{content:'';position:absolute;pointer-events:none}
+.ab.t1{background-image:linear-gradient(150deg,var(--c3),var(--c2) 55%,transparent);box-shadow:inset 0 0 10px var(--c2),0 0 10px -2px var(--c)}
+.ab.t2{border-width:2px;background-image:radial-gradient(circle at 50% 30%,var(--c3),var(--c2) 75%);box-shadow:0 0 0 2px #151922,0 0 0 3.5px var(--c),0 0 14px 2px var(--c2);animation:apulse 2.6s ease-in-out infinite}
+.ab.t2::after{top:-25%;left:-70%;width:38%;height:150%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.6),transparent);transform:skewX(-20deg);z-index:1;animation:sheen 3.8s ease-in-out infinite}
+.ab.t2::before{inset:0;z-index:1;background:radial-gradient(circle at 25% 90%,#fff 0 1px,transparent 2px),radial-gradient(circle at 70% 95%,var(--c) 0 1.3px,transparent 2.6px),radial-gradient(circle at 50% 98%,#fff 0 1px,transparent 2px);animation:mrise 2.8s linear infinite}
+@keyframes apulse{50%{box-shadow:0 0 0 2px #151922,0 0 0 3.5px var(--c),0 0 24px 5px var(--c3)}}
+.ab.lk{color:#6B7280;border-color:rgba(163,170,183,.35);background:rgba(255,255,255,.02)!important;box-shadow:none!important;animation:none!important}
+.ab.lk::before,.ab.lk::after{display:none}
+.ab .lkb{position:absolute;right:1px;bottom:1px;width:36%;height:36%;color:#A3AAB7;z-index:3;background:#151922;border-radius:50%;padding:2px;box-sizing:border-box;display:flex}
+.ab .lkb svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.astrip{display:flex;flex-wrap:wrap;gap:2px;margin-top:-2px}
+.open .astrip{display:none}
+.arow{display:flex;align-items:center;gap:8px;padding:4px 0}
+.arow.dim .an{color:var(--mut)}
+.arow .am{flex:1;min-width:0}.arow .an{font-weight:550;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.arow .ac{font-size:12.5px;color:var(--mut);line-height:1.35}
+.abar{height:4px;border-radius:2px;background:#0e1118;margin-top:5px;overflow:hidden;border:1px solid var(--line2)}.abar i{display:block;height:100%;background:var(--c)}
+.arow .as{font-size:12px;color:var(--mut);text-align:right;white-space:nowrap}.arow .as .ok{display:block;color:var(--c);font-size:15px;font-weight:700}
+.aitem{margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid var(--line2)}
+.ahead{display:flex;align-items:center;gap:6px}.ahead input{flex:1}
+.ahead .abtn{background:none;border:0;padding:0;cursor:pointer;display:flex}
+.astat{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:13px;color:var(--mut)}.astat span{flex:1}
+.apick{margin-top:10px;padding:10px;border:1px solid var(--line2);border-radius:12px;background:var(--bg)}
+.apick .pl{font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--mut);margin:10px 0 6px;font-weight:550}.apick .pl:first-child{margin-top:0}
+.igrid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px}
+.ig{aspect-ratio:1;border:1px solid var(--line);border-radius:10px;background:none;color:var(--mut);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
+.ig svg{width:58%;height:58%;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.ig.on{color:var(--acc);border-color:var(--acc);background:rgba(113,230,242,.08)}
+.cgrid{display:flex;gap:10px;flex-wrap:wrap}
+.cg{width:30px;height:30px;border-radius:50%;border:2px solid transparent;cursor:pointer;padding:0}.cg.on{border-color:#fff;box-shadow:inset 0 0 0 2px var(--bg)}
+.tgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.tg{border:1px solid var(--line);border-radius:10px;background:none;color:var(--mut);padding:8px 4px;cursor:pointer;font:550 13px var(--body)}.tg small{display:block;font-weight:400;font-size:11px;opacity:.8}
+.tg.on{color:var(--acc);border-color:var(--acc);background:rgba(113,230,242,.08)}
+.crow{display:flex;gap:8px;align-items:center;margin-top:8px}.crow select,.crow input{flex:1}.crow .u{color:var(--mut);font-size:13px;white-space:nowrap}
+#toasts{position:fixed;left:0;right:0;bottom:calc(18px + env(safe-area-inset-bottom));display:flex;flex-direction:column;align-items:center;gap:8px;z-index:60;pointer-events:none}
+.toast{display:flex;align-items:center;gap:8px;background:#1B2030;border:1px solid var(--c);border-radius:18px;padding:4px 18px 4px 4px;box-shadow:0 8px 30px rgba(0,0,0,.55),0 0 18px -4px var(--c);animation:tin .45s cubic-bezier(.2,.9,.3,1.2),tout .4s 3.5s forwards;max-width:calc(100% - 32px)}
+.toast small{display:block;color:var(--mut);font-size:10.5px;letter-spacing:.09em;text-transform:uppercase}
+.toast b{font:650 15px var(--display)}
+@keyframes tin{from{transform:translateY(30px) scale(.9);opacity:0}}
+@keyframes tout{to{transform:translateY(20px);opacity:0}}
+.tabs button:last-child:nth-child(3n+1){grid-column:1/-1}
 .rbar{width:84px;height:5px;border-radius:3px;background:#0e1118;border:1px solid var(--line2);overflow:hidden}
 .rbar i{display:block;height:100%;background:var(--c);width:0;transition:width .3s}
 .rpct{font-size:10.5px;color:var(--mut);white-space:nowrap;margin-top:-4px}
@@ -246,6 +289,12 @@ h2 .q{margin-left:8px;text-transform:none}
     <div id="skillsMore" class="hide"></div>
   </div>
 
+  <div class="card" id="achCard" style="margin-top:12px" data-acc="achMore" onclick="acc('achMore')">
+    <h2 style="display:flex;align-items:center;gap:6px">Achievements<span class="s2" id="achCount" style="text-transform:none;letter-spacing:0;font-weight:500"></span><span class="chev" style="margin-left:auto">▾</span></h2>
+    <div class="astrip" id="achStrip"></div>
+    <div id="achMore" class="hide"><div id="achList"></div><button class="btn" style="min-height:40px;margin-top:8px" onclick="event.stopPropagation();goGoals()">Manage goals</button></div>
+  </div>
+
   <div class="card deb" id="debuff" style="margin-top:12px" data-acc="debBody" onclick="acc('debBody')">
     <h2 style="display:flex;align-items:center;gap:6px"><span id="flameIco"></span>Debuffs<span class="chev" style="margin-left:auto">▾</span></h2>
     <div class="chips" id="debChips"><span class="chip" id="chipL"></span><span class="chip" id="chipG"></span><span class="chip" id="chipC"></span><span class="chip" id="chipT"></span><span class="chip" id="chipK"></span><span class="chip" id="chipA">AI race: Exponential</span></div>
@@ -306,6 +355,14 @@ h2 .q{margin-left:8px;text-transform:none}
     <button class="add" id="add-wishlist" onclick="addItem('wishlist')">+ Add item</button>
     <div class="mini"><span class="lab">Total</span><b id="wTot">-</b><span class="s2" id="wTotLife"></span><div id="wTotV" style="margin-top:6px"></div></div>
     <div class="note" style="margin-top:8px">The rule: buy only when the price stays within your limit as a share of assets. Raise income and assets to unlock bigger things.</div>
+  </div>
+
+  <div id="p6" class="card hide">
+    <h2>Goals</h2>
+    <div id="list-ach"></div>
+    <button class="add" onclick="achAdd()">+ Add achievement</button>
+    <div class="note" id="achEmpty">No achievements yet. Add one.</div>
+    <div class="note" style="margin-top:8px">Auto goals unlock by themselves from your numbers, once your expenses are set. Cancel an unlock if you were only testing: it can unlock again after the condition turns false and then true. Tiers: Common is plain, Rare glows, Epic is animated.</div>
   </div>
 
   <div class="foot" id="foot"></div>
@@ -380,6 +437,7 @@ h2 .q{margin-left:8px;text-transform:none}
   </div>
 </div>
 
+<div id="toasts"></div>
 <script>
 const KEY='life-time-v3',OLD='life-time-v2',$=id=>document.getElementById(id);
 const THEME_COLOR='#0B0D12';
@@ -424,12 +482,50 @@ const IC={
  dagger:'<path d="M12 2l3 9H9z"/><path d="M7 11h10"/><path d="M12 11v8"/><circle cx="12" cy="20.5" r="1.3"/>',
  camera:'<path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/>'
 };
+Object.assign(IC,{
+ trend:'<path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/>',
+ bars:'<path d="M5 20v-8M12 20V5M19 20v-9M3 20h18"/>',
+ star:'<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>',
+ trophy:'<path d="M8 4h8v5a4 4 0 0 1-8 0z"/><path d="M8 6H5a3 3 0 0 0 3 4M16 6h3a3 3 0 0 1-3 4"/><path d="M12 13v4M8 20h8M10 17h4"/>',
+ medal:'<circle cx="12" cy="15" r="5"/><path d="M8.5 3L11 10M15.5 3L13 10"/><path d="M12 13v4"/>',
+ target:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2"/>',
+ flag:'<path d="M5 21V4"/><path d="M5 4h12l-2 4 2 4H5"/>',
+ hourglass:'<path d="M6 3h12M6 21h12M7 3v3l5 6-5 6v3M17 3v3l-5 6 5 6v3"/>',
+ calendar:'<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/>',
+ compass:'<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>',
+ key:'<circle cx="8" cy="12" r="3.5"/><path d="M11.5 12H21M17 12v3M20 12v2.5"/>',
+ chain:'<path d="M10 14l-2 2a3 3 0 0 1-4-4l3-3"/><path d="M14 10l2-2a3 3 0 0 1 4 4l-3 3"/><path d="M9 4v2M4 8h2M15 18v2M18 16h2"/>',
+ brain:'<path d="M12 5a3 3 0 0 0-5.2-1.2A3 3 0 0 0 5 9a3 3 0 0 0 .5 5A3 3 0 0 0 9 18.5 3 3 0 0 0 12 20z"/><path d="M12 5a3 3 0 0 1 5.2-1.2A3 3 0 0 1 19 9a3 3 0 0 1-.5 5A3 3 0 0 1 15 18.5 3 3 0 0 1 12 20z"/>',
+ gem:'<path d="M6 4h12l3 5-9 11L3 9z"/><path d="M3 9h18M9 4L8 9l4 11M15 4l1 5-4 11"/>',
+ btc:'<circle cx="12" cy="12" r="9"/><path d="M10 7v10M10 7h3.5a2.2 2.2 0 0 1 0 4.4H10m3.8 0a2.3 2.3 0 0 1 0 4.6H10M12 5.5V7M12 17v1.5"/>',
+ gold:'<path d="M3 17l3-7h12l3 7z"/><path d="M8 13.5h8"/>',
+ wallet:'<path d="M4 7h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="M4 7V6a2 2 0 0 1 2-2h10"/><circle cx="16" cy="13.5" r="1.2"/>',
+ leaf:'<path d="M5 19c0-8 5-13 14-14 0 9-5 14-14 14z"/><path d="M5 19l8-8"/>',
+ sun:'<circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/>',
+ mountain:'<path d="M3 20l6-11 4 6 3-4 5 9z"/>',
+ person:'<circle cx="12" cy="8" r="3.5"/><path d="M5 21a7 7 0 0 1 14 0"/>',
+ check:'<circle cx="12" cy="12" r="9"/><path d="M8 12.5l3 3 5-6"/>',
+ rocket:'<path d="M12 3c3 2 5 5 5 9l-2 3H9l-2-3c0-4 2-7 5-9z"/><circle cx="12" cy="10" r="1.6"/><path d="M9 15l-2 5 3-1.5M15 15l2 5-3-1.5"/>'
+});
+const ACH_ICONS=['coin','wallet','chest','trend','bars','gem','gold','btc','shield','chain','lock','key','hourglass','calendar','flame','sun','leaf','mountain','target','flag','compass','rocket','star','medal','trophy','crown','check','brain','book','heart','bolt','sword','tower','person'];
+const ACH_KEYS=['lt','ff','sr','sp','nw','as','db','rk','sk'];
+const ACH_COL=['#5BE3A0','#F5B14C','#FF7A66','#FF9A5C','#71E6F2','#5B9DFF','#FF7BBE','#C9CFD8'];
+const ACH_PRESETS=()=>[
+ {n:'Debt-free',ic:'chain',c:0,t:1,m:'db',o:'<=',v:0},
+ {n:'Saving habit',ic:'trend',c:4,t:0,m:'sr',o:'>=',v:10},
+ {n:'3 months of life',ic:'hourglass',c:1,t:0,m:'lt',o:'>=',v:3},
+ {n:'One year of life',ic:'hourglass',c:4,t:1,m:'lt',o:'>=',v:12},
+ {n:'Freedom 20%',ic:'compass',c:5,t:1,m:'ff',o:'>=',v:20},
+ {n:'10 million saved',ic:'coin',c:1,t:0,m:'as',o:'>=',v:10000000},
+ {n:'Rank A: Master',ic:'medal',c:0,t:2,m:'rk',o:'>=',v:5},
+ {n:'Financially free',ic:'sun',c:1,t:2,m:'ff',o:'>=',v:100}
+].map(a=>Object.assign({sk:'',d:null,h:false},a));
 const svg=(n,s=20)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]}</svg>`;
 
 /* ---------- state ---------- */
 const DEFAULT=()=>({app:'life-time',version:3,cur:'IDR',
  settings:{rate:16000,growth:4,infLocal:15,infIntl:3,corr:1,corrV:2,tax:0,theme:'dungeon',th:{sp:10,lt:[6,12],ff:[10,50],nw:[0,50],buy:[10,15,20],inf:[3,5,9,12,14],tax:[0,10,20,30,39],lvl:[1,4,7,10,14],lvlp:[10,30,50,70,90],w:[1,1,1,1]},crime:1,doom:'2030-01-01'},
- name:'',dis:{yt:0,ig:0,tt:0,extra:[]},income:[],expenses:[],assets:[],debts:[],skills:[],wishlist:[],history:[],updated:null});
+ name:'',dis:{yt:0,ig:0,tt:0,extra:[]},income:[],expenses:[],assets:[],debts:[],skills:[],wishlist:[],history:[],ach:ACH_PRESETS(),updated:null});
 
 function clean(r){
  r=r&&typeof r==='object'?r:{};
@@ -456,6 +552,7 @@ function clean(r){
   skills:arr(r.skills).map(i=>({n:nm(i.n),l:Math.max(0,Math.min(3,parseInt(i.l)||0))})),
   wishlist:arr(r.wishlist).map(i=>({n:nm(i.n),v:nv(i.v)})),
   history:arr(r.history).filter(h=>typeof h.t==='string'&&!isNaN(new Date(h.t))).slice(-120).map(h=>({t:h.t.slice(0,40),I:nv(h.I),E:nv(h.E),A:nv(h.A),D:nv(h.D),sp:sv(h.sp),nw:sv(h.nw)})),
+  ach:Array.isArray(r.ach)?arr(r.ach).slice(0,60).map(i=>({n:String(i.n==null?'':i.n).slice(0,40),ic:ACH_ICONS.includes(i.ic)?i.ic:'star',c:Math.max(0,Math.min(7,parseInt(i.c)||0)),t:Math.max(0,Math.min(2,parseInt(i.t)||0)),m:ACH_KEYS.includes(i.m)?i.m:'',o:i.o==='<='?'<=':'>=',v:(()=>{const x=Number(i.v);return isFinite(x)?Math.max(-1e13,Math.min(1e13,x)):0})(),sk:nm(i.sk),d:typeof i.d==='string'&&!isNaN(new Date(i.d))?i.d.slice(0,40):null,h:!!i.h})):ACH_PRESETS(),
   updated:typeof r.updated==='string'?r.updated.slice(0,40):null};
 }
 let S=null;
@@ -618,6 +715,7 @@ function calc(){
  updateHero();
  updateDis();
  updateDoom();
+ checkAch();
  const u=S.updated,f=$('foot');
  if(!u){f.textContent='No data yet.';f.className='foot'}
  else{const days=Math.floor((Date.now()-new Date(u))/864e5);
@@ -713,6 +811,7 @@ function renderList(key){
 }
 function renderAll(){
  const ro=S.cur==='USD';
+ renderAchCard();renderAchEditor();
  ['income','expenses','assets','debts','skills','wishlist'].forEach(renderList);
  ['income','expenses','debts','wishlist'].forEach(k=>$('add-'+k).classList.toggle('hide',ro));
  ['g','c','l'].forEach(x=>$('add-assets-'+x).classList.toggle('hide',ro));
@@ -768,9 +867,10 @@ function updateTiers(){
 }
 
 /* ---------- tabs ---------- */
-const TABS=[['Income','coin'],['Expenses','scroll'],['Assets','chest'],['Debts','skull'],['Skills','book'],['Wishlist','bag']];
+const TABS=[['Income','coin'],['Expenses','scroll'],['Assets','chest'],['Debts','skull'],['Skills','book'],['Wishlist','bag'],['Goals','target']];
 $('tabs').innerHTML=TABS.map(([l,ic],i)=>`<button id="t${i}" onclick="tab(${i})">${svg(ic,18)}${l}</button>`).join('');
-function tab(n){TABS.forEach((_,i)=>{$('p'+i).classList.toggle('hide',i!==n);$('t'+i).classList.toggle('on',i===n)})}
+function tab(n){TABS.forEach((_,i)=>{$('p'+i).classList.toggle('hide',i!==n);$('t'+i).classList.toggle('on',i===n)});if(n===6)renderAchEditor()}
+function goGoals(){tab(6);$('tabs').scrollIntoView({behavior:'smooth',block:'start'})}
 
 /* ---------- indicator cards ---------- */
 const INDS=[['lt','Life Time'],['sp','Saving Power'],['ff','Financial Freedom']];
@@ -779,7 +879,7 @@ const headH=(id,l)=>`<div class="rt"><span class="lab">${l}</span></div><div cla
 $('inds').innerHTML=`<div class="irow" id="i-lt" data-b="irow" data-acc="ih-lt" onclick="acc('ih-lt')">${headH('lt','Life Time')}<span class="chev">▾</span><div class="cur">Time is your currency. Price every purchase in it.</div></div>`;
 $('pair').innerHTML=[['sp','Saving Power'],['ff','Financial Freedom']].map(([id,l])=>`<div class="card icard" id="i-${id}" data-b="card icard" data-acc="ih-${id}" onclick="acc('ih-${id}')">${headH(id,l)}<span class="chev">▾</span></div>`).join('');
 $('pairHints').innerHTML=hintH('sp')+hintH('ff');
-const ACC_IDS=['hint-av','ih-lt','ih-sp','ih-ff','hint-nw','hint-df','hint-ai','disBody','skillsMore','debBody'];
+const ACC_IDS=['hint-av','ih-lt','ih-sp','ih-ff','hint-nw','hint-df','hint-ai','disBody','skillsMore','achMore','debBody'];
 function acc(id){
  const el=$(id),willOpen=el.classList.contains('hide');
  ACC_IDS.forEach(x=>$(x).classList.add('hide'));
@@ -838,6 +938,114 @@ function updateHero(){
   `<b>Mode</b> comes from four debuffs, each scored 0-5 points: local inflation ${pp.loc}, corruption ${pp.cor}, tax ${pp.tax}, crime ${pp.cri}. That is ${Math.round(md.pct)}% of the maximum. Easy up to ${th.lvlp[0]}%, Normal up to ${th.lvlp[1]}%, Hard up to ${th.lvlp[2]}%, Very Hard up to ${th.lvlp[3]}%, Nightmare up to ${th.lvlp[4]}%, Hell above.<div class="note" style="margin-top:8px">Tap anywhere here to close.</div>`;
 }
 $('snapBtn').innerHTML=svg('camera',20);$('logo').innerHTML=svg('sword',24);$('flameIco').innerHTML=svg('flame',16);
+
+/* ---------- achievements ---------- */
+let ACH_READY=false,ACH_OPEN=-1;
+const pcf=v=>(Math.abs(v)>=10?v.toFixed(0):v.toFixed(1))+'%';
+const rkf=v=>{const r=RANKS[Math.max(0,Math.min(8,Math.round(v)))];return r[0]+' ('+r[1]+')'};
+const dfmt=iso=>new Date(iso).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+const ACH_M={
+ lt:{l:'Life Time',k:'num',u:'months',fin:1,d:6,get:()=>LAST.A/LAST.E,f:v=>dur(v)},
+ ff:{l:'Financial Freedom',k:'num',u:'%',fin:1,d:20,get:()=>LAST.A/(LAST.E*12*(100/S.settings.growth))*100,f:pcf},
+ sr:{l:'Saving rate',k:'num',u:'% of income',fin:1,d:10,get:()=>LAST.I>0?(LAST.I-LAST.E)/LAST.I*100:null,f:pcf},
+ sp:{l:'Saving Power',k:'money',fin:1,d:500000,get:()=>LAST.I-LAST.E,f:v=>fmt(v)},
+ nw:{l:'Net worth',k:'money',fin:1,d:10000000,get:()=>LAST.A-LAST.D,f:v=>fmt(v)},
+ as:{l:'Total assets',k:'money',fin:1,d:10000000,get:()=>LAST.A,f:v=>fmt(v)},
+ db:{l:'Total debts',k:'money',fin:1,d:0,o:'<=',get:()=>LAST.D,f:v=>fmt(v)},
+ rk:{l:'Rank',k:'rank',fin:1,d:5,get:()=>rankCalc().idx,f:rkf},
+ sk:{l:'Skill level',k:'skill',d:3,get:a=>{const L=S.skills.filter(x=>x.n.trim().toLowerCase()===String(a.sk||'').trim().toLowerCase());return L.length?Math.max(...L.map(x=>x.l)):null},f:v=>LEVELS[Math.max(0,Math.min(3,Math.round(v)))]}
+};
+const hexRGB=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16));
+function achStyle(a){const h=ACH_COL[a.c]||ACH_COL[0],[r,g,b]=hexRGB(h);return `--c:${h};--c2:rgba(${r},${g},${b},.22);--c3:rgba(${r},${g},${b},.42)`}
+const icoSvg=n=>`<svg viewBox="0 0 24 24" aria-hidden="true">${IC[n]||IC.star}</svg>`;
+function badgeH(a,locked,size){return `<span class="ab t${a.t}${locked?' lk':''}" style="${achStyle(a)};--s:${size||44}px">${icoSvg(a.ic)}${locked?`<span class="lkb">${icoSvg('lock')}</span>`:''}</span>`}
+function achCond(a){
+ if(!a.m)return 'Manual: you mark it done.';
+ const M=ACH_M[a.m],op=a.o==='<='?'≤':'≥';
+ return `${a.m==='sk'?(a.sk||'Skill'):M.l} ${op} ${M.f(a.v)}`;
+}
+function achEval(a){
+ const M=ACH_M[a.m];if(!M)return null;
+ if(M.fin&&!(LAST.E>0))return null;
+ const cur=M.get(a);if(cur==null||!isFinite(cur))return null;
+ const ge=a.o!=='<=',t=a.v,met=ge?cur>=t:cur<=t;
+ return {met,cur,curTxt:M.f(cur),pct:met?1:ge?(t>0?Math.max(0,Math.min(1,cur/t)):0):null};
+}
+const achUnlocked=()=>S.ach.filter(a=>a.d).sort((x,y)=>y.t-x.t||new Date(y.d)-new Date(x.d));
+function toastAch(a){
+ const t=document.createElement('div');t.className='toast';t.style.cssText=achStyle(a);
+ t.innerHTML=`${badgeH(a,false,40)}<div><small>Achievement unlocked</small><b>${esc(a.n||'Untitled')}</b></div>`;
+ $('toasts').appendChild(t);while($('toasts').children.length>3)$('toasts').firstChild.remove();
+ setTimeout(()=>t.remove(),4000);
+}
+function checkAch(){
+ const newly=[];
+ S.ach.forEach(a=>{
+  if(!a.m)return;
+  const r=achEval(a);if(!r)return;
+  if(a.h&&!r.met)a.h=false;
+  if(!a.d&&!a.h&&r.met){a.d=new Date().toISOString();newly.push(a)}
+ });
+ if(newly.length){save(false);if(ACH_READY)newly.slice(0,3).forEach(toastAch)}
+ renderAchCard();
+ if(newly.length&&!$('p6').classList.contains('hide')&&!(document.activeElement&&document.activeElement.tagName==='INPUT'))renderAchEditor();
+}
+function renderAchCard(){
+ if(!$('achCard'))return;
+ const un=achUnlocked(),tot=S.ach.length;
+ $('achCount').textContent=tot?`${un.length} / ${tot}`:'';
+ $('achStrip').innerHTML=un.length?un.slice(0,8).map(a=>badgeH(a,false,34)).join(''):`<div class="note" style="margin:0">${tot?'Nothing unlocked yet. Tap to see your goals.':'No achievements yet. Add one in Goals.'}</div>`;
+ const rows=S.ach.map(a=>({a,r:a.m?achEval(a):null}));
+ const rank=x=>x.a.d?[0,-x.a.t,-new Date(x.a.d)]:[1,x.r&&x.r.pct!=null?-x.r.pct:(x.a.m?0.5:1),0];
+ rows.sort((x,y)=>{const p=rank(x),q=rank(y);return p[0]-q[0]||p[1]-q[1]||p[2]-q[2]});
+ $('achList').innerHTML=rows.map(({a,r})=>{
+  const bar=!a.d&&r&&r.pct!=null?`<div class="abar"><i style="width:${Math.round(r.pct*100)}%"></i></div>`:'';
+  const now=!a.d&&r&&r.pct==null?` · now ${esc(r.curTxt)}`:'';
+  const right=a.d?`<span class="ok">✓</span>${dfmt(a.d)}`:(r&&r.pct!=null?Math.floor(r.pct*100)+'%':(a.m?'':'Manual'));
+  return `<div class="arow${a.d?'':' dim'}" style="${achStyle(a)}">${badgeH(a,!a.d,42)}<div class="am"><div class="an">${esc(a.n||'Untitled')}</div><div class="ac">${esc(achCond(a))}${now}</div>${bar}</div><div class="as">${right}</div></div>`}).join('');
+}
+function achItemH(a,i){
+ const open=i===ACH_OPEN,r=a.m?achEval(a):null,usd=S.cur==='USD',M=ACH_M[a.m];
+ const stat=a.d?`Unlocked ${dfmt(a.d)}`:(r&&r.pct!=null?`Locked · ${Math.floor(r.pct*100)}%`:'Locked');
+ const btn=a.d?`<button class="x" onclick="achCancel(${i})">Cancel unlock</button>`:`<button class="x" onclick="achUnlock(${i})">${a.m?'Unlock now':'Mark done'}</button>`;
+ let cond='';
+ if(a.m){
+  let val='';
+  if(M.k==='rank')val=`<select onchange="achNum(${i},this.value)">${RANKS.map((x,j)=>`<option value="${j}"${a.v===j?' selected':''}>${x[0]} · ${x[1]}</option>`).join('')}</select>`;
+  else if(M.k==='skill'){
+   const names=[...new Set(S.skills.map(x=>x.n.trim()).filter(Boolean))];
+   val=(names.length?`<select onchange="achSkill(${i},this.value)">${names.map(n=>`<option value="${esc(n)}"${n===a.sk?' selected':''}>${esc(n)}</option>`).join('')}</select>`:`<span class="u">Add a skill first</span>`)+`<select onchange="achNum(${i},this.value)">${LEVELS.map((x,j)=>`<option value="${j}"${a.v===j?' selected':''}>${x}</option>`).join('')}</select>`;
+  }else if(M.k==='money')val=usd?`<input type="text" readonly value="${(a.v/rate()).toLocaleString('en-US',{maximumFractionDigits:2})}"><span class="u">USD view: switch to IDR to edit</span>`:`<input type="text" inputmode="numeric" value="${a.v?a.v.toLocaleString('id-ID'):'0'}" oninput="achMoney(${i},this)"><span class="u">IDR</span>`;
+  else val=`<input type="text" inputmode="decimal" value="${a.v}" oninput="achNum(${i},this.value)"><span class="u">${M.u}</span>`;
+  cond=`<div class="crow"><select onchange="achSetOp(${i},this.value)"><option value=">="${a.o!=='<='?' selected':''}>at least</option><option value="<="${a.o==='<='?' selected':''}>at most</option></select></div><div class="crow">${val}</div>`;
+ }
+ const pick=open?`<div class="apick">
+  <div class="pl">Icon</div><div class="igrid">${ACH_ICONS.map(n=>`<button class="ig${a.ic===n?' on':''}" onclick="achSet(${i},'ic','${n}')" aria-label="${n}">${icoSvg(n)}</button>`).join('')}</div>
+  <div class="pl">Color</div><div class="cgrid">${ACH_COL.map((h,j)=>`<button class="cg${a.c===j?' on':''}" style="background:${h}" onclick="achSet(${i},'c',${j})" aria-label="Color ${j+1}"></button>`).join('')}</div>
+  <div class="pl">Style</div><div class="tgrid">${[['Common','Plain'],['Rare','Glow'],['Epic','Animated']].map((x,j)=>`<button class="tg${a.t===j?' on':''}" onclick="achSet(${i},'t',${j})">${x[0]}<small>${x[1]}</small></button>`).join('')}</div>
+  <div class="pl">Unlocks when</div><div class="crow"><select onchange="achMetric(${i},this.value)"><option value="">Manual: I mark it done</option>${ACH_KEYS.map(k=>`<option value="${k}"${a.m===k?' selected':''}>Auto: ${ACH_M[k].l}</option>`).join('')}</select></div>${cond}
+ </div>`:'';
+ return `<div class="aitem"><div class="ahead"><button class="abtn" onclick="achToggle(${i})" aria-label="Edit icon, color and condition">${badgeH(a,!a.d,44)}</button><input type="text" maxlength="40" placeholder="Name" value="${esc(a.n)}" oninput="achName(${i},this.value)"><button class="x" onclick="achDel(${i})" aria-label="Delete">✕</button></div>
+ <div class="astat"><span>${stat} · ${esc(achCond(a))}</span>${btn}</div>${pick}</div>`;
+}
+function renderAchEditor(){
+ const box=$('list-ach');if(!box)return;
+ box.innerHTML=S.ach.map(achItemH).join('');
+ $('achEmpty').classList.toggle('hide',S.ach.length>0);
+}
+function achChanged(){checkAch()}
+function achSet(i,k,v){S.ach[i][k]=v;save(false);achChanged();renderAchEditor()}
+function achName(i,v){S.ach[i].n=v.slice(0,40);save(false);renderAchCard()}
+function achMetric(i,m){const a=S.ach[i];a.m=m;if(m){const M=ACH_M[m];a.v=M.d;a.o=M.o||'>=';a.sk=m==='sk'?((S.skills[0]||{}).n||''):''}a.h=false;save(false);achChanged();renderAchEditor()}
+function achSetOp(i,o){S.ach[i].o=o==='<='?'<=':'>=';save(false);achChanged();renderAchEditor()}
+function achNum(i,v){S.ach[i].v=numF(v);save(false);achChanged()}
+function achMoney(i,el){const v=numI(el.value);S.ach[i].v=v;el.value=v?v.toLocaleString('id-ID'):'';save(false);achChanged()}
+function achSkill(i,v){S.ach[i].sk=v;save(false);achChanged();renderAchEditor()}
+function achUnlock(i){const a=S.ach[i];a.d=new Date().toISOString();a.h=false;save(false);toastAch(a);renderAchCard();renderAchEditor()}
+function achCancel(i){const a=S.ach[i];a.d=null;if(a.m)a.h=true;save(false);renderAchCard();renderAchEditor()}
+function achDel(i){S.ach.splice(i,1);if(ACH_OPEN===i)ACH_OPEN=-1;else if(ACH_OPEN>i)ACH_OPEN--;save(false);renderAchCard();renderAchEditor()}
+function achAdd(){S.ach.push({n:'',ic:'star',c:0,t:0,m:'',o:'>=',v:0,sk:'',d:null,h:false});ACH_OPEN=S.ach.length-1;save(false);renderAchCard();renderAchEditor()}
+function achToggle(i){ACH_OPEN=ACH_OPEN===i?-1:i;renderAchEditor()}
 
 /* ---------- settings ---------- */
 const FIELDS=[
@@ -988,14 +1196,51 @@ function drawRankFace(c,x,y,sz,ri,rl,col,F){
  c.fillText(rl,cx,cy+fs*.35);
  c.restore();
 }
+const ICN_CACHE={};
+function drawIcon(c,name,x,y,sz,col,lw){
+ const doc=ICN_CACHE[name]||(ICN_CACHE[name]=new DOMParser().parseFromString('<svg xmlns="http://www.w3.org/2000/svg">'+(IC[name]||IC.star)+'</svg>','image/svg+xml'));
+ c.save();c.translate(x,y);c.scale(sz/24,sz/24);c.strokeStyle=col;c.lineWidth=lw||1.8;c.lineCap='round';c.lineJoin='round';
+ Array.from(doc.documentElement.children).forEach(n=>{
+  const t=n.tagName,g=k=>+n.getAttribute(k);let p=new Path2D();
+  if(t==='path')p=new Path2D(n.getAttribute('d'));
+  else if(t==='circle')p.arc(g('cx'),g('cy'),g('r'),0,6.2832);
+  else if(t==='rect'){if(p.roundRect)p.roundRect(g('x'),g('y'),g('width'),g('height'),g('rx')||0);else p.rect(g('x'),g('y'),g('width'),g('height'))}
+  c.stroke(p)});
+ c.restore();
+}
+function drawAchBadge(c,x,y,sz,a){
+ const col=ACH_COL[a.c]||ACH_COL[0],[R,G,B]=hexRGB(col),t=a.t,r=sz*.3,ra=al=>`rgba(${R},${G},${B},${al})`;
+ c.save();
+ if(t>=1){c.shadowColor=ra(t===2?.8:.5);c.shadowBlur=t===2?26:14}
+ rr(c,x,y,sz,sz,r);c.fillStyle='#151922';c.fill();
+ let fill='rgba(255,255,255,.02)';
+ if(t===1){const g=c.createLinearGradient(x,y,x+sz,y+sz);g.addColorStop(0,ra(.42));g.addColorStop(.55,ra(.22));g.addColorStop(1,ra(.04));fill=g}
+ if(t===2){const g=c.createRadialGradient(x+sz/2,y+sz*.3,0,x+sz/2,y+sz*.3,sz*.8);g.addColorStop(0,ra(.5));g.addColorStop(1,ra(.18));fill=g}
+ c.fillStyle=fill;c.fill();c.shadowBlur=0;c.shadowColor='transparent';
+ c.strokeStyle=col;c.lineWidth=t===2?4:3;c.stroke();
+ if(t===2){rr(c,x-sz*.07,y-sz*.07,sz*1.14,sz*1.14,r*1.2);c.lineWidth=2;c.stroke();
+  c.save();rr(c,x,y,sz,sz,r);c.clip();c.fillStyle='rgba(255,255,255,.22)';c.beginPath();c.moveTo(x+sz*.5,y-4);c.lineTo(x+sz*.7,y-4);c.lineTo(x+sz*.36,y+sz+4);c.lineTo(x+sz*.16,y+sz+4);c.closePath();c.fill();c.restore()}
+ drawIcon(c,a.ic,x+sz*.21,y+sz*.21,sz*.58,col,t===0?1.8:2);
+ c.restore();
+}
+function wrapText(c,t,x,y,mw,ml,lh){
+ const w=String(t).split(/\s+/);let line='',n=0;
+ for(let i=0;i<w.length;i++){
+  const test=line?line+' '+w[i]:w[i];
+  if(c.measureText(test).width>mw&&line){c.fillText(line,x,y+n*lh);n++;line=w[i];if(n>=ml-1){c.fillText(clip(c,w.slice(i).join(' '),mw),x,y+n*lh);return}}
+  else line=test;
+ }
+ c.fillText(clip(c,line,mw),x,y+n*lh);
+}
 function drawSnap(prev){
  const F='"Bricolage Grotesque","Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif';
  const SKN=S.skills.length,SKH=SKN?64+Math.min(SKN,6)*46+(SKN>6?36:0)+24:0;
  const dbc=LAST.deb?[`Local ${LAST.deb.L}%`,`Global ${LAST.deb.G}%`,`Corruption: ${LAST.deb.C}`,`Crime: ${LAST.deb.K}`,`Tax ${LAST.deb.T}%`,'AI race: Exponential']:[];
  const mc2=document.createElement('canvas').getContext('2d');mc2.font=`600 24px ${F}`;
  let cx=0,cr0=0;const chipPos=dbc.map(t=>{const w=mc2.measureText(t).width+40;if(cx+w>904&&cx>0){cx=0;cr0++}const p={t,x:cx,r:cr0,w};cx+=w+14;return p});
+ const UNL=achUnlocked(),UN3=UNL.slice(0,3),ACHH=UN3.length?214:0;
  const CHR=dbc.length?cr0+1:0,DEBH=LAST.deb?(80+CHR*62+70+24):0;
- const W=1080,H=160+468+250+702+SKH+DEBH+224+70,cv=document.createElement('canvas');cv.width=W;cv.height=H;const c=cv.getContext('2d');
+ const W=1080,H=160+468+250+702+SKH+ACHH+DEBH+224+70,cv=document.createElement('canvas');cv.width=W;cv.height=H;const c=cv.getContext('2d');
  const COL={g:'#5BE3A0',y:'#F5B14C',r:'#FF7A66',n:'#A3AAB7',a:'#71E6F2',o:'#FF9A5C'},TXT='#F3F5F7',MUT='#A3AAB7',ACC='#71E6F2',PANEL='#151922',LINE='rgba(163,170,183,.22)',DEB='#A98BFF';
  c.fillStyle='#0B0D12';c.fillRect(0,0,W,H);
  const g=c.createRadialGradient(W,0,0,W,0,760);g.addColorStop(0,'rgba(113,230,242,.12)');g.addColorStop(1,'rgba(113,230,242,0)');c.fillStyle=g;c.fillRect(0,0,W,H);
@@ -1066,6 +1311,16 @@ function drawSnap(prev){
   y+=SKH;
  }
 
+ if(UN3.length){
+  panel(48,y,984,ACHH-24);
+  c.fillStyle=MUT;c.font=`600 23px ${F}`;c.fillText('ACHIEVEMENTS',88,y+46);
+  c.textAlign='right';c.fillText(`${UNL.length} / ${S.ach.length}`,992,y+46);c.textAlign='left';
+  UN3.forEach((a,i)=>{const sx=88+i*300;drawAchBadge(c,sx+4,y+80,88,a);
+   c.fillStyle=TXT;c.font=`600 25px ${F}`;wrapText(c,a.n||'Untitled',sx+112,y+110,170,2,30);
+   c.fillStyle=MUT;c.font=`500 20px ${F}`;c.fillText(dfmt(a.d),sx+112,y+172)});
+  y+=ACHH;
+ }
+
  if(LAST.deb){
   panel(48,y,984,DEBH-24,'rgba(169,139,255,.55)');
   c.fillStyle=DEB;c.font=`700 24px ${F}`;c.fillText('DEBUFFS',88,y+50);
@@ -1130,7 +1385,8 @@ async function shareSnap(){
 /* ---------- init ---------- */
 applyTheme();renderAll();calc();
 renderDisSettings();
-(function(){const q=new URLSearchParams(location.search).get('tab'),m={income:0,expenses:1,assets:2,debts:3,skills:4,wishlist:5};tab(q&&q in m?m[q]:0)})();
+ACH_READY=true;
+(function(){const q=new URLSearchParams(location.search).get('tab'),m={income:0,expenses:1,assets:2,debts:3,skills:4,wishlist:5,goals:6};tab(q&&q in m?m[q]:0)})();
 if('serviceWorker' in navigator&&location.protocol.startsWith('http')){window.addEventListener('load',()=>{navigator.serviceWorker.register('life-time-sw.js',{scope:'./life-time.html'}).catch(()=>{})})}
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeSettings();closeSnap()}});
 </script>
