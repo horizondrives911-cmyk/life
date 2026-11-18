@@ -439,6 +439,12 @@ h2 .q{margin-left:8px;text-transform:none}
       <div class="note">Default is 1 Jan 2030. It is a reminder clock, not a prediction.</div>
     </div>
 
+    <div class="sec"><h3>Tracking start</h3>
+      <button class="btn danger" onclick="resetStart()">Reset first day to today</button>
+      <div class="note">Clears the daily snapshot history and the "Since" comparison, so today becomes day one. Assets, debts, skills and achievements stay.</div>
+      <div class="status" id="startStatus"></div>
+    </div>
+
     <div class="sec"><h3>Achievements</h3>
       <button class="btn" onclick="achExport()">⬇ Export achievements (.json)</button>
       <label class="btn" for="achImp" style="margin-bottom:0">⬆ Import achievements (.json)</label>
@@ -1235,6 +1241,11 @@ function achImport(inp){
  };
  rd.readAsText(f);
 }
+function resetStart(){
+ if(!confirm('Make today the first day? The snapshot history and the "Since" comparison will be cleared. Your assets, debts, skills and achievements stay.'))return;
+ S.history=[];S.first=new Date().toISOString();save(false);calc();
+ const e=$('startStatus');if(e)e.textContent='Done. Today is now day one.'
+}
 function achResetStarters(){
  if(!confirm('Replace your whole list with the 32 starter achievements? Your own achievements and unlock dates will be lost. Export first if you want a backup.'))return;
  S.ach=ACH_PRESETS();ACH_OPEN=-1;ACH_READY=false;save(false);checkAch();ACH_READY=true;renderAchEditor();achSay('Starter achievements restored.')
@@ -1440,9 +1451,9 @@ function drawSnap(prev){
  const dbc=LAST.deb?[`Local ${LAST.deb.L}%`,`Global ${LAST.deb.G}%`,`Corruption: ${LAST.deb.C}`,`Crime: ${LAST.deb.K}`,`Tax ${LAST.deb.T}%`,'AI race: Exponential']:[];
  const mc2=document.createElement('canvas').getContext('2d');mc2.font=`600 24px ${F}`;
  let cx=0,cr0=0;const chipPos=dbc.map(t=>{const w=mc2.measureText(t).width+40;if(cx+w>904&&cx>0){cx=0;cr0++}const p={t,x:cx,r:cr0,w};cx+=w+14;return p});
- const UNL=achUnlocked(),UN3=UNL.slice(0,3),ACHH=UN3.length?214:0;
+ const UNL=achUnlocked(),UN3=UNL.slice(0,3),ACHH=0,HX=UN3.length?100:0;
  const CHR=dbc.length?cr0+1:0,DEBH=LAST.deb?(80+CHR*62+70+24):0;
- const W=1080,H=160+468+250+702+SKH+ACHH+DEBH+224+70,cv=document.createElement('canvas');cv.width=W;cv.height=H;const c=cv.getContext('2d');
+ const W=1080,H=160+468+HX+250+702+SKH+ACHH+DEBH+224+70,cv=document.createElement('canvas');cv.width=W;cv.height=H;const c=cv.getContext('2d');
  const COL={g:'#5BE3A0',y:'#F5B14C',r:'#FF7A66',n:'#A3AAB7',a:'#71E6F2',o:'#FF9A5C'},TXT='#F3F5F7',MUT='#A3AAB7',ACC='#71E6F2',PANEL='#151922',LINE='rgba(163,170,183,.22)',DEB='#A98BFF';
  c.fillStyle='#0B0D12';c.fillRect(0,0,W,H);
  const g=c.createRadialGradient(W,0,0,W,0,760);g.addColorStop(0,'rgba(113,230,242,.12)');g.addColorStop(1,'rgba(113,230,242,0)');c.fillStyle=g;c.fillRect(0,0,W,H);
@@ -1457,7 +1468,8 @@ function drawSnap(prev){
  {
   const hh=LAST.hero||{rank:0,score:0,pct:0,next:'',mode:0},[rl,rn,rcol]=RANKS[hh.rank],nm=(S.name||'').trim();
   const lt=LAST.ind.lt||{num:'-'},lcol=COL[lt.st]||COL.n,cxm=213;
-  panel(48,y,984,444);
+  panel(48,y,984,444+HX);
+  c.save();c.translate(0,HX/2);
   drawRankFace(c,cxm-80,y+32,160,hh.rank,rl,rcol,F);
   c.textAlign='center';
   let ty=y+244;
@@ -1468,15 +1480,16 @@ function drawSnap(prev){
   const [mn,mc]=MODES[hh.mode],mcol=COL[mc],mt=mn.toUpperCase()+' MODE';
   c.font=`700 24px ${F}`;const mw=c.measureText(mt).width+40,my=y+444-24-44;
   rr(c,cxm-mw/2,my,mw,44,22);if(hh.mode===5){c.fillStyle=mcol;c.fill()}else{c.strokeStyle=mcol;c.lineWidth=2;c.stroke()}
-  c.fillStyle=hh.mode===5?'#0B0D12':mcol;c.fillText(mt,cxm,my+30);c.textAlign='left';
-  c.strokeStyle=LINE;c.lineWidth=2;c.beginPath();c.moveTo(350,y+32);c.lineTo(350,y+412);c.stroke();
+  c.fillStyle=hh.mode===5?'#0B0D12':mcol;c.fillText(mt,cxm,my+30);c.textAlign='left';c.restore();
+  c.strokeStyle=LINE;c.lineWidth=2;c.beginPath();c.moveTo(350,y+32);c.lineTo(350,y+412+HX);c.stroke();
   c.save();c.translate(0,34);const x0=392;
   c.fillStyle=MUT;c.font=`600 26px ${F}`;c.fillText('LIFE TIME',x0,y+62);
   c.fillStyle=lcol;let lfs=92;c.font=`700 ${lfs}px ${F}`;while(lfs>48&&c.measureText(lt.num).width>600){lfs-=4;c.font=`700 ${lfs}px ${F}`}c.fillText(clip(c,lt.num,600),x0,y+170);
   bar(x0,y+204,600,18,lt.pct,lcol);
   c.fillStyle=MUT;c.font=`500 24px ${F}`;c.fillText(clip(c,lt.unit||'',600),x0,y+262);
   c.fillStyle=ACC;c.font=`500 26px ${F}`;c.fillText('Time is your currency.',x0,y+312);c.fillText('Price every purchase in it.',x0,y+346);c.restore();
-  y+=468;
+  if(UN3.length){const bs=88,gp=28,tw=UN3.length*bs+(UN3.length-1)*gp,bx=692-tw/2;UN3.forEach((a,i)=>drawAchBadge(c,bx+i*(bs+gp),y+414,bs,a))}
+  y+=468+HX;
  }
  [['sp','SAVING POWER',48],['ff','FINANCIAL FREEDOM',548]].forEach(([id,lab,x])=>{
   const o=LAST.ind[id]||{num:'-'},col=COL[o.st]||COL.n;
@@ -1514,15 +1527,6 @@ function drawSnap(prev){
   y+=SKH;
  }
 
- if(UN3.length){
-  panel(48,y,984,ACHH-24);
-  c.fillStyle=MUT;c.font=`600 23px ${F}`;c.fillText('ACHIEVEMENTS',88,y+46);
-  c.textAlign='right';c.fillText(`${UNL.length} / ${S.ach.length}`,992,y+46);c.textAlign='left';
-  UN3.forEach((a,i)=>{const sx=88+i*300;drawAchBadge(c,sx+4,y+80,88,a);
-   c.fillStyle=TXT;c.font=`600 25px ${F}`;wrapText(c,a.n||'Untitled',sx+112,y+110,170,2,30);
-   c.fillStyle=MUT;c.font=`500 20px ${F}`;c.fillText(dfmt(a.d),sx+112,y+172)});
-  y+=ACHH;
- }
 
  if(LAST.deb){
   panel(48,y,984,DEBH-24,'rgba(169,139,255,.55)');
