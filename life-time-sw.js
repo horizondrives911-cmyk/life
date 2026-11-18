@@ -1,4 +1,4 @@
-const CACHE='life-time-v32';
+const CACHE='life-time-v36';
 const FILES=['life-time.html','life-time-manifest.json','life-time-192.png','life-time-512.png'];
 self.addEventListener('install',e=>{
   e.waitUntil(caches.open(CACHE).then(c=>c.addAll(FILES)).then(()=>self.skipWaiting()));

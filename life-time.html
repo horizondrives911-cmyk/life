@@ -62,7 +62,7 @@ h1 .c,h1 svg{color:var(--acc)}
 @keyframes sheen{0%,55%{transform:translateX(0) skewX(-20deg);opacity:0}60%{opacity:1}85%,100%{transform:translateX(480%) skewX(-20deg);opacity:0}}
 @keyframes mpulse{50%{box-shadow:0 0 26px 4px rgba(194,107,255,.75),0 0 52px 8px rgba(194,107,255,.38)}}
 @keyframes mrise{0%{transform:translateY(8px);opacity:0}25%{opacity:.9}100%{transform:translateY(-70px);opacity:0}}
-@media (prefers-reduced-motion:reduce){.face,.face::before,.face::after,.ab,.ab::before,.ab::after,.toast{animation:none!important}}
+@media (prefers-reduced-motion:reduce){.pips i,.pips.lv3::before,.pips.lv3::after{animation:none!important}.face,.face::before,.face::after,.ab,.ab::before,.ab::after,.toast{animation:none!important}}
 .rg{display:flex;align-items:center;gap:12px;padding:8px 6px;border-radius:12px;border:1px solid transparent}
 .rg.cur{border-color:var(--c);background:rgba(255,255,255,.04)}
 .rg.lock .rt2{opacity:.6}
@@ -85,7 +85,8 @@ h1 .c,h1 svg{color:var(--acc)}
 .ab.lk::before,.ab.lk::after{display:none}
 .ab .lkb{position:absolute;right:1px;bottom:1px;width:36%;height:36%;color:#A3AAB7;z-index:3;background:#151922;border-radius:50%;padding:2px;box-sizing:border-box;display:flex}
 .ab .lkb svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
-.astrip{display:flex;flex-wrap:wrap;gap:2px;margin-top:-2px}
+.astrip{display:flex;flex-wrap:nowrap;overflow:hidden;gap:2px;margin-top:-2px;align-items:center}
+.amore{display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:34px;margin:4px;padding:0 6px;color:var(--mut);font:600 13px var(--body);border:1px dashed var(--line);border-radius:30%;flex:none}
 .open .astrip{display:none}
 .arow{display:flex;align-items:center;gap:8px;padding:4px 0}
 .arow.dim .an{color:var(--mut)}
@@ -196,7 +197,22 @@ input[readonly]{opacity:.7}
 .item .r2 .ir{display:flex;align-items:center;gap:6px;flex:1;color:var(--mut);font-size:13px;text-transform:none;letter-spacing:0;font-weight:400}.item .r2 .ir input{width:80px}
 .sk{display:flex;align-items:center;gap:12px;padding:7px 0}.sk b{flex:1;font-weight:500;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.sk .lv{color:var(--mut);font-size:13px;width:96px;text-align:right}.sk .pips{flex:none}.sk-more{color:var(--mut);font-size:13px;padding-top:4px}
 .item .r2 .pips i{flex:1;width:auto}
-.pips{flex:1;display:flex;gap:4px}.pips i{width:24px;height:8px;border-radius:0;transform:skewX(-20deg);background:var(--bg2);border:1px solid var(--line)}.pips i.f{background:var(--acc);border-color:var(--acc)}
+.pips{flex:1;display:flex;gap:4px}
+.pips.lv0 i.f{background:#9AA6B5;border-color:#9AA6B5}
+.pips.lv1 i.f{background:#5BE3A0;border-color:#5BE3A0;box-shadow:0 0 6px rgba(91,227,160,.5)}
+.pips.lv2 i.f{background:linear-gradient(100deg,#F2C14E 35%,#FFF3C4 50%,#F2C14E 65%);background-size:300% 100%;border-color:#F2C14E;animation:pgold 2.4s ease-in-out infinite,gshine 2.2s linear infinite}
+@keyframes gshine{from{background-position:100% 0}to{background-position:0% 0}}
+.pips.lv3 i.f{background:#C26BFF;border-color:#D9A6FF;animation:pmyth 1.5s ease-in-out infinite}
+.pips.lv3{position:relative}
+.pips.lv3::before,.pips.lv3::after{content:'';position:absolute;left:0;right:0;top:-3px;bottom:3px;pointer-events:none;background-repeat:no-repeat;animation:spark 1.5s ease-out infinite}
+.pips.lv3::before{background-image:radial-gradient(circle at 6% 60%,#fff 0 1.2px,transparent 2.2px),radial-gradient(circle at 30% 70%,#E7C2FF 0 1.4px,transparent 2.6px),radial-gradient(circle at 52% 55%,#fff 0 1.1px,transparent 2.1px),radial-gradient(circle at 78% 68%,#E7C2FF 0 1.3px,transparent 2.4px),radial-gradient(circle at 94% 58%,#fff 0 1.2px,transparent 2.2px)}
+.pips.lv3::after{animation-delay:.75s;background-image:radial-gradient(circle at 18% 65%,#E7C2FF 0 1.3px,transparent 2.4px),radial-gradient(circle at 40% 58%,#fff 0 1.2px,transparent 2.2px),radial-gradient(circle at 64% 66%,#E7C2FF 0 1.4px,transparent 2.6px),radial-gradient(circle at 88% 60%,#fff 0 1.1px,transparent 2.1px)}
+@keyframes spark{0%{transform:translateY(6px);opacity:0}20%{opacity:1}100%{transform:translateY(-16px);opacity:0}}
+.pips.lv2 i:nth-child(2){animation-delay:.3s}.pips.lv2 i:nth-child(3){animation-delay:.6s}
+.pips.lv3 i:nth-child(2){animation-delay:.2s}.pips.lv3 i:nth-child(3){animation-delay:.4s}.pips.lv3 i:nth-child(4){animation-delay:.6s}
+@keyframes pgold{0%,100%{box-shadow:0 0 5px rgba(242,193,78,.5);filter:brightness(1)}50%{box-shadow:0 0 12px rgba(242,193,78,.95);filter:brightness(1.3)}}
+@keyframes pmyth{0%,100%{box-shadow:0 0 7px rgba(194,107,255,.6);filter:brightness(1)}40%{box-shadow:0 0 16px 2px rgba(194,107,255,1);filter:brightness(1.5)}}
+.sk .lv.l1{color:#5BE3A0}.sk .lv.l2{color:#F2C14E}.sk .lv.l3{color:#C26BFF}.pips i{width:24px;height:8px;border-radius:0;transform:skewX(-20deg);background:var(--bg2);border:1px solid var(--line)}.pips i.f{background:var(--acc);border-color:var(--acc)}
 .x{background:none;border:1px solid var(--line);color:var(--mut);border-radius:10px;padding:9px 13px;cursor:pointer}
 .x:hover{border-color:var(--r);color:var(--r)}
 .add{background:none;border:1px dashed rgba(163,170,183,.35);color:var(--acc);border-radius:12px;padding:0 16px;min-height:42px;cursor:pointer;font:600 14px var(--body);margin-bottom:14px}
@@ -362,7 +378,7 @@ h2 .q{margin-left:8px;text-transform:none}
     <div id="list-ach"></div>
     <button class="add" onclick="achAdd()">+ Add achievement</button>
     <div class="note" id="achEmpty">No achievements yet. Add one.</div>
-    <div class="note" style="margin-top:8px">Auto goals unlock by themselves from your numbers, once your expenses are set. Cancel an unlock if you were only testing: it can unlock again after the condition turns false and then true. Tiers: Common is plain, Rare glows, Epic is animated.</div>
+    <div class="note" style="margin-top:8px">Auto goals unlock by themselves from your numbers, once your expenses are set. Cancel an unlock if you were only testing: it can unlock again after the condition turns false and then true. Tiers: Common is plain, Rare glows, Epic is animated. Export, import and delete live in Settings, under Achievements.</div>
   </div>
 
   <div class="foot" id="foot"></div>
@@ -424,6 +440,15 @@ h2 .q{margin-left:8px;text-transform:none}
     <div class="sec"><h3>AI Doomsday</h3>
       <div class="fld"><span class="t">Countdown date</span><div class="in"><input id="sDoom" type="date" style="width:150px;text-align:left"></div></div>
       <div class="note">Default is 1 Jan 2030. It is a reminder clock, not a prediction.</div>
+    </div>
+
+    <div class="sec"><h3>Achievements</h3>
+      <button class="btn" onclick="achExport()">⬇ Export achievements (.json)</button>
+      <label class="btn" for="achImp" style="margin-bottom:0">⬆ Import achievements (.json)</label>
+      <input type="file" id="achImp" accept=".json,application/json" class="hide" onchange="achImport(this)">
+      <button class="btn" onclick="achResetStarters()">Reset to 32 starter achievements</button>
+      <button class="btn danger" onclick="achDeleteAll()">Delete all achievements</button>
+      <div class="status" id="achStatus"></div>
     </div>
 
     <div class="sec"><h3>Data</h3>
@@ -508,25 +533,53 @@ Object.assign(IC,{
  rocket:'<path d="M12 3c3 2 5 5 5 9l-2 3H9l-2-3c0-4 2-7 5-9z"/><circle cx="12" cy="10" r="1.6"/><path d="M9 15l-2 5 3-1.5M15 15l2 5-3-1.5"/>'
 });
 const ACH_ICONS=['coin','wallet','chest','trend','bars','gem','gold','btc','shield','chain','lock','key','hourglass','calendar','flame','sun','leaf','mountain','target','flag','compass','rocket','star','medal','trophy','crown','check','brain','book','heart','bolt','sword','tower','person'];
-const ACH_KEYS=['lt','ff','sr','sp','nw','as','db','rk','sk'];
+const ACH_KEYS=['lt','ff','sr','sp','nw','nwm','as','db','dbm','dn','ex','in','rk','sk','sc','sa','sm','ds','md','tk'];
 const ACH_COL=['#5BE3A0','#F5B14C','#FF7A66','#FF9A5C','#71E6F2','#5B9DFF','#FF7BBE','#C9CFD8'];
 const ACH_PRESETS=()=>[
- {n:'Debt-free',ic:'chain',c:0,t:1,m:'db',o:'<=',v:0},
- {n:'Saving habit',ic:'trend',c:4,t:0,m:'sr',o:'>=',v:10},
- {n:'3 months of life',ic:'hourglass',c:1,t:0,m:'lt',o:'>=',v:3},
- {n:'One year of life',ic:'hourglass',c:4,t:1,m:'lt',o:'>=',v:12},
- {n:'Freedom 20%',ic:'compass',c:5,t:1,m:'ff',o:'>=',v:20},
- {n:'10 million saved',ic:'coin',c:1,t:0,m:'as',o:'>=',v:10000000},
- {n:'Rank A: Master',ic:'medal',c:0,t:2,m:'rk',o:'>=',v:5},
- {n:'Financially free',ic:'sun',c:1,t:2,m:'ff',o:'>=',v:100}
-].map(a=>Object.assign({sk:'',d:null,h:false},a));
+ {n:"First month",ic:'hourglass',c:1,t:0,m:'lt',o:'>=',v:1,hm:0},
+ {n:"3 months of life",ic:'hourglass',c:1,t:0,m:'lt',o:'>=',v:3,hm:0},
+ {n:"Half a year of life",ic:'hourglass',c:4,t:0,m:'lt',o:'>=',v:6,hm:0},
+ {n:"One year of life",ic:'hourglass',c:4,t:1,m:'lt',o:'>=',v:12,hm:0},
+ {n:"Two years of life",ic:'hourglass',c:5,t:1,m:'lt',o:'>=',v:24,hm:0},
+ {n:"Five years of life",ic:'hourglass',c:0,t:2,m:'lt',o:'>=',v:60,hm:0},
+ {n:"Freedom 5%",ic:'compass',c:1,t:0,m:'ff',o:'>=',v:5,hm:0},
+ {n:"Freedom 20%",ic:'compass',c:5,t:1,m:'ff',o:'>=',v:20,hm:0},
+ {n:"Halfway free",ic:'compass',c:4,t:1,m:'ff',o:'>=',v:50,hm:0},
+ {n:"Financially free",ic:'sun',c:1,t:2,m:'ff',o:'>=',v:100,hm:0},
+ {n:"Triple freedom",ic:'crown',c:1,t:2,m:'ff',o:'>=',v:300,hm:0},
+ {n:"Saving habit",ic:'trend',c:4,t:0,m:'sr',o:'>=',v:10,hm:0},
+ {n:"Serious saver",ic:'trend',c:0,t:0,m:'sr',o:'>=',v:20,hm:0},
+ {n:"Half your pay",ic:'trend',c:1,t:1,m:'sr',o:'>=',v:50,hm:0},
+ {n:"Net worth: 12 months",ic:'bars',c:0,t:0,m:'nwm',o:'>=',v:12,hm:0},
+ {n:"Net worth: 120 months",ic:'bars',c:4,t:1,m:'nwm',o:'>=',v:120,hm:0},
+ {n:"Debt under 3 months",ic:'chain',c:1,t:0,m:'dbm',o:'<=',v:3,hm:0},
+ {n:"Debt-free",ic:'chain',c:0,t:1,m:'db',o:'<=',v:0,hm:0},
+ {n:"No new debt for 6 months",ic:'lock',c:5,t:1,m:'dn',o:'<=',v:0,hm:6},
+ {n:"Debt-free for 12 months",ic:'chain',c:0,t:2,m:'db',o:'<=',v:0,hm:12},
+ {n:"Rank C: Veteran",ic:'medal',c:4,t:0,m:'rk',o:'>=',v:3,hm:0},
+ {n:"Rank B: Elite",ic:'medal',c:5,t:1,m:'rk',o:'>=',v:4,hm:0},
+ {n:"Rank A: Master",ic:'medal',c:0,t:1,m:'rk',o:'>=',v:5,hm:0},
+ {n:"Rank S: Grandmaster",ic:'trophy',c:7,t:2,m:'rk',o:'>=',v:6,hm:0},
+ {n:"Rank SS: Legend",ic:'trophy',c:1,t:2,m:'rk',o:'>=',v:7,hm:0},
+ {n:"Rank SSS: Mythic",ic:'star',c:6,t:2,m:'rk',o:'>=',v:8,hm:0},
+ {n:"First skill",ic:'book',c:4,t:0,m:'sc',o:'>=',v:1,hm:0},
+ {n:"Master of one",ic:'brain',c:6,t:1,m:'sm',o:'>=',v:1,hm:0},
+ {n:"Tracking for 3 months",ic:'calendar',c:1,t:0,m:'tk',o:'>=',v:3,hm:0},
+ {n:"Tracking for 12 months",ic:'calendar',c:4,t:1,m:'tk',o:'>=',v:12,hm:0},
+ {n:"Written budget",ic:'scroll',c:1,t:0,m:'',o:'>=',v:0,hm:0},
+ {n:"Gave to charity",ic:'heart',c:6,t:0,m:'',o:'>=',v:0,hm:0}
+].map(a=>Object.assign({sk:'',d:null,h:false,s:null,b:0,z:false},a));
 const svg=(n,s=20)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]}</svg>`;
 
 /* ---------- state ---------- */
 const DEFAULT=()=>({app:'life-time',version:3,cur:'IDR',
  settings:{rate:16000,growth:4,infLocal:15,infIntl:3,corr:1,corrV:2,tax:0,theme:'dungeon',th:{sp:10,lt:[6,12],ff:[10,50],nw:[0,50],buy:[10,15,20],inf:[3,5,9,12,14],tax:[0,10,20,30,39],lvl:[1,4,7,10,14],lvlp:[10,30,50,70,90],w:[1,1,1,1]},crime:1,doom:'2030-01-01'},
- name:'',dis:{yt:0,ig:0,tt:0,extra:[]},income:[],expenses:[],assets:[],debts:[],skills:[],wishlist:[],history:[],ach:ACH_PRESETS(),updated:null});
+ name:'',dis:{yt:0,ig:0,tt:0,extra:[]},income:[],expenses:[],assets:[],debts:[],skills:[],wishlist:[],history:[],achV:3,first:null,ach:ACH_PRESETS(),updated:null});
 
+function cleanAch(i){
+ const x=Number(i.v),iso=v=>typeof v==='string'&&!isNaN(new Date(v))?v.slice(0,40):null;
+ return {n:String(i.n==null?'':i.n).slice(0,40),ic:ACH_ICONS.includes(i.ic)?i.ic:'star',c:Math.max(0,Math.min(7,parseInt(i.c)||0)),t:Math.max(0,Math.min(2,parseInt(i.t)||0)),m:ACH_KEYS.includes(i.m)?i.m:'',o:i.o==='<='?'<=':'>=',v:isFinite(x)?Math.max(-1e13,Math.min(1e13,x)):0,hm:Math.max(0,Math.min(600,parseInt(i.hm)||0)),sk:String(i.sk==null?'':i.sk).slice(0,60),d:iso(i.d),s:iso(i.s),b:Math.max(0,Math.min(1e13,Number(i.b)||0)),z:!!i.z,h:!!i.h};
+}
 function clean(r){
  r=r&&typeof r==='object'?r:{};
  const D=DEFAULT(),s=r.settings||{},th=s.th||{};
@@ -552,7 +605,8 @@ function clean(r){
   skills:arr(r.skills).map(i=>({n:nm(i.n),l:Math.max(0,Math.min(3,parseInt(i.l)||0))})),
   wishlist:arr(r.wishlist).map(i=>({n:nm(i.n),v:nv(i.v)})),
   history:arr(r.history).filter(h=>typeof h.t==='string'&&!isNaN(new Date(h.t))).slice(-120).map(h=>({t:h.t.slice(0,40),I:nv(h.I),E:nv(h.E),A:nv(h.A),D:nv(h.D),sp:sv(h.sp),nw:sv(h.nw)})),
-  ach:Array.isArray(r.ach)?arr(r.ach).slice(0,60).map(i=>({n:String(i.n==null?'':i.n).slice(0,40),ic:ACH_ICONS.includes(i.ic)?i.ic:'star',c:Math.max(0,Math.min(7,parseInt(i.c)||0)),t:Math.max(0,Math.min(2,parseInt(i.t)||0)),m:ACH_KEYS.includes(i.m)?i.m:'',o:i.o==='<='?'<=':'>=',v:(()=>{const x=Number(i.v);return isFinite(x)?Math.max(-1e13,Math.min(1e13,x)):0})(),sk:nm(i.sk),d:typeof i.d==='string'&&!isNaN(new Date(i.d))?i.d.slice(0,40):null,h:!!i.h})):ACH_PRESETS(),
+  achV:3,first:typeof r.first==='string'&&!isNaN(new Date(r.first))?r.first.slice(0,40):null,
+  ach:Number(r.achV)>=3&&Array.isArray(r.ach)?arr(r.ach).slice(0,120).map(cleanAch):ACH_PRESETS(),
   updated:typeof r.updated==='string'?r.updated.slice(0,40):null};
 }
 let S=null;
@@ -570,8 +624,8 @@ function renderSkillsCard(){
  card.classList.toggle('hide',!L.length);box.innerHTML='';more.innerHTML='';
  const row=s=>{const r=document.createElement('div');r.className='sk';
   const b=document.createElement('b');b.textContent=s.n||'Untitled';
-  const p=document.createElement('span');p.className='pips';p.innerHTML=[0,1,2,3].map(j=>`<i class="${j<=s.l?'f':''}"></i>`).join('');
-  const v=document.createElement('span');v.className='lv';v.textContent=LEVELS[s.l];
+  const p=document.createElement('span');p.className='pips lv'+s.l;p.innerHTML=[0,1,2,3].map(j=>`<i class="${j<=s.l?'f':''}"></i>`).join('');
+  const v=document.createElement('span');v.className='lv l'+s.l;v.textContent=LEVELS[s.l];
   r.append(b,p,v);return r};
  L.slice(0,4).forEach(s=>box.appendChild(row(s)));
  if(L.length>4){const m=document.createElement('div');m.className='sk-more';m.textContent='+'+(L.length-4)+' more';box.appendChild(m)}
@@ -621,14 +675,23 @@ function debtMonths(debts,extra){
 function setInd(id,o){
  LAST.ind[id]=o;
  const el=$('i-'+id);el.className=(el.dataset.b||'irow')+(o.st?' s-'+o.st:'');
- $(id+'Num').textContent=o.num;$(id+'Unit').textContent=o.unit||'';
+ $(id+'Num').textContent=o.num;fitText($(id+'Num'));$(id+'Unit').textContent=o.unit||'';
  $(id+'Bar').style.width=Math.round((o.pct||0)*100)+'%';
  $(id+'Note').textContent=o.note||'';
 }
+function fitText(el){
+ if(!el)return;el.style.fontSize='';
+ if(!el.clientWidth)return;
+ let fs=parseFloat(getComputedStyle(el).fontSize);
+ while(el.scrollWidth>el.clientWidth+1&&fs>11){fs-=1;el.style.fontSize=fs+'px'}
+}
+function fitAll(){document.querySelectorAll('.mini b,.big').forEach(fitText)}
+window.addEventListener('resize',()=>{fitAll();try{renderAchCard()}catch(e){}});
 function setMini(id,text,st,sub){
  LAST.mini[id]={text,st,sub};
  const el=$('m-'+id);el.className='mini'+(st?' s-'+st:'');
  el.querySelector('b').textContent=text;el.querySelector('.s2').textContent=sub||'';
+ fitText(el.querySelector('b'));
 }
 
 function calc(){
@@ -801,7 +864,7 @@ function renderList(key){
    const sel=document.createElement('select');sel.innerHTML=LEVELS.map((l,j)=>`<option value="${j}">${l}</option>`).join('');sel.value=it.l;
    d.appendChild(sel);
    const pips=document.createElement('span');pips.className='pips';
-   const draw=()=>{pips.innerHTML=[0,1,2,3].map(j=>`<i class="${j<=it.l?'f':''}"></i>`).join('')};draw();
+   const draw=()=>{pips.className='pips lv'+it.l;pips.innerHTML=[0,1,2,3].map(j=>`<i class="${j<=it.l?'f':''}"></i>`).join('')};draw();
    sel.onchange=()=>{it.l=parseInt(sel.value)||0;draw();save(true)};
    r2.appendChild(pips);r2.appendChild(del);d.appendChild(r2);
   }
@@ -941,18 +1004,30 @@ $('snapBtn').innerHTML=svg('camera',20);$('logo').innerHTML=svg('sword',24);$('f
 
 /* ---------- achievements ---------- */
 let ACH_READY=false,ACH_OPEN=-1;
+const MS_MONTH=30.4375*864e5;
 const pcf=v=>(Math.abs(v)>=10?v.toFixed(0):v.toFixed(1))+'%';
 const rkf=v=>{const r=RANKS[Math.max(0,Math.min(8,Math.round(v)))];return r[0]+' ('+r[1]+')'};
 const dfmt=iso=>new Date(iso).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
 const ACH_M={
  lt:{l:'Life Time',k:'num',u:'months',fin:1,d:6,get:()=>LAST.A/LAST.E,f:v=>dur(v)},
  ff:{l:'Financial Freedom',k:'num',u:'%',fin:1,d:20,get:()=>LAST.A/(LAST.E*12*(100/S.settings.growth))*100,f:pcf},
+ nwm:{l:'Net worth in months',k:'num',u:'months',fin:1,d:12,get:()=>LAST.E>0?(LAST.A-LAST.D)/LAST.E:null,f:v=>dur(v)},
+ dbm:{l:'Debts in months of expenses',k:'num',u:'months',fin:1,d:3,o:'<=',get:()=>LAST.E>0?LAST.D/LAST.E:null,f:v=>dur(v)},
+ dn:{l:'No new debt',k:'none',fin:1,d:0,hm:6,get:()=>LAST.D,f:v=>fmt(v)},
+ tk:{l:'Using the app',k:'num',u:'months',d:3,get:()=>S.first?(Date.now()-new Date(S.first))/MS_MONTH:null,f:v=>dur(v)},
  sr:{l:'Saving rate',k:'num',u:'% of income',fin:1,d:10,get:()=>LAST.I>0?(LAST.I-LAST.E)/LAST.I*100:null,f:pcf},
  sp:{l:'Saving Power',k:'money',fin:1,d:500000,get:()=>LAST.I-LAST.E,f:v=>fmt(v)},
  nw:{l:'Net worth',k:'money',fin:1,d:10000000,get:()=>LAST.A-LAST.D,f:v=>fmt(v)},
  as:{l:'Total assets',k:'money',fin:1,d:10000000,get:()=>LAST.A,f:v=>fmt(v)},
  db:{l:'Total debts',k:'money',fin:1,d:0,o:'<=',get:()=>LAST.D,f:v=>fmt(v)},
+ ex:{l:'Monthly expenses',k:'money',fin:1,d:5000000,o:'<=',get:()=>LAST.E,f:v=>fmt(v)},
+ in:{l:'Monthly income',k:'money',fin:1,d:10000000,get:()=>LAST.I,f:v=>fmt(v)},
  rk:{l:'Rank',k:'rank',fin:1,d:5,get:()=>rankCalc().idx,f:rkf},
+ sc:{l:'Skills added',k:'num',u:'skills',d:1,get:()=>S.skills.length,f:v=>String(Math.round(v))},
+ sa:{l:'Skills at Advanced or higher',k:'num',u:'skills',d:1,get:()=>S.skills.filter(x=>x.l>=2).length,f:v=>String(Math.round(v))},
+ sm:{l:'Skills at Master',k:'num',u:'skills',d:1,get:()=>S.skills.filter(x=>x.l>=3).length,f:v=>String(Math.round(v))},
+ ds:{l:'Distraction level',k:'dis',fin:1,d:0,o:'<=',get:()=>LAST.dis?LAST.dis.lv:null,f:v=>DIS_L[Math.max(0,Math.min(4,Math.round(v)))]},
+ md:{l:'Mode',k:'mode',fin:1,d:1,o:'<=',get:()=>LAST.hero?LAST.hero.mode:null,f:v=>MODES[Math.max(0,Math.min(5,Math.round(v)))][0]},
  sk:{l:'Skill level',k:'skill',d:3,get:a=>{const L=S.skills.filter(x=>x.n.trim().toLowerCase()===String(a.sk||'').trim().toLowerCase());return L.length?Math.max(...L.map(x=>x.l)):null},f:v=>LEVELS[Math.max(0,Math.min(3,Math.round(v)))]}
 };
 const hexRGB=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16));
@@ -961,15 +1036,39 @@ const icoSvg=n=>`<svg viewBox="0 0 24 24" aria-hidden="true">${IC[n]||IC.star}</
 function badgeH(a,locked,size){return `<span class="ab t${a.t}${locked?' lk':''}" style="${achStyle(a)};--s:${size||44}px">${icoSvg(a.ic)}${locked?`<span class="lkb">${icoSvg('lock')}</span>`:''}</span>`}
 function achCond(a){
  if(!a.m)return 'Manual: you mark it done.';
- const M=ACH_M[a.m],op=a.o==='<='?'≤':'≥';
- return `${a.m==='sk'?(a.sk||'Skill'):M.l} ${op} ${M.f(a.v)}`;
+ const M=ACH_M[a.m],op=a.o==='<='?'≤':'≥',hold=a.hm>0?` for ${a.hm} month${a.hm>1?'s':''}`:'';
+ if(a.m==='dn')return 'Total debts do not rise'+hold;
+ return `${a.m==='sk'?(a.sk||'Skill'):M.l} ${op} ${M.f(a.v)}${hold}`;
 }
 function achEval(a){
  const M=ACH_M[a.m];if(!M)return null;
  if(M.fin&&!(LAST.E>0))return null;
+ if(a.m==='dn')return {met:true,cur:LAST.D,curTxt:fmt(LAST.D),pct:null};
  const cur=M.get(a);if(cur==null||!isFinite(cur))return null;
  const ge=a.o!=='<=',t=a.v,met=ge?cur>=t:cur<=t;
  return {met,cur,curTxt:M.f(cur),pct:met?1:ge?(t>0?Math.max(0,Math.min(1,cur/t)):0):null};
+}
+function holdInfo(a,r){
+ if(!(a.m==='dn'||a.hm>0)||!r)return null;
+ const need=a.hm||1,el=a.s&&r.met?(Date.now()-new Date(a.s))/MS_MONTH:0;
+ return {pct:Math.min(1,el/need),txt:`${el.toFixed(1)} / ${need} months`,el};
+}
+function histVal(m,h){
+ const E=h.E,I=h.I,g=S.settings.growth;
+ switch(m){case 'lt':return E>0?h.A/E:null;case 'ff':return E>0?h.A/(E*12*(100/g))*100:null;case 'sr':return I>0?(I-E)/I*100:null;
+  case 'sp':return h.sp;case 'nw':return h.nw;case 'nwm':return E>0?h.nw/E:null;case 'as':return h.A;case 'db':return h.D;case 'dbm':return E>0?h.D/E:null;case 'ex':return E;case 'in':return I;default:return null}
+}
+function backdate(a){
+ const H=S.history;if(!H.length)return null;let start=null;
+ if(a.m==='dn'){
+  if(LAST.D>H[H.length-1].D+0.5)return null;
+  for(let j=H.length-1;j>=0;j--){if(j<H.length-1&&H[j].D<H[j+1].D-0.5)break;start=H[j].t}
+  return start;
+ }
+ if(!['lt','ff','sr','sp','nw','nwm','as','db','dbm','ex','in'].includes(a.m))return null;
+ const ge=a.o!=='<=';
+ for(let j=H.length-1;j>=0;j--){const v=histVal(a.m,H[j]);if(v==null||!(ge?v>=a.v:v<=a.v))break;start=H[j].t}
+ return start;
 }
 const achUnlocked=()=>S.ach.filter(a=>a.d).sort((x,y)=>y.t-x.t||new Date(y.d)-new Date(x.d));
 function toastAch(a){
@@ -979,14 +1078,27 @@ function toastAch(a){
  setTimeout(()=>t.remove(),4000);
 }
 function checkAch(){
- const newly=[];
+ if(!S.first){const h=S.history[0];S.first=(h&&h.t)||S.updated||new Date().toISOString();save(false)}
+ const newly=[],now=new Date().toISOString();
  S.ach.forEach(a=>{
   if(!a.m)return;
   const r=achEval(a);if(!r)return;
   if(a.h&&!r.met)a.h=false;
-  if(!a.d&&!a.h&&r.met){a.d=new Date().toISOString();newly.push(a)}
+  if(a.d)return;
+  const hold=a.m==='dn'||a.hm>0;
+  if(a.m==='dn'){
+   if(!a.s){a.s=(a.z?null:backdate(a))||now;a.z=true;a.b=LAST.D}
+   else if(LAST.D>(a.b||0)+0.5){a.s=now;a.b=LAST.D}
+   else a.b=Math.min(a.b||0,LAST.D);
+  }else if(hold){
+   if(r.met){if(!a.s){a.s=(a.z?null:backdate(a))||now;a.z=true}}
+   else{a.s=null;a.z=true}
+  }
+  const timeOk=!hold||(a.s&&(Date.now()-new Date(a.s))/MS_MONTH>=(a.hm||1));
+  if(!a.h&&r.met&&timeOk){a.d=now;newly.push(a)}
  });
- if(newly.length){save(false);if(ACH_READY)newly.slice(0,3).forEach(toastAch)}
+ save(false);
+ if(newly.length&&ACH_READY)newly.slice(0,3).forEach(toastAch);
  renderAchCard();
  if(newly.length&&!$('p6').classList.contains('hide')&&!(document.activeElement&&document.activeElement.tagName==='INPUT'))renderAchEditor();
 }
@@ -994,30 +1106,37 @@ function renderAchCard(){
  if(!$('achCard'))return;
  const un=achUnlocked(),tot=S.ach.length;
  $('achCount').textContent=tot?`${un.length} / ${tot}`:'';
- $('achStrip').innerHTML=un.length?un.slice(0,8).map(a=>badgeH(a,false,34)).join(''):`<div class="note" style="margin:0">${tot?'Nothing unlocked yet. Tap to see your goals.':'No achievements yet. Add one in Goals.'}</div>`;
- const rows=S.ach.map(a=>({a,r:a.m?achEval(a):null}));
- const rank=x=>x.a.d?[0,-x.a.t,-new Date(x.a.d)]:[1,x.r&&x.r.pct!=null?-x.r.pct:(x.a.m?0.5:1),0];
+ const strip=$('achStrip'),w=strip.clientWidth||($('achCard').clientWidth-36)||300,per=Math.max(1,Math.floor((w+2)/44));
+ strip.innerHTML=un.length?un.slice(0,per).map(a=>badgeH(a,false,34)).join(''):`<div class="note" style="margin:0">${tot?'Nothing unlocked yet. Tap to see your goals.':'No achievements yet. Add one in Goals.'}</div>`;
+ const rows=S.ach.map(a=>{const r=a.m?achEval(a):null,hi=a.d?null:holdInfo(a,r);return {a,r,hi,p:hi?hi.pct:(r?r.pct:null)}});
+ const rank=x=>x.a.d?[0,-x.a.t,-new Date(x.a.d)]:[1,x.p!=null?-x.p:(x.a.m?0.5:1),0];
  rows.sort((x,y)=>{const p=rank(x),q=rank(y);return p[0]-q[0]||p[1]-q[1]||p[2]-q[2]});
- $('achList').innerHTML=rows.map(({a,r})=>{
-  const bar=!a.d&&r&&r.pct!=null?`<div class="abar"><i style="width:${Math.round(r.pct*100)}%"></i></div>`:'';
-  const now=!a.d&&r&&r.pct==null?` · now ${esc(r.curTxt)}`:'';
-  const right=a.d?`<span class="ok">✓</span>${dfmt(a.d)}`:(r&&r.pct!=null?Math.floor(r.pct*100)+'%':(a.m?'':'Manual'));
+ $('achList').innerHTML=rows.map(({a,r,hi,p})=>{
+  const bar=!a.d&&p!=null?`<div class="abar"><i style="width:${Math.round(p*100)}%"></i></div>`:'';
+  const now=!a.d?(hi?` · ${hi.txt}`:(r&&r.pct==null&&a.m!=='dn'?` · now ${esc(r.curTxt)}`:'')):'';
+  const right=a.d?`<span class="ok">✓</span>${dfmt(a.d)}`:(p!=null?Math.floor(p*100)+'%':(a.m?'':'Manual'));
   return `<div class="arow${a.d?'':' dim'}" style="${achStyle(a)}">${badgeH(a,!a.d,42)}<div class="am"><div class="an">${esc(a.n||'Untitled')}</div><div class="ac">${esc(achCond(a))}${now}</div>${bar}</div><div class="as">${right}</div></div>`}).join('');
 }
 function achItemH(a,i){
- const open=i===ACH_OPEN,r=a.m?achEval(a):null,usd=S.cur==='USD',M=ACH_M[a.m];
- const stat=a.d?`Unlocked ${dfmt(a.d)}`:(r&&r.pct!=null?`Locked · ${Math.floor(r.pct*100)}%`:'Locked');
+ const open=i===ACH_OPEN,r=a.m?achEval(a):null,hi=a.d?null:holdInfo(a,r),usd=S.cur==='USD',M=ACH_M[a.m];
+ const stat=a.d?`Unlocked ${dfmt(a.d)}`:(hi?`Locked · ${hi.txt}`:(r&&r.pct!=null?`Locked · ${Math.floor(r.pct*100)}%`:'Locked'));
  const btn=a.d?`<button class="x" onclick="achCancel(${i})">Cancel unlock</button>`:`<button class="x" onclick="achUnlock(${i})">${a.m?'Unlock now':'Mark done'}</button>`;
  let cond='';
  if(a.m){
-  let val='';
-  if(M.k==='rank')val=`<select onchange="achNum(${i},this.value)">${RANKS.map((x,j)=>`<option value="${j}"${a.v===j?' selected':''}>${x[0]} · ${x[1]}</option>`).join('')}</select>`;
-  else if(M.k==='skill'){
-   const names=[...new Set(S.skills.map(x=>x.n.trim()).filter(Boolean))];
-   val=(names.length?`<select onchange="achSkill(${i},this.value)">${names.map(n=>`<option value="${esc(n)}"${n===a.sk?' selected':''}>${esc(n)}</option>`).join('')}</select>`:`<span class="u">Add a skill first</span>`)+`<select onchange="achNum(${i},this.value)">${LEVELS.map((x,j)=>`<option value="${j}"${a.v===j?' selected':''}>${x}</option>`).join('')}</select>`;
-  }else if(M.k==='money')val=usd?`<input type="text" readonly value="${(a.v/rate()).toLocaleString('en-US',{maximumFractionDigits:2})}"><span class="u">USD view: switch to IDR to edit</span>`:`<input type="text" inputmode="numeric" value="${a.v?a.v.toLocaleString('id-ID'):'0'}" oninput="achMoney(${i},this)"><span class="u">IDR</span>`;
-  else val=`<input type="text" inputmode="decimal" value="${a.v}" oninput="achNum(${i},this.value)"><span class="u">${M.u}</span>`;
-  cond=`<div class="crow"><select onchange="achSetOp(${i},this.value)"><option value=">="${a.o!=='<='?' selected':''}>at least</option><option value="<="${a.o==='<='?' selected':''}>at most</option></select></div><div class="crow">${val}</div>`;
+  const hr=`<div class="crow"><span class="u">Hold for</span><input type="text" inputmode="numeric" value="${a.hm||0}" oninput="achHold(${i},this.value)"><span class="u">months${a.m==='dn'?'':' (0 = no wait)'}</span></div>`;
+  if(M.k==='none')cond=hr;
+  else{
+   let val='';
+   if(M.k==='rank')val=`<select onchange="achNum(${i},this.value)">${RANKS.map((x,j)=>`<option value="${j}"${a.v===j?' selected':''}>${x[0]} · ${x[1]}</option>`).join('')}</select>`;
+   else if(M.k==='dis')val=`<select onchange="achNum(${i},this.value)">${DIS_L.map((x,j)=>`<option value="${j}"${a.v===j?' selected':''}>${x}</option>`).join('')}</select>`;
+   else if(M.k==='mode')val=`<select onchange="achNum(${i},this.value)">${MODES.map((x,j)=>`<option value="${j}"${a.v===j?' selected':''}>${x[0]}</option>`).join('')}</select>`;
+   else if(M.k==='skill'){
+    const names=[...new Set(S.skills.map(x=>x.n.trim()).filter(Boolean))];
+    val=(names.length?`<select onchange="achSkill(${i},this.value)">${names.map(n=>`<option value="${esc(n)}"${n===a.sk?' selected':''}>${esc(n)}</option>`).join('')}</select>`:`<span class="u">Add a skill first</span>`)+`<select onchange="achNum(${i},this.value)">${LEVELS.map((x,j)=>`<option value="${j}"${a.v===j?' selected':''}>${x}</option>`).join('')}</select>`;
+   }else if(M.k==='money')val=usd?`<input type="text" readonly value="${(a.v/rate()).toLocaleString('en-US',{maximumFractionDigits:2})}"><span class="u">USD view: switch to IDR to edit</span>`:`<input type="text" inputmode="numeric" value="${a.v?a.v.toLocaleString('id-ID'):'0'}" oninput="achMoney(${i},this)"><span class="u">IDR</span>`;
+   else val=`<input type="text" inputmode="decimal" value="${a.v}" oninput="achNum(${i},this.value)"><span class="u">${M.u}</span>`;
+   cond=`<div class="crow"><select onchange="achSetOp(${i},this.value)"><option value=">="${a.o!=='<='?' selected':''}>at least</option><option value="<="${a.o==='<='?' selected':''}>at most</option></select></div><div class="crow">${val}</div>`+hr;
+  }
  }
  const pick=open?`<div class="apick">
   <div class="pl">Icon</div><div class="igrid">${ACH_ICONS.map(n=>`<button class="ig${a.ic===n?' on':''}" onclick="achSet(${i},'ic','${n}')" aria-label="${n}">${icoSvg(n)}</button>`).join('')}</div>
@@ -1036,16 +1155,55 @@ function renderAchEditor(){
 function achChanged(){checkAch()}
 function achSet(i,k,v){S.ach[i][k]=v;save(false);achChanged();renderAchEditor()}
 function achName(i,v){S.ach[i].n=v.slice(0,40);save(false);renderAchCard()}
-function achMetric(i,m){const a=S.ach[i];a.m=m;if(m){const M=ACH_M[m];a.v=M.d;a.o=M.o||'>=';a.sk=m==='sk'?((S.skills[0]||{}).n||''):''}a.h=false;save(false);achChanged();renderAchEditor()}
+function achMetric(i,m){const a=S.ach[i];a.m=m;a.hm=0;a.s=null;a.b=0;a.z=false;if(m){const M=ACH_M[m];a.v=M.d;a.o=M.o||'>=';a.hm=M.hm||0;a.sk=m==='sk'?((S.skills[0]||{}).n||''):''}a.h=false;save(false);achChanged();renderAchEditor()}
+function achHold(i,v){const a=S.ach[i];a.hm=Math.max(a.m==='dn'?1:0,Math.min(600,numI(v)));save(false);achChanged()}
 function achSetOp(i,o){S.ach[i].o=o==='<='?'<=':'>=';save(false);achChanged();renderAchEditor()}
 function achNum(i,v){S.ach[i].v=numF(v);save(false);achChanged()}
 function achMoney(i,el){const v=numI(el.value);S.ach[i].v=v;el.value=v?v.toLocaleString('id-ID'):'';save(false);achChanged()}
 function achSkill(i,v){S.ach[i].sk=v;save(false);achChanged();renderAchEditor()}
-function achUnlock(i){const a=S.ach[i];a.d=new Date().toISOString();a.h=false;save(false);toastAch(a);renderAchCard();renderAchEditor()}
-function achCancel(i){const a=S.ach[i];a.d=null;if(a.m)a.h=true;save(false);renderAchCard();renderAchEditor()}
+function achUnlock(i){const a=S.ach[i];a.d=new Date().toISOString();a.h=false;a.z=true;save(false);toastAch(a);renderAchCard();renderAchEditor()}
+function achCancel(i){const a=S.ach[i];a.d=null;a.z=true;if(a.m==='dn'){a.s=new Date().toISOString();a.b=LAST.D}else{a.s=null;if(a.m)a.h=true}save(false);renderAchCard();renderAchEditor()}
 function achDel(i){S.ach.splice(i,1);if(ACH_OPEN===i)ACH_OPEN=-1;else if(ACH_OPEN>i)ACH_OPEN--;save(false);renderAchCard();renderAchEditor()}
-function achAdd(){S.ach.push({n:'',ic:'star',c:0,t:0,m:'',o:'>=',v:0,sk:'',d:null,h:false});ACH_OPEN=S.ach.length-1;save(false);renderAchCard();renderAchEditor()}
+function achAdd(){S.ach.push({n:'',ic:'star',c:0,t:0,m:'',o:'>=',v:0,hm:0,sk:'',d:null,s:null,b:0,z:false,h:false});ACH_OPEN=S.ach.length-1;save(false);renderAchCard();renderAchEditor()}
 function achToggle(i){ACH_OPEN=ACH_OPEN===i?-1:i;renderAchEditor()}
+const achSay=(t,bad)=>{const e=$('achStatus');e.textContent=t;e.style.color=bad?'var(--r)':'var(--g)'};
+function achExport(){
+ try{
+  const data={app:'life-time-achievements',version:1,exportedAt:new Date().toISOString(),ach:S.ach.map(a=>Object.assign({},a))};
+  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:'application/json'}));
+  a.download='life-time-achievements-'+new Date().toISOString().slice(0,10)+'.json';
+  document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),2000);
+  achSay(`Exported ${S.ach.length} achievements.`);
+ }catch(e){achSay('Export failed.',true)}
+}
+function achImport(inp){
+ const f=inp.files&&inp.files[0];inp.value='';if(!f)return;
+ if(f.size>1500000){achSay('File is too large.',true);return}
+ const rd=new FileReader();rd.onerror=()=>achSay('Could not read the file.',true);
+ rd.onload=()=>{
+  let r;try{r=JSON.parse(rd.result)}catch(e){achSay('Not a valid JSON file.',true);return}
+  const list=Array.isArray(r)?r:(r&&Array.isArray(r.ach)?r.ach:null);
+  if(!list){achSay('This is not an achievements file.',true);return}
+  const key=a=>[a.n.trim().toLowerCase(),a.m,a.o,a.m==='sk'?a.sk.trim().toLowerCase():'',a.v].join('|');
+  const have=new Set(S.ach.map(key));let add=0,skip=0;
+  list.filter(i=>i&&typeof i==='object').slice(0,200).map(cleanAch).forEach(a=>{
+   if(have.has(key(a))||S.ach.length>=120){skip++;return}
+   have.add(key(a));S.ach.push(a);add++;
+  });
+  save(false);checkAch();renderAchEditor();
+  achSay(`Added ${add}, skipped ${skip} (already there or over the 120 limit).`,add===0&&skip>0);
+ };
+ rd.readAsText(f);
+}
+function achResetStarters(){
+ if(!confirm('Replace your whole list with the 32 starter achievements? Your own achievements and unlock dates will be lost. Export first if you want a backup.'))return;
+ S.ach=ACH_PRESETS();ACH_OPEN=-1;ACH_READY=false;save(false);checkAch();ACH_READY=true;renderAchEditor();achSay('Starter achievements restored.')
+}
+function achDeleteAll(){
+ if(!confirm('Delete ALL achievements? Export first if you want a backup.'))return;
+ S.ach=[];ACH_OPEN=-1;save(false);renderAchCard();renderAchEditor();achSay('All achievements deleted.')
+}
+
 
 /* ---------- settings ---------- */
 const FIELDS=[
@@ -1232,6 +1390,7 @@ function wrapText(c,t,x,y,mw,ml,lh){
  }
  c.fillText(clip(c,line,mw),x,y+n*lh);
 }
+const SKC=['#9AA6B5','#5BE3A0','#F2C14E','#C26BFF'];
 function drawSnap(prev){
  const F='"Bricolage Grotesque","Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif';
  const SKN=S.skills.length,SKH=SKN?64+Math.min(SKN,6)*46+(SKN>6?36:0)+24:0;
@@ -1305,8 +1464,9 @@ function drawSnap(prev){
   S.skills.slice().sort((a,b)=>b.l-a.l).slice(0,6).forEach((s,i)=>{
    const yy=y+92+i*46;
    c.fillStyle=TXT;c.font=`500 27px ${F}`;c.textAlign='left';c.fillText(clip(c,s.n||'Untitled',420),88,yy);
-   for(let j=0;j<4;j++){c.beginPath();c.moveTo(520+j*52+6,yy-18);c.lineTo(520+j*52+44+6,yy-18);c.lineTo(520+j*52+44,yy-4);c.lineTo(520+j*52,yy-4);c.closePath();c.fillStyle=j<=s.l?ACC:'#0e1118';c.fill();c.strokeStyle=j<=s.l?ACC:LINE;c.lineWidth=1.5;c.stroke()}
-   c.fillStyle=MUT;c.font=`500 24px ${F}`;c.textAlign='right';c.fillText(LEVELS[s.l],992,yy);c.textAlign='left'});
+   for(let j=0;j<4;j++){c.beginPath();c.moveTo(520+j*52+6,yy-18);c.lineTo(520+j*52+44+6,yy-18);c.lineTo(520+j*52+44,yy-4);c.lineTo(520+j*52,yy-4);c.closePath();const sc0=SKC[s.l],on=j<=s.l;c.save();if(on&&s.l>=1){c.shadowColor=sc0;c.shadowBlur=s.l===1?8:s.l===2?14:20}c.fillStyle=on?sc0:'#0e1118';c.fill();c.restore();c.strokeStyle=on?(s.l===3?'#D9A6FF':sc0):LINE;c.lineWidth=1.5;c.stroke()}
+   if(s.l===3){c.save();[[10,-26,'#fff',2],[64,-30,'#E7C2FF',2.4],[118,-25,'#fff',1.8],[172,-30,'#E7C2FF',2.4],[206,-24,'#fff',2]].forEach(([dx,dy,col,r])=>{c.fillStyle=col;c.shadowColor='#C26BFF';c.shadowBlur=8;c.beginPath();c.arc(520+dx,yy+dy,r,0,6.3);c.fill()});c.restore()}
+   c.fillStyle=s.l>=1?SKC[s.l]:MUT;c.font=`500 24px ${F}`;c.textAlign='right';c.fillText(LEVELS[s.l],992,yy);c.textAlign='left'});
   if(SKN>6){c.fillStyle=MUT;c.font=`500 22px ${F}`;c.fillText('+'+(SKN-6)+' more',88,y+92+6*46-8)}
   y+=SKH;
  }
@@ -1386,6 +1546,7 @@ async function shareSnap(){
 applyTheme();renderAll();calc();
 renderDisSettings();
 ACH_READY=true;
+fitAll();try{document.fonts&&document.fonts.ready.then(fitAll)}catch(e){}
 (function(){const q=new URLSearchParams(location.search).get('tab'),m={income:0,expenses:1,assets:2,debts:3,skills:4,wishlist:5,goals:6};tab(q&&q in m?m[q]:0)})();
 if('serviceWorker' in navigator&&location.protocol.startsWith('http')){window.addEventListener('load',()=>{navigator.serviceWorker.register('life-time-sw.js',{scope:'./life-time.html'}).catch(()=>{})})}
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeSettings();closeSnap()}});
