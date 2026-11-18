@@ -45,7 +45,37 @@ h1 .c,h1 svg{color:var(--acc)}
 .irow .hint{margin:8px 0 0}
 .hero{display:grid;grid-template-columns:104px minmax(0,1fr);gap:16px;align-items:stretch}
 .av{--c:var(--mut);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;border-right:1px solid var(--line2);padding-right:14px;min-width:0}
-.av .face{width:84px;height:84px;border-radius:20px;border:1.5px solid var(--c);color:var(--c);display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.03)}
+.av .face{width:84px;height:84px;border-radius:20px;border:1.5px solid var(--c);color:var(--c);display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.03);position:relative;overflow:hidden;isolation:isolate}
+.face .L{font:800 46px var(--display);line-height:1;position:relative;z-index:2;letter-spacing:-.02em}
+.face.l2 .L{font-size:38px}.face.l3 .L{font-size:29px;letter-spacing:-.04em}
+.face::before,.face::after{content:'';position:absolute;pointer-events:none}
+.face.t0{background-color:rgba(169,113,75,.08);background-image:radial-gradient(rgba(255,255,255,.09) 1px,transparent 1.3px);background-size:5px 5px}
+.face.t1{background-color:rgba(217,137,74,.10);background-image:radial-gradient(rgba(255,255,255,.08) 1px,transparent 1.3px);background-size:6px 6px}
+.face.t2,.face.t3{background-image:repeating-linear-gradient(90deg,rgba(255,255,255,.06) 0 1px,transparent 1px 3px),linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,0))}
+.face.t4,.face.t5{background-image:linear-gradient(155deg,rgba(255,255,255,.20),rgba(255,255,255,.02) 55%),linear-gradient(0deg,rgba(255,255,255,.03),rgba(255,255,255,.03));box-shadow:inset 0 0 14px rgba(255,255,255,.10),0 0 10px -2px var(--c)}
+.face.t6{border-width:2px;background-image:linear-gradient(135deg,rgba(255,255,255,.26),rgba(255,255,255,.05) 45%,rgba(255,255,255,.20));box-shadow:0 0 12px -2px var(--c)}
+.face.t7{border-width:2px;background-image:linear-gradient(135deg,rgba(242,193,78,.34),rgba(242,193,78,.06) 50%,rgba(242,193,78,.28));box-shadow:0 0 0 3px #151922,0 0 0 4.5px var(--c),0 0 16px 2px rgba(242,193,78,.35)}
+.face.t8{border-width:2px;background-image:radial-gradient(circle at 50% 35%,rgba(194,107,255,.38),rgba(194,107,255,.06) 70%);box-shadow:0 0 18px 2px rgba(194,107,255,.55),0 0 38px 4px rgba(194,107,255,.30);animation:mpulse 2.6s ease-in-out infinite}
+.face.t6::after,.face.t7::after{top:-25%;left:-70%;width:38%;height:150%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.65),transparent);transform:skewX(-20deg);z-index:1;animation:sheen 4.2s ease-in-out infinite}
+.face.t7::after{background:linear-gradient(100deg,transparent,rgba(255,236,170,.75),transparent);animation-duration:3.4s}
+.face.t8::before{inset:0;z-index:1;background:radial-gradient(circle at 22% 90%,#fff 0 1px,transparent 2px),radial-gradient(circle at 68% 95%,#EBC8FF 0 1.3px,transparent 2.6px),radial-gradient(circle at 46% 98%,#fff 0 1px,transparent 2px),radial-gradient(circle at 84% 92%,#EBC8FF 0 1px,transparent 2px);animation:mrise 2.8s linear infinite}
+@keyframes sheen{0%,55%{transform:translateX(0) skewX(-20deg);opacity:0}60%{opacity:1}85%,100%{transform:translateX(480%) skewX(-20deg);opacity:0}}
+@keyframes mpulse{50%{box-shadow:0 0 26px 4px rgba(194,107,255,.75),0 0 52px 8px rgba(194,107,255,.38)}}
+@keyframes mrise{0%{transform:translateY(8px);opacity:0}25%{opacity:.9}100%{transform:translateY(-70px);opacity:0}}
+@media (prefers-reduced-motion:reduce){.face,.face::before,.face::after{animation:none!important}}
+.rg{display:flex;align-items:center;gap:12px;padding:8px 6px;border-radius:12px;border:1px solid transparent}
+.rg.cur{border-color:var(--c);background:rgba(255,255,255,.04)}
+.rg.lock .rt2{opacity:.6}
+.rg .face{width:50px;height:50px;border-radius:13px;flex:none;margin:4px;display:flex;align-items:center;justify-content:center;border:1.5px solid var(--c);color:var(--c);background-color:rgba(255,255,255,.03);position:relative;overflow:hidden;isolation:isolate}
+.rg .face.t6,.rg .face.t7,.rg .face.t8{border-width:2px}
+.rg .face .L{font-size:25px}.rg .face.l2 .L{font-size:20px}.rg .face.l3 .L{font-size:15px}
+.rg .face.t7{box-shadow:0 0 0 2px #151922,0 0 0 3.5px var(--c),0 0 12px 1px rgba(242,193,78,.35)}
+.rg .rt2{min-width:0;flex:1}.rg .rn{font:650 14px var(--display);color:var(--c)}
+.rg .rq{font-size:12.5px;color:var(--mut);line-height:1.4;margin-top:1px}
+.rg .st{font-size:11px;color:var(--c);white-space:nowrap;font-weight:600}
+.rbar{width:84px;height:5px;border-radius:3px;background:#0e1118;border:1px solid var(--line2);overflow:hidden}
+.rbar i{display:block;height:100%;background:var(--c);width:0;transition:width .3s}
+.rpct{font-size:10.5px;color:var(--mut);white-space:nowrap;margin-top:-4px}
 .av .rk{display:flex;align-items:center;gap:4px}.av .rk b{font:650 15px var(--display);color:var(--c)}
 .diff{font:700 10px var(--body);letter-spacing:.08em;text-transform:uppercase;color:var(--c);border:1px solid var(--c);padding:2px 8px;border-radius:99px;white-space:nowrap;display:inline-block}
 .diff.d-g{--c:var(--g)}.diff.d-y{--c:var(--y)}.diff.d-r{--c:var(--r)}.diff.d-a{--c:var(--acc)}.diff.d-o{--c:#FF9A5C}
@@ -181,11 +211,12 @@ h2 .q{margin-left:8px;text-transform:none}
       <div class="face" id="avFace"></div>
       <div class="nm" id="avName"></div>
       <div class="rk"><b id="avRank">-</b><span class="chev">▾</span></div>
+      <div class="rbar"><i id="avBar"></i></div><div class="rpct" id="avPct"></div>
       <div><span class="s2" style="display:block;margin-bottom:3px;font-size:11px">Mode</span><span class="diff d-g" id="diff">-</span></div>
     </div>
     <div id="inds"></div>
   </div>
-  <div class="hint hide" id="hint-av" style="margin:-4px 0 14px"></div>
+  <div class="hint hide" id="hint-av" style="margin:-4px 0 14px;cursor:pointer" onclick="acc('hint-av')"></div>
   <div class="hint hide" id="ih-lt" style="margin:-4px 0 14px"><span id="ltUnit"></span><br><span id="ltNote"></span></div>
 
   <div class="pair" id="pair"></div>
@@ -253,6 +284,7 @@ h2 .q{margin-left:8px;text-transform:none}
 
   <div id="p3" class="card hide">
     <h2>Debts</h2>
+    <div class="note" style="margin:0 0 12px;padding:10px 12px;border-left:3px solid var(--r);background:rgba(255,122,102,.07);border-radius:0 10px 10px 0;color:var(--txt);line-height:1.5">A person or company with no debt cannot go bankrupt. Avoid every kind of debt.</div>
     <div class="tot"><div class="grid2"><div class="mini"><b id="tot3">-</b><span class="s2" id="tot3s">total debts</span></div><div class="mini"><b id="tot3i">-</b><span class="s2">interest per month</span></div></div></div>
     <div class="ronote ronote-el hide">USD view: switch to IDR to edit amounts.</div>
     <div id="list-debts"></div>
@@ -759,21 +791,51 @@ let DROW=null;
 function applyDrow(){document.querySelectorAll('.drow').forEach(r=>{const o=r.dataset.k===DROW;r.classList.toggle('open',o);r.querySelector('.dx').classList.toggle('hide',!o)})}
 function drow(k,ev){ev.stopPropagation();DROW=DROW===k?null:k;applyDrow()}
 /* ---------- avatar + mode ---------- */
-const AV={s:['M12 3c-3 0-5 2.4-5 5.2 0 1.5.6 2.6 1.4 3.4L6 21h12l-2.4-9.4c.8-.8 1.4-1.9 1.4-3.4C17 5.4 15 3 12 3z','M10 9.5h4'],
- w:['M12 3a3 3 0 1 0 0 6 3 3 0 0 0 0-6z','M6 21v-4a6 6 0 0 1 12 0v4','M19 4v17'],
- k:['M5 20V11a7 7 0 0 1 14 0v9','M5 13h14','M12 13v7'],
- r:['M6 21v-7a6 6 0 0 1 12 0v7','M6 11l2-4 2 2 2-4 2 4 2-2 2 4']};
-const RANKS=[['s','Survivor','r'],['w','Wanderer','y'],['k','Knight','g'],['r','Sovereign','acc']];
+const RANKS=[['F','Novice','#A9714B'],['E','Apprentice','#D9894A'],['D','Adept','#9AA6B5'],['C','Veteran','#3FD0C0'],['B','Elite','#5B9DFF'],['A','Master','#5BE3A0'],['S','Grandmaster','#E4ECF5'],['SS','Legend','#F2C14E'],['SSS','Mythic','#C26BFF']];
+const RK_CUT=[8,18,32,50,72];
+function rankCalc(){
+ const I=LAST.I,E=LAST.E,A=LAST.A,D=LAST.D,g=S.settings.growth;
+ if(!E)return {idx:0,score:0,ff:0,pct:0,limit:'Add your expenses to start.',c:{ff:0,lt:0,sp:0,db:0}};
+ const ff=A/(E*12*(100/g))*100,lt=A/E,spr=I>0?(I-E)/I:0,free=D<=0;
+ const c={ff:Math.min(1,ff/50),lt:Math.min(1,lt/24),sp:Math.max(0,Math.min(1,spr/0.3)),db:free?1:Math.max(0,1-D/(6*E))};
+ const score=100*(0.4*c.ff+0.25*c.lt+0.2*c.sp+0.15*c.db);
+ let idx=0;RK_CUT.forEach((t,i)=>{if(score>=t)idx=i+1});
+ if(idx>=4&&ff<20)idx=3;
+ if(idx>=5&&!(ff>=50&&free))idx=4;
+ if(free&&ff>=100)idx=ff>=700?8:ff>=300?7:6;
+ let pct=1,limit='';
+ const cl=x=>Math.max(0,Math.min(1,x));
+ if(idx<=5){
+  const lo=idx===0?0:RK_CUT[idx-1],hi=RK_CUT[idx]!=null?RK_CUT[idx]:null;
+  if(idx<5){
+   pct=cl((score-lo)/(hi-lo));
+   if(idx===3){pct=Math.min(pct,cl(ff/20));if(ff<20)limit=`Assets must reach 20% of your freedom target (now ${ff.toFixed(1)}%).`}
+   if(idx===4){pct=Math.min(pct,cl(ff/50));if(ff<50)limit=`Assets must reach 50% of your freedom target (now ${ff.toFixed(1)}%).`;if(!free){pct=Math.min(pct,.99);limit+=(limit?' ':'')+'Clear every debt.'}}
+  }else{
+   pct=cl(ff/100);if(!free){pct=Math.min(pct,.99);limit='Clear every debt.'}
+   if(ff<100)limit=(limit?limit+' ':'')+`Assets must reach 100% of your freedom target (now ${ff.toFixed(1)}%).`;
+  }
+ }else if(idx===6)pct=cl((ff-100)/200);
+ else if(idx===7)pct=cl((ff-300)/400);
+ else pct=1;
+ if(idx>=5&&idx<8&&!limit&&idx>5)limit=idx===6?'Reach 300% of your freedom target for SS.':'Reach 700% of your freedom target for SSS.';
+ return {idx,score,ff,pct,limit,c};
+}
 function updateHero(){
- const sc=['lt','sp','ff'].reduce((a,k)=>{const s=(LAST.ind[k]||{}).st;return a+(s==='g'?2:s==='y'?1:0)},0);
- const ri=sc<=1?0:sc<=3?1:sc<=5?2:3,[ak,rn,rc]=RANKS[ri];
- $('avFace').innerHTML=`<svg width="52" height="52" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${AV[ak].map(d=>`<path d="${d}"/>`).join('')}</svg>`;
- $('av').style.setProperty('--c',`var(--${rc})`);$('avRank').textContent=rn;
+ const rk=rankCalc(),ri=rk.idx,[rl,rn,rc]=RANKS[ri],nx=RANKS[ri+1];
+ const fc=$('avFace');fc.className='face t'+ri+(rl.length>1?' l'+rl.length:'');fc.innerHTML=`<span class="L">${rl}</span>`;
+ $('av').style.setProperty('--c',rc);$('avRank').textContent=rn;
+ $('avBar').style.width=Math.round(rk.pct*100)+'%';$('avPct').textContent=nx?`${Math.floor(rk.pct*100)}% to ${nx[0]}`:'Max rank';
  $('avName').textContent=S.name||'';$('avName').style.display=S.name?'':'none';
  const md=modeCalc(),mi=md.level,[mn,mc]=MODES[mi],df=$('diff'),th=S.settings.th,pp=md.p;
  df.textContent=mn;df.className='diff d-'+mc+(mi===5?' hell':'');
- LAST.hero={rank:ri,score:sc,mode:mi,pts:md.total,max:md.max};
- $('hint-av').textContent=`Rank comes from your three indicators: red 0, yellow 1, green 2 points. Survivor 0-1, Wanderer 2-3, Knight 4-5, Sovereign 6 (you have ${sc}/6). Mode comes from four debuffs, each scored 0-5 points: local inflation ${pp.loc}, corruption ${pp.cor}, tax ${pp.tax}, crime ${pp.cri}. That is ${Math.round(md.pct)}% of the maximum. Easy up to ${th.lvlp[0]}%, Normal up to ${th.lvlp[1]}%, Hard up to ${th.lvlp[2]}%, Very Hard up to ${th.lvlp[3]}%, Nightmare up to ${th.lvlp[4]}%, Hell above.`;
+ LAST.hero={rank:ri,score:rk.score,pct:rk.pct,next:nx?nx[0]:'',mode:mi,pts:md.total,max:md.max};
+ const REQ=['Where everyone starts.',`Score ${RK_CUT[0]}+`,`Score ${RK_CUT[1]}+`,`Score ${RK_CUT[2]}+`,`Score ${RK_CUT[3]}+ and assets at 20% of your freedom target`,`Score ${RK_CUT[4]}+, assets at 50% of your freedom target, no debts`,'Assets at 100% of your freedom target (financial freedom reached), no debts','Assets at 300% of your freedom target, no debts','Assets at 700% of your freedom target, no debts'];
+ const rows=RANKS.map((r,i)=>{const cur=i===ri,done=i<ri;
+  return `<div class="rg${cur?' cur':''}${!cur&&!done?' lock':''}" style="--c:${r[2]}"><div class="face t${i}${r[0].length>1?' l'+r[0].length:''}"><span class="L">${r[0]}</span></div><div class="rt2"><div class="rn">${r[0]} · ${r[1]}</div><div class="rq">${REQ[i]}</div></div><div class="st">${done?'✓ reached':cur?'You are here':''}</div></div>`}).join('');
+ $('hint-av').innerHTML=`<b>${rl} · ${rn}.</b> ${nx?`${Math.floor(rk.pct*100)}% of the way to ${nx[0]} (${nx[1]}).`:'You reached the top.'}${rk.limit?' '+rk.limit:''}<div style="margin:10px 0 6px">${rows}</div>`+
+  `<b>The score</b> (now <b>${rk.score.toFixed(0)}</b> of 100): Financial Freedom 40% (full at 50%), Life Time 25% (full at 24 months), Saving Power 20% (full at 30% of income), debts 15% (full when none, zero at 6 months of expenses owed).<br><br>`+
+  `<b>Mode</b> comes from four debuffs, each scored 0-5 points: local inflation ${pp.loc}, corruption ${pp.cor}, tax ${pp.tax}, crime ${pp.cri}. That is ${Math.round(md.pct)}% of the maximum. Easy up to ${th.lvlp[0]}%, Normal up to ${th.lvlp[1]}%, Hard up to ${th.lvlp[2]}%, Very Hard up to ${th.lvlp[3]}%, Nightmare up to ${th.lvlp[4]}%, Hell above.<div class="note" style="margin-top:8px">Tap anywhere here to close.</div>`;
 }
 $('snapBtn').innerHTML=svg('camera',20);$('logo').innerHTML=svg('sword',24);$('flameIco').innerHTML=svg('flame',16);
 
@@ -900,6 +962,32 @@ function recordHistory(){
 }
 function rr(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath()}
 function clip(c,t,mw){t=String(t);if(c.measureText(t).width<=mw)return t;while(t.length>1&&c.measureText(t+'…').width>mw)t=t.slice(0,-1);return t+'…'}
+function drawRankFace(c,x,y,sz,ri,rl,col,F){
+ const r=sz*.22,cx=x+sz/2,cy=y+sz/2;
+ c.save();
+ if(ri===8){c.shadowColor='rgba(194,107,255,.75)';c.shadowBlur=40}
+ else if(ri===7){c.shadowColor='rgba(242,193,78,.45)';c.shadowBlur=26}
+ else if(ri>=4){c.shadowColor=col;c.shadowBlur=ri===6?22:16}
+ rr(c,x,y,sz,sz,r);
+ let fill='rgba(255,255,255,.03)';
+ if(ri<=1)fill=ri?'rgba(217,137,74,.12)':'rgba(169,113,75,.10)';
+ else if(ri<=3){const g=c.createLinearGradient(x,y,x,y+sz);g.addColorStop(0,'rgba(255,255,255,.10)');g.addColorStop(1,'rgba(255,255,255,.02)');fill=g}
+ else if(ri<=5){const g=c.createLinearGradient(x,y,x+sz,y+sz);g.addColorStop(0,'rgba(255,255,255,.22)');g.addColorStop(.55,'rgba(255,255,255,.03)');g.addColorStop(1,'rgba(255,255,255,.05)');fill=g}
+ else if(ri===6){const g=c.createLinearGradient(x,y,x+sz,y+sz);g.addColorStop(0,'rgba(255,255,255,.34)');g.addColorStop(.45,'rgba(255,255,255,.06)');g.addColorStop(1,'rgba(255,255,255,.26)');fill=g}
+ else if(ri===7){const g=c.createLinearGradient(x,y,x+sz,y+sz);g.addColorStop(0,'rgba(242,193,78,.42)');g.addColorStop(.5,'rgba(242,193,78,.08)');g.addColorStop(1,'rgba(242,193,78,.34)');fill=g}
+ else{const g=c.createRadialGradient(cx,y+sz*.35,0,cx,y+sz*.35,sz*.75);g.addColorStop(0,'rgba(194,107,255,.50)');g.addColorStop(1,'rgba(194,107,255,.08)');fill=g}
+ c.fillStyle='#151922';c.fill();c.fillStyle=fill;c.fill();
+ c.shadowBlur=0;c.shadowColor='transparent';
+ c.strokeStyle=col;c.lineWidth=ri>=6?5:3;c.stroke();
+ if(ri===7){rr(c,x-9,y-9,sz+18,sz+18,r+6);c.lineWidth=2;c.stroke()}
+ if(ri>=6){c.save();rr(c,x,y,sz,sz,r);c.clip();c.fillStyle=ri===7?'rgba(255,236,170,.28)':ri===8?'rgba(235,200,255,.20)':'rgba(255,255,255,.30)';
+  c.beginPath();c.moveTo(x+sz*.52,y-4);c.lineTo(x+sz*.72,y-4);c.lineTo(x+sz*.38,y+sz+4);c.lineTo(x+sz*.18,y+sz+4);c.closePath();c.fill();c.restore()}
+ c.fillStyle=col;c.textAlign='center';c.textBaseline='alphabetic';
+ const fs=rl.length===1?sz*.58:rl.length===2?sz*.46:sz*.36;c.font=`800 ${fs}px ${F}`;
+ if(ri===8){c.fillStyle='#F1D9FF';c.shadowColor='rgba(194,107,255,.8)';c.shadowBlur=10}
+ c.fillText(rl,cx,cy+fs*.35);
+ c.restore();
+}
 function drawSnap(prev){
  const F='"Bricolage Grotesque","Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif';
  const SKN=S.skills.length,SKH=SKN?64+Math.min(SKN,6)*46+(SKN>6?36:0)+24:0;
@@ -907,7 +995,7 @@ function drawSnap(prev){
  const mc2=document.createElement('canvas').getContext('2d');mc2.font=`600 24px ${F}`;
  let cx=0,cr0=0;const chipPos=dbc.map(t=>{const w=mc2.measureText(t).width+40;if(cx+w>904&&cx>0){cx=0;cr0++}const p={t,x:cx,r:cr0,w};cx+=w+14;return p});
  const CHR=dbc.length?cr0+1:0,DEBH=LAST.deb?(80+CHR*62+70+24):0;
- const W=1080,H=160+404+250+702+SKH+DEBH+224+70,cv=document.createElement('canvas');cv.width=W;cv.height=H;const c=cv.getContext('2d');
+ const W=1080,H=160+468+250+702+SKH+DEBH+224+70,cv=document.createElement('canvas');cv.width=W;cv.height=H;const c=cv.getContext('2d');
  const COL={g:'#5BE3A0',y:'#F5B14C',r:'#FF7A66',n:'#A3AAB7',a:'#71E6F2',o:'#FF9A5C'},TXT='#F3F5F7',MUT='#A3AAB7',ACC='#71E6F2',PANEL='#151922',LINE='rgba(163,170,183,.22)',DEB='#A98BFF';
  c.fillStyle='#0B0D12';c.fillRect(0,0,W,H);
  const g=c.createRadialGradient(W,0,0,W,0,760);g.addColorStop(0,'rgba(113,230,242,.12)');g.addColorStop(1,'rgba(113,230,242,0)');c.fillStyle=g;c.fillRect(0,0,W,H);
@@ -920,28 +1008,28 @@ function drawSnap(prev){
 
  let y=160;
  {
-  const hh=LAST.hero||{rank:0,score:0,mode:0},[ak,rn]=RANKS[hh.rank],rcol=[COL.r,COL.y,COL.g,ACC][hh.rank],nm=(S.name||'').trim();
+  const hh=LAST.hero||{rank:0,score:0,pct:0,next:'',mode:0},[rl,rn,rcol]=RANKS[hh.rank],nm=(S.name||'').trim();
   const lt=LAST.ind.lt||{num:'-'},lcol=COL[lt.st]||COL.n,cxm=213;
-  panel(48,y,984,380);
-  rr(c,cxm-80,y+32,160,160,34);c.fillStyle='rgba(255,255,255,.03)';c.fill();c.strokeStyle=rcol;c.lineWidth=3;c.stroke();
-  c.save();c.translate(cxm-56,y+32+24);c.scale(112/24,112/24);c.strokeStyle=rcol;c.lineWidth=1.6;c.lineCap='round';c.lineJoin='round';
-  AV[ak].forEach(d=>c.stroke(new Path2D(d)));c.restore();
+  panel(48,y,984,444);
+  drawRankFace(c,cxm-80,y+32,160,hh.rank,rl,rcol,F);
   c.textAlign='center';
-  let ty=y+246;
-  if(nm){c.fillStyle=TXT;c.font=`700 36px ${F}`;c.fillText(clip(c,nm,250),cxm,ty);ty+=46}
-  c.fillStyle=rcol;c.font=`700 40px ${F}`;c.fillText(rn,cxm,ty);
+  let ty=y+244;
+  if(nm){c.fillStyle=TXT;c.font=`700 36px ${F}`;c.fillText(clip(c,nm,250),cxm,ty);ty+=44}
+  c.fillStyle=rcol;c.font=`700 38px ${F}`;c.fillText(rn,cxm,ty);
+  bar(cxm-100,ty+18,200,10,hh.next?hh.pct:1,rcol);
+  c.fillStyle=MUT;c.font=`500 22px ${F}`;c.fillText(hh.next?`${Math.floor(hh.pct*100)}% to ${hh.next}`:'Max rank',cxm,ty+54);
   const [mn,mc]=MODES[hh.mode],mcol=COL[mc],mt=mn.toUpperCase()+' MODE';
-  c.font=`700 24px ${F}`;const mw=c.measureText(mt).width+40,my=y+380-24-44;
+  c.font=`700 24px ${F}`;const mw=c.measureText(mt).width+40,my=y+444-24-44;
   rr(c,cxm-mw/2,my,mw,44,22);if(hh.mode===5){c.fillStyle=mcol;c.fill()}else{c.strokeStyle=mcol;c.lineWidth=2;c.stroke()}
   c.fillStyle=hh.mode===5?'#0B0D12':mcol;c.fillText(mt,cxm,my+30);c.textAlign='left';
-  c.strokeStyle=LINE;c.lineWidth=2;c.beginPath();c.moveTo(350,y+32);c.lineTo(350,y+348);c.stroke();
-  const x0=392;
+  c.strokeStyle=LINE;c.lineWidth=2;c.beginPath();c.moveTo(350,y+32);c.lineTo(350,y+412);c.stroke();
+  c.save();c.translate(0,34);const x0=392;
   c.fillStyle=MUT;c.font=`600 26px ${F}`;c.fillText('LIFE TIME',x0,y+62);
-  c.fillStyle=lcol;c.font=`700 92px ${F}`;c.fillText(clip(c,lt.num,600),x0,y+170);
+  c.fillStyle=lcol;let lfs=92;c.font=`700 ${lfs}px ${F}`;while(lfs>48&&c.measureText(lt.num).width>600){lfs-=4;c.font=`700 ${lfs}px ${F}`}c.fillText(clip(c,lt.num,600),x0,y+170);
   bar(x0,y+204,600,18,lt.pct,lcol);
   c.fillStyle=MUT;c.font=`500 24px ${F}`;c.fillText(clip(c,lt.unit||'',600),x0,y+262);
-  c.fillStyle=ACC;c.font=`500 26px ${F}`;c.fillText('Time is your currency.',x0,y+312);c.fillText('Price every purchase in it.',x0,y+346);
-  y+=404;
+  c.fillStyle=ACC;c.font=`500 26px ${F}`;c.fillText('Time is your currency.',x0,y+312);c.fillText('Price every purchase in it.',x0,y+346);c.restore();
+  y+=468;
  }
  [['sp','SAVING POWER',48],['ff','FINANCIAL FREEDOM',548]].forEach(([id,lab,x])=>{
   const o=LAST.ind[id]||{num:'-'},col=COL[o.st]||COL.n;
