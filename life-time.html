@@ -963,7 +963,8 @@ function renderAll(){
 }
 function addItem(key){
  const t={income:{n:'',v:0,f:'m',k:1},expenses:{n:'',v:0,f:'m',k:1},assets:{n:'',v:0,u:0,q:0,pr:0},debts:{n:'',v:0,r:0,p:0},skills:{n:'',l:0},wishlist:{n:'',v:0,c:0}};
- if(key==='wishlist'){FIL.wishlist={c:-1,q:'',o:'d'};initFilters()}if(key==='skills'){FIL.skills={l:-1};initFilters()}
+ if(key==='wishlist'){const f=FIL.wishlist;if(f.c>=0)t.wishlist.c=f.c;if(f.q){f.q='';initFilters()}}
+ if(key==='skills'){const f=FIL.skills;if(f.l>=0)t.skills.l=f.l}
  S[key].push(t[key]);save(true);renderList(key);calc();
 }
 function toggleCur(){S.cur=S.cur==='USD'?'IDR':'USD';save(false);renderAll();calc()}
@@ -1292,7 +1293,7 @@ function achSkill(i,v){S.ach[i].sk=v;save(false);achChanged();renderAchEditor()}
 function achUnlock(i){const a=S.ach[i];a.d=new Date().toISOString();a.h=false;a.z=true;save(false);toastAch(a);renderAchCard();renderAchEditor()}
 function achCancel(i){const a=S.ach[i];a.d=null;a.z=true;if(a.m==='dn'){a.s=new Date().toISOString();a.b=LAST.D}else{a.s=null;if(a.m)a.h=true}save(false);renderAchCard();renderAchEditor()}
 function achDel(i){S.ach.splice(i,1);if(ACH_OPEN===i)ACH_OPEN=-1;else if(ACH_OPEN>i)ACH_OPEN--;save(false);renderAchCard();renderAchEditor()}
-function achAdd(){FIL.ach={s:'all',t:-1,q:'',o:'d'};initFilters();S.ach.push({n:'',ic:'star',c:0,t:0,m:'',o:'>=',v:0,hm:0,sk:'',d:null,s:null,b:0,z:false,h:false});ACH_OPEN=S.ach.length-1;save(false);renderAchCard();renderAchEditor()}
+function achAdd(){const f=FIL.ach;if(f.s==='un'||f.q){if(f.s==='un')f.s='all';f.q='';initFilters()}S.ach.push({n:'',ic:'star',c:0,t:f.t>=0?f.t:0,m:'',o:'>=',v:0,hm:0,sk:'',d:null,s:null,b:0,z:false,h:false});ACH_OPEN=S.ach.length-1;save(false);renderAchCard();renderAchEditor()}
 function achToggle(i){ACH_OPEN=ACH_OPEN===i?-1:i;renderAchEditor()}
 const achSay=(t,bad)=>{const e=$('achStatus');e.textContent=t;e.style.color=bad?'var(--r)':'var(--g)'};
 function achExport(){
