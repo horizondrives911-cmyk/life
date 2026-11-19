@@ -595,7 +595,7 @@ const svg=(n,s=20)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="n
 
 /* ---------- state ---------- */
 const DEFAULT=()=>({app:'life-time',version:3,cur:'IDR',
- settings:{rate:16000,growth:4,infLocal:15,infIntl:3,corr:1,corrV:2,tax:0,theme:'dungeon',th:{sp:10,lt:[6,12],ff:[10,50],nw:[0,50],cat:[10,25,50],inf:[3,5,9,12,14],tax:[0,10,20,30,39],lvl:[1,4,7,10,14],lvlp:[10,30,50,70,90],w:[1,1,1,1]},crime:1,doom:'2030-01-01'},
+ settings:{rate:16000,growth:4,infLocal:15,infIntl:3,corr:1,corrV:2,tax:0,theme:'dungeon',th:{sp:10,lt:[6,12],ff:[10,50],nw:[0,50],cat:[5,25,50],inf:[3,5,9,12,14],tax:[0,10,20,30,39],lvl:[1,4,7,10,14],lvlp:[10,30,50,70,90],w:[1,1,1,1]},crime:1,doom:'2030-01-01'},
  name:'',dis:{yt:0,ig:0,tt:0,extra:[]},income:[],expenses:[],assets:[],debts:[],skills:[],wishlist:[],history:[],achV:4,first:null,ach:ACH_PRESETS(),updated:null});
 
 function cleanAch(i){
@@ -619,7 +619,7 @@ function clean(r){
   cur:r.cur==='USD'?'USD':'IDR',
   settings:{rate,growth,corr:(()=>{const v=Number(s.corr);return Number(s.corrV)===2?([0,1,2,3].includes(v)?v:1):([0,1,2].includes(v)?v+1:1)})(),corrV:2,tax:pc(s.tax,0,100),infLocal:pc(s.infLocal,15,1000),infIntl:pc(s.infIntl,3,1000),
    theme:'dungeon',
-   th:{sp:pc(th.sp,10,1000),lt:pair(th.lt,[6,12]),ff:pair(th.ff,[10,50]),nw:pair(th.nw,[0,50]),cat:pair(th.cat,[10,25,50]),inf:pair(th.inf,[3,5,9,12,14]),tax:pair(th.tax,[0,10,20,30,39]),lvl:pair(th.lvl,[1,4,7,10,14]),lvlp:pair(th.lvlp,[10,30,50,70,90]),w:pair(th.w,[1,1,1,1])},crime:[0,1,2,3].includes(Number(s.crime))?Number(s.crime):1,doom:/^\d{4}-\d{2}-\d{2}$/.test(String(s.doom))?String(s.doom):'2030-01-01'},
+   th:{sp:pc(th.sp,10,1000),lt:pair(th.lt,[6,12]),ff:pair(th.ff,[10,50]),nw:pair(th.nw,[0,50]),cat:(c=>c[0]===10&&c[1]===25&&c[2]===50?[5,25,50]:c)(pair(th.cat,[5,25,50])),inf:pair(th.inf,[3,5,9,12,14]),tax:pair(th.tax,[0,10,20,30,39]),lvl:pair(th.lvl,[1,4,7,10,14]),lvlp:pair(th.lvlp,[10,30,50,70,90]),w:pair(th.w,[1,1,1,1])},crime:[0,1,2,3].includes(Number(s.crime))?Number(s.crime):1,doom:/^\d{4}-\d{2}-\d{2}$/.test(String(s.doom))?String(s.doom):'2030-01-01'},
   name:String(r.name==null?'':r.name).slice(0,24),
   dis:(()=>{const d=r.dis&&typeof r.dis==='object'?r.dis:{},lv=v=>Math.max(0,Math.min(4,parseInt(v)||0));return {yt:lv(d.yt),ig:lv(d.ig),tt:lv(d.tt),extra:arr(d.extra).slice(0,10).map(i=>({n:nm(i.n),l:lv(i.l)}))}})(),
   income:fr(r.income),expenses:fr(r.expenses),
