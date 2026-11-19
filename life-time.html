@@ -449,7 +449,7 @@ h2 .q{margin-left:8px;text-transform:none}
       <button class="btn" onclick="achExport()">⬇ Export achievements (.json)</button>
       <label class="btn" for="achImp" style="margin-bottom:0">⬆ Import achievements (.json)</label>
       <input type="file" id="achImp" accept=".json,application/json" class="hide" onchange="achImport(this)">
-      <button class="btn" onclick="achResetStarters()">Reset to 32 starter achievements</button>
+      <button class="btn" onclick="achResetStarters()">Reset to 34 starter achievements</button>
       <button class="btn danger" onclick="achDeleteAll()">Delete all achievements</button>
       <div class="status" id="achStatus"></div>
     </div>
@@ -536,8 +536,12 @@ Object.assign(IC,{
  rocket:'<path d="M12 3c3 2 5 5 5 9l-2 3H9l-2-3c0-4 2-7 5-9z"/><circle cx="12" cy="10" r="1.6"/><path d="M9 15l-2 5 3-1.5M15 15l2 5-3-1.5"/>'
 });
 const ACH_ICONS=['coin','wallet','chest','trend','bars','gem','gold','btc','shield','chain','lock','key','hourglass','calendar','flame','sun','leaf','mountain','target','flag','compass','rocket','star','medal','trophy','crown','check','brain','book','heart','bolt','sword','tower','person'];
-const ACH_KEYS=['lt','ff','sr','sp','nw','nwm','as','db','dbm','dn','ex','in','rk','sk','sc','sa','sm','ds','md','tk'];
+const ACH_KEYS=['lt','ff','sr','sp','nw','nwm','as','db','dbm','dn','ex','in','rk','sk','sc','sa','sm','ds','md','tk','gm','gc','gz'];
 const ACH_COL=['#5BE3A0','#F5B14C','#FF7A66','#FF9A5C','#71E6F2','#5B9DFF','#FF7BBE','#C9CFD8'];
+const ACH_NEW4=()=>[
+ {n:"Emergency fund",ic:'shield',c:4,t:0,m:'gm',o:'>=',v:6,hm:0},
+ {n:"Balanced fortress",ic:'tower',c:5,t:1,m:'gc',o:'>=',v:6,hm:0},
+ {n:"Ironclad portfolio",ic:'mountain',c:6,t:2,m:'gz',o:'>=',v:12,hm:0}];
 const ACH_PRESETS=()=>[
  {n:"First month",ic:'hourglass',c:1,t:0,m:'lt',o:'>=',v:1,hm:0},
  {n:"3 months of life",ic:'hourglass',c:1,t:0,m:'lt',o:'>=',v:3,hm:0},
@@ -569,7 +573,7 @@ const ACH_PRESETS=()=>[
  {n:"Master of one",ic:'brain',c:6,t:1,m:'sm',o:'>=',v:1,hm:0},
  {n:"Tracking for 3 months",ic:'calendar',c:1,t:0,m:'tk',o:'>=',v:3,hm:0},
  {n:"Tracking for 12 months",ic:'calendar',c:4,t:1,m:'tk',o:'>=',v:12,hm:0},
- {n:"Written budget",ic:'scroll',c:1,t:0,m:'',o:'>=',v:0,hm:0},
+ ...ACH_NEW4(),
  {n:"Gave to charity",ic:'heart',c:6,t:0,m:'',o:'>=',v:0,hm:0}
 ].map(a=>Object.assign({sk:'',d:null,h:false,s:null,b:0,z:false},a));
 const svg=(n,s=20)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]}</svg>`;
@@ -577,7 +581,7 @@ const svg=(n,s=20)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="n
 /* ---------- state ---------- */
 const DEFAULT=()=>({app:'life-time',version:3,cur:'IDR',
  settings:{rate:16000,growth:4,infLocal:15,infIntl:3,corr:1,corrV:2,tax:0,theme:'dungeon',th:{sp:10,lt:[6,12],ff:[10,50],nw:[0,50],buy:[10,15,20],inf:[3,5,9,12,14],tax:[0,10,20,30,39],lvl:[1,4,7,10,14],lvlp:[10,30,50,70,90],w:[1,1,1,1]},crime:1,doom:'2030-01-01'},
- name:'',dis:{yt:0,ig:0,tt:0,extra:[]},income:[],expenses:[],assets:[],debts:[],skills:[],wishlist:[],history:[],achV:3,first:null,ach:ACH_PRESETS(),updated:null});
+ name:'',dis:{yt:0,ig:0,tt:0,extra:[]},income:[],expenses:[],assets:[],debts:[],skills:[],wishlist:[],history:[],achV:4,first:null,ach:ACH_PRESETS(),updated:null});
 
 function cleanAch(i){
  const x=Number(i.v),iso=v=>typeof v==='string'&&!isNaN(new Date(v))?v.slice(0,40):null;
@@ -609,8 +613,11 @@ function clean(r){
   skills:arr(r.skills).map(i=>({n:nm(i.n),l:Math.max(0,Math.min(3,parseInt(i.l)||0))})),
   wishlist:arr(r.wishlist).map(i=>({n:nm(i.n),v:nv(i.v)})),
   history:arr(r.history).filter(h=>typeof h.t==='string'&&!isNaN(new Date(h.t))).slice(-120).map(h=>({t:h.t.slice(0,40),I:nv(h.I),E:nv(h.E),A:nv(h.A),D:nv(h.D),sp:sv(h.sp),nw:sv(h.nw)})),
-  achV:3,first:typeof r.first==='string'&&!isNaN(new Date(r.first))?r.first.slice(0,40):null,
-  ach:Number(r.achV)>=3&&Array.isArray(r.ach)?arr(r.ach).slice(0,120).map(cleanAch):ACH_PRESETS(),
+  achV:4,first:typeof r.first==='string'&&!isNaN(new Date(r.first))?r.first.slice(0,40):null,
+  ach:(()=>{if(!(Number(r.achV)>=3&&Array.isArray(r.ach)))return ACH_PRESETS();const L=arr(r.ach).slice(0,120).map(cleanAch);
+   if(!(Number(r.achV)>=4)){const N=ACH_NEW4().map(cleanAch),has=n=>L.some(a=>a.n===n),i=L.findIndex(a=>a.n==='Written budget'&&!a.m&&!a.d);
+    if(i>=0)L.splice(i,1);N.forEach(a=>{if(!has(a.n)&&L.length<120)L.push(a)})}
+   return L})(),
   updated:typeof r.updated==='string'?r.updated.slice(0,40):null};
 }
 let S=null;
@@ -1071,6 +1078,7 @@ const MS_MONTH=30.4375*864e5;
 const pcf=v=>(Math.abs(v)>=10?v.toFixed(0):v.toFixed(1))+'%';
 const rkf=v=>{const r=RANKS[Math.max(0,Math.min(8,Math.round(v)))];return r[0]+' ('+r[1]+')'};
 const dfmt=iso=>new Date(iso).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+const gSum=t=>S.assets.filter(a=>(a.t||'g')===t).reduce((x,a)=>x+a.v,0);
 const ACH_M={
  lt:{l:'Life Time',k:'num',u:'months',fin:1,d:6,get:()=>LAST.A/LAST.E,f:v=>dur(v)},
  ff:{l:'Financial Freedom',k:'num',u:'%',fin:1,d:20,get:()=>LAST.A/(LAST.E*12*(100/S.settings.growth))*100,f:pcf},
@@ -1091,6 +1099,9 @@ const ACH_M={
  sm:{l:'Skills at Master',k:'num',u:'skills',d:1,get:()=>S.skills.filter(x=>x.l>=3).length,f:v=>String(Math.round(v))},
  ds:{l:'Distraction level',k:'dis',fin:1,d:0,o:'<=',get:()=>LAST.dis?LAST.dis.lv:null,f:v=>DIS_L[Math.max(0,Math.min(4,Math.round(v)))]},
  md:{l:'Mode',k:'mode',fin:1,d:1,o:'<=',get:()=>LAST.hero?LAST.hero.mode:null,f:v=>MODES[Math.max(0,Math.min(5,Math.round(v)))][0]},
+ gm:{l:'Guard assets in months',k:'num',u:'months',fin:1,d:6,get:()=>LAST.E>0?gSum('g')/LAST.E:null,f:v=>dur(v)},
+ gc:{l:'Guard months while Garrison > Guard',k:'num',u:'months',fin:1,d:6,get:()=>LAST.E>0&&gSum('c')>gSum('g')?gSum('g')/LAST.E:(LAST.E>0?0:null),f:v=>dur(v)},
+ gz:{l:'Guard months, Garrison > Guard, Legion ≤ 5%',k:'num',u:'months',fin:1,d:12,get:()=>LAST.E>0&&gSum('c')>gSum('g')&&gSum('l')<=LAST.A*.05?gSum('g')/LAST.E:(LAST.E>0?0:null),f:v=>dur(v)},
  sk:{l:'Skill level',k:'skill',d:3,get:a=>{const L=S.skills.filter(x=>x.n.trim().toLowerCase()===String(a.sk||'').trim().toLowerCase());return L.length?Math.max(...L.map(x=>x.l)):null},f:v=>LEVELS[Math.max(0,Math.min(3,Math.round(v)))]}
 };
 const hexRGB=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16));
@@ -1264,7 +1275,7 @@ function resetStart(){
  const e=$('startStatus');if(e)e.textContent='Done. Today is now day one.'
 }
 function achResetStarters(){
- if(!confirm('Replace your whole list with the 32 starter achievements? Your own achievements and unlock dates will be lost. Export first if you want a backup.'))return;
+ if(!confirm('Replace your whole list with the 34 starter achievements? Your own achievements and unlock dates will be lost. Export first if you want a backup.'))return;
  S.ach=ACH_PRESETS();ACH_OPEN=-1;ACH_READY=false;save(false);checkAch();ACH_READY=true;renderAchEditor();achSay('Starter achievements restored.')
 }
 function achDeleteAll(){
