@@ -82,11 +82,11 @@ h1 .c,h1 svg{color:var(--acc)}
 .ab.lk::before,.ab.lk::after{display:none}
 .ab .lkb{position:absolute;right:1px;bottom:1px;width:36%;height:36%;color:#A3AAB7;z-index:3;background:#151922;border-radius:50%;padding:2px;box-sizing:border-box;display:flex}
 .ab .lkb svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
-.astrip{display:flex;flex-wrap:nowrap;overflow:hidden;gap:2px;margin-top:-2px;align-items:center}
+.astrip{display:flex;flex-wrap:nowrap;overflow:visible;gap:8px;margin-top:-2px;align-items:center}
 .amore{display:inline-flex;align-items:center;justify-content:center;min-width:34px;height:34px;margin:4px;padding:0 6px;color:var(--mut);font:600 13px var(--body);border:1px dashed var(--line);border-radius:30%;flex:none}
 #achCard:has(#achMore.hide){display:none}
 .hcol{display:flex;flex-direction:column;min-width:0}
-.hcol .astrip{margin-top:auto;padding-top:6px;cursor:pointer;justify-content:center}
+.hcol .astrip{margin-top:auto;padding-top:6px;cursor:pointer;justify-content:center;gap:8px}
 .arow{display:flex;align-items:center;gap:8px;padding:4px 0}
 .arow.dim .an{color:var(--mut)}
 .arow .am{flex:1;min-width:0}.arow .an{font-weight:550;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -604,7 +604,7 @@ function clean(r){
   name:String(r.name==null?'':r.name).slice(0,24),
   dis:(()=>{const d=r.dis&&typeof r.dis==='object'?r.dis:{},lv=v=>Math.max(0,Math.min(4,parseInt(v)||0));return {yt:lv(d.yt),ig:lv(d.ig),tt:lv(d.tt),extra:arr(d.extra).slice(0,10).map(i=>({n:nm(i.n),l:lv(i.l)}))}})(),
   income:fr(r.income),expenses:fr(r.expenses),
-  assets:arr(r.assets).map(i=>({n:nm(i.n),v:nv(i.v),t:['g','c','l'].includes(i.t)?i.t:'g'})),
+  assets:arr(r.assets).map(i=>{const q=Math.max(0,Math.min(1e12,Number(i.q)||0)),pr=nv(i.pr),u=i.u&&(q>0||pr>0)?1:0;return {n:nm(i.n),v:u?nv(q*pr):nv(i.v),t:['g','c','l'].includes(i.t)?i.t:'g',u,q:u?q:0,pr:u?pr:0}}),
   debts:arr(r.debts).map(i=>({n:nm(i.n),v:nv(i.v),r:pc(i.r,0,1000),p:nv(i.p)})),
   skills:arr(r.skills).map(i=>({n:nm(i.n),l:Math.max(0,Math.min(3,parseInt(i.l)||0))})),
   wishlist:arr(r.wishlist).map(i=>({n:nm(i.n),v:nv(i.v)})),
@@ -840,10 +840,27 @@ function renderList(key){
    kk.oninput=()=>{it.k=numI(kk.value)||1;save(true);calc()};
    r2.appendChild(del);d.appendChild(r2);
   }else if(key==='assets'){
-   d.appendChild(moneyInput(it,ro));
+   let tot;
+   if(it.u&&!ro){tot=document.createElement('input');tot.type='text';tot.readOnly=true;tot.value=it.v?it.v.toLocaleString('id-ID'):'0';d.appendChild(tot)}
+   else d.appendChild(moneyInput(it,ro));
    const ts=document.createElement('select');ts.innerHTML=TIERS.map(x=>`<option value="${x[0]}">${x[1]}</option>`).join('');ts.value=it.t||'g';
    ts.onchange=()=>{it.t=ts.value;save(true);renderList('assets');calc()};
    r2.appendChild(ts);r2.appendChild(del);d.appendChild(r2);
+   if(!ro){
+    const mr=document.createElement('div');mr.className='r3';mr.style.cssText='display:flex;gap:8px;margin:6px 0 0';
+    const ms=document.createElement('select');ms.innerHTML='<option value="0">Fixed Rp amount</option><option value="1">Quantity × price per unit</option>';ms.value=it.u?'1':'0';ms.style.flex='1';
+    ms.onchange=()=>{if(ms.value==='1'){it.u=1;if(!(it.pr>0)){it.pr=it.v;it.q=it.v?1:0}it.v=Math.round(it.q*it.pr)}else it.u=0;save(true);renderList('assets');calc()};
+    mr.appendChild(ms);d.appendChild(mr);
+    if(it.u){
+     const ur=document.createElement('div');ur.className='r3';ur.style.cssText='display:flex;gap:8px;margin:6px 0 0';
+     const q=document.createElement('input');q.type='text';q.inputMode='decimal';q.placeholder='Quantity (e.g. 0,05)';q.value=it.q?String(it.q).replace('.',','):'';q.style.flex='1';q.style.minWidth='0';
+     const p=document.createElement('input');p.type='text';p.inputMode='numeric';p.placeholder='Price per unit (Rp)';p.value=it.pr?it.pr.toLocaleString('id-ID'):'';p.style.flex='1';p.style.minWidth='0';
+     const upd=()=>{it.v=Math.max(0,Math.min(1e13,Math.round(it.q*it.pr)||0));tot.value=it.v?it.v.toLocaleString('id-ID'):'0';save(true);calc()};
+     q.oninput=()=>{const x=parseFloat(String(q.value).replace(',','.'));it.q=isFinite(x)&&x>0?x:0;upd()};
+     p.oninput=()=>{it.pr=numI(p.value);p.value=it.pr?it.pr.toLocaleString('id-ID'):'';upd()};
+     ur.appendChild(q);ur.appendChild(p);d.appendChild(ur);
+    }
+   }
    const at=document.createElement('div');at.className='note r3';at.id='at-'+i;at.style.margin='0';d.appendChild(at);
   }else if(key==='debts'){
    d.appendChild(moneyInput(it,ro));
@@ -886,7 +903,7 @@ function renderAll(){
  $('cIDR').classList.toggle('on',!ro);$('cUSD').classList.toggle('on',ro);
 }
 function addItem(key){
- const t={income:{n:'',v:0,f:'m',k:1},expenses:{n:'',v:0,f:'m',k:1},assets:{n:'',v:0},debts:{n:'',v:0,r:0,p:0},skills:{n:'',l:0},wishlist:{n:'',v:0}};
+ const t={income:{n:'',v:0,f:'m',k:1},expenses:{n:'',v:0,f:'m',k:1},assets:{n:'',v:0,u:0,q:0,pr:0},debts:{n:'',v:0,r:0,p:0},skills:{n:'',l:0},wishlist:{n:'',v:0}};
  S[key].push(t[key]);save(true);renderList(key);calc();
 }
 function toggleCur(){S.cur=S.cur==='USD'?'IDR':'USD';save(false);renderAll();calc()}
@@ -1152,7 +1169,7 @@ function renderAchCard(){
  if(!$('achCard'))return;
  const un=achUnlocked(),tot=S.ach.length;
  $('achCount').textContent=tot?`${un.length} / ${tot}`:'';
- const strip=$('achStrip'),w=strip.clientWidth||200,per=Math.min(5,Math.max(1,Math.floor((w+2)/44)));
+ const strip=$('achStrip'),w=strip.clientWidth||200,per=Math.min(5,Math.max(1,Math.floor((w+8)/48)));
  strip.innerHTML=un.length?un.slice(0,per).map(a=>badgeH(a,false,32)).join(''):`<div class="note" style="margin:0">${tot?'Nothing unlocked yet. Tap to see your goals.':'No achievements yet. Add one in Goals.'}</div>`;
  const rows=S.ach.map(a=>{const r=a.m?achEval(a):null,hi=a.d?null:holdInfo(a,r);return {a,r,hi,p:hi?hi.pct:(r?r.pct:null)}});
  const rank=x=>x.a.d?[0,-x.a.t,-new Date(x.a.d)]:[1,x.p!=null?-x.p:(x.a.m?0.5:1),0];
@@ -1488,7 +1505,7 @@ function drawSnap(prev){
   bar(x0,y+204,600,18,lt.pct,lcol);
   c.fillStyle=MUT;c.font=`500 24px ${F}`;c.fillText(clip(c,lt.unit||'',600),x0,y+262);
   c.fillStyle=ACC;c.font=`500 26px ${F}`;c.fillText('Time is your currency.',x0,y+312);c.fillText('Price every purchase in it.',x0,y+346);c.restore();
-  if(UN3.length){const bs=88,gp=28,tw=UN3.length*bs+(UN3.length-1)*gp,bx=692-tw/2;UN3.forEach((a,i)=>drawAchBadge(c,bx+i*(bs+gp),y+414,bs,a))}
+  if(UN3.length){const bs=88,gp=44,tw=UN3.length*bs+(UN3.length-1)*gp,bx=692-tw/2;UN3.forEach((a,i)=>drawAchBadge(c,bx+i*(bs+gp),y+414,bs,a))}
   y+=468+HX;
  }
  [['sp','SAVING POWER',48],['ff','FINANCIAL FREEDOM',548]].forEach(([id,lab,x])=>{
