@@ -176,6 +176,11 @@ h1 .c,h1 svg{color:var(--acc)}
 .mini .s2{font-size:12.5px;color:var(--mut)}
 .deb{border-color:rgba(169,139,255,.35)}
 .deb h2{color:var(--deb);display:flex;align-items:center;gap:6px}
+.fbar{display:flex;flex-direction:column;gap:6px;margin:0 0 12px}
+.frow{display:flex;gap:6px;flex-wrap:wrap}
+.fchip{border:1px solid var(--line);background:transparent;color:var(--mut);border-radius:99px;padding:5px 12px;font:600 13px var(--body);min-height:32px;cursor:pointer}
+.fchip.on{color:var(--ink);background:var(--acc);border-color:var(--acc)}
+.fbar input.fq{width:100%;font:15px var(--body);color:var(--txt);background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 14px;min-width:0}
 .chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
 .chip{border:1px solid rgba(169,139,255,.5);color:var(--deb);border-radius:99px;padding:3px 12px;font-size:13px}
 .deb ul{margin:0;padding-left:18px;font-size:14px;color:var(--txt)}.deb li{margin:5px 0}
@@ -327,6 +332,7 @@ h2 .q{margin-left:8px;text-transform:none}
     <h2>Income sources</h2>
     <div class="tot"><div class="mini"><span class="lab">Earning power</span><b id="tot0m">-</b><span class="s2" id="tot0s"></span></div></div>
     <div class="ronote ronote-el hide">USD view: switch to IDR to edit amounts.</div>
+    <div id="f-income"></div>
     <div id="list-income"></div>
     <button class="add" id="add-income" onclick="addItem('income')">+ Add income</button>
   </div>
@@ -335,6 +341,7 @@ h2 .q{margin-left:8px;text-transform:none}
     <h2>Expenses</h2>
     <div class="tot"><div class="grid2"><div class="mini"><b id="tot1m">-</b><span class="s2">per month</span></div><div class="mini"><b id="tot1d">-</b><span class="s2">per day (break-even)</span></div></div></div>
     <div class="ronote ronote-el hide">USD view: switch to IDR to edit amounts.</div>
+    <div id="f-expenses"></div>
     <div id="list-expenses"></div>
     <div id="linked"></div>
     <button class="add" id="add-expenses" onclick="addItem('expenses')">+ Add expense</button>
@@ -343,6 +350,7 @@ h2 .q{margin-left:8px;text-transform:none}
   <div id="p2" class="card hide">
     <h2>Assets<button class="q" onclick="tgl('hint-assets')" aria-label="Hint">?</button></h2>
     <div class="hint hide" id="hint-assets">Count what you can turn into cash. Do not count the bike you work with.</div>
+    <div id="f-assets"></div>
     <div class="ronote ronote-el hide">USD view: switch to IDR to edit amounts.</div>
     <div id="tiers"></div>
   </div>
@@ -352,6 +360,7 @@ h2 .q{margin-left:8px;text-transform:none}
     <div class="note" style="margin:0 0 12px;padding:10px 12px;border-left:3px solid var(--r);background:rgba(255,122,102,.07);border-radius:0 10px 10px 0;color:var(--txt);line-height:1.5">A person or company with no debt cannot go bankrupt. Avoid and pay off every kind of debt.</div>
     <div class="tot"><div class="grid2"><div class="mini"><b id="tot3">-</b><span class="s2" id="tot3s">total debts</span></div><div class="mini"><b id="tot3i">-</b><span class="s2">interest per month</span></div></div></div>
     <div class="ronote ronote-el hide">USD view: switch to IDR to edit amounts.</div>
+    <div id="f-debts"></div>
     <div id="list-debts"></div>
     <button class="add" id="add-debts" onclick="addItem('debts')">+ Add debt</button>
     <div class="note" style="margin-top:8px">Interest 0 means the debt does not grow. A monthly installment is added to your expenses automatically, so do not enter it again in Expenses.</div>
@@ -359,6 +368,7 @@ h2 .q{margin-left:8px;text-transform:none}
 
   <div id="p4" class="card hide">
     <h2>Skills</h2>
+    <div id="f-skills"></div>
     <div id="list-skills"></div>
     <button class="add" onclick="addItem('skills')">+ Add skill</button>
     <div class="note" id="skillEmpty">No skills yet. Add one, for example English.</div>
@@ -367,6 +377,7 @@ h2 .q{margin-left:8px;text-transform:none}
   <div id="p5" class="card hide">
     <h2>Wishlist: buy calculator</h2>
     <div class="ronote ronote-el hide">USD view: switch to IDR to edit amounts.</div>
+    <div id="f-wishlist"></div>
     <div id="list-wishlist"></div>
     <button class="add" id="add-wishlist" onclick="addItem('wishlist')">+ Add item</button>
     <div class="mini"><span class="lab">Total</span><b id="wTot">-</b><span class="s2" id="wTotLife"></span><div id="wTotV" style="margin-top:6px"></div></div>
@@ -375,6 +386,7 @@ h2 .q{margin-left:8px;text-transform:none}
 
   <div id="p6" class="card hide">
     <h2>Goals</h2>
+    <div id="f-ach"></div>
     <div id="list-ach"></div>
     <button class="add" onclick="achAdd()">+ Add achievement</button>
     <div class="note" id="achEmpty">No achievements yet. Add one.</div>
@@ -839,7 +851,7 @@ function renderList(key){
  if(box)box.innerHTML='';else['g','c','l'].forEach(x=>{$('list-assets-'+x).innerHTML=''});
  const ro=S.cur==='USD'&&MONEY.includes(key);
  S[key].forEach((it,i)=>{
-  const d=document.createElement('div');d.className='item';
+  const d=document.createElement('div');d.className='item';d._it=it;d._i=i;
   d.appendChild(nameInput(it));
   const r2=document.createElement('div');r2.className='r2';
   const del=document.createElement('button');del.className='x';del.textContent='✕';
@@ -908,9 +920,40 @@ function renderList(key){
   (box||$('list-assets-'+(it.t||'g'))).appendChild(d);
  });
  if(key==='skills')$('skillEmpty').classList.toggle('hide',S.skills.length>0);
+ applyFil(key);
+}
+const FIL={income:{o:'d'},expenses:{o:'d'},assets:{o:'d'},debts:{o:'d'},wishlist:{c:-1,q:''},skills:{l:-1},ach:{s:'all',t:-1,q:''}};
+function fRender(id,st,rows,search,cb){
+ const box=$(id);if(!box)return;box.className='fbar';
+ box.innerHTML=rows.map(r=>`<div class="frow">${r.o.map(([v,l])=>`<button type="button" class="fchip${st[r.k]===v?' on':''}" data-k="${r.k}" data-v="${v}">${l}</button>`).join('')}</div>`).join('')+(search?`<input type="search" class="fq" placeholder="Search name" value="${esc(st.q)}">`:'');
+ box.onclick=e=>{const b=e.target.closest('.fchip');if(!b)return;const v=b.dataset.v;st[b.dataset.k]=isNaN(v)?v:+v;cb();fRender(id,st,rows,search,cb)};
+ const q=box.querySelector('.fq');if(q)q.oninput=()=>{st.q=q.value;cb()};
+}
+const SORT_O=[['d','Default'],['h','Highest'],['l','Lowest']];
+const F_ROWS={income:[{k:'o',o:SORT_O}],expenses:[{k:'o',o:SORT_O}],assets:[{k:'o',o:SORT_O}],debts:[{k:'o',o:SORT_O}],
+ wishlist:[{k:'c',o:[[-1,'All'],[0,'Consumptive'],[1,'Productive'],[2,'Growth']]}],
+ skills:[{k:'l',o:[[-1,'All'],...LEVELS.map((x,i)=>[i,x])]}],
+ ach:[{k:'s',o:[['all','All'],['un','Unlocked'],['lk','Locked']]},{k:'t',o:[[-1,'All tiers'],[0,'Common'],[1,'Rare'],[2,'Epic']]}]};
+function sortBox(box,key){
+ if(!box)return;const m=FIL[key].o,val=it=>(key==='assets'||key==='debts')?it.v:monthly(it);
+ [...box.children].filter(d=>d._it).sort((a,b)=>m==='h'?val(b._it)-val(a._it):m==='l'?val(a._it)-val(b._it):a._i-b._i).forEach(d=>box.appendChild(d));
+}
+function applyFil(key){
+ if(key==='income'||key==='expenses'||key==='debts')sortBox($('list-'+key),key);
+ else if(key==='assets')['g','c','l'].forEach(x=>sortBox($('list-assets-'+x),'assets'));
+ else
+ if(key==='wishlist'){const f=FIL.wishlist,q=f.q.trim().toLowerCase();[...$('list-wishlist').children].forEach(d=>{const it=d._it;if(it)d.style.display=(f.c<0||(it.c||0)===f.c)&&(!q||(it.n||'').toLowerCase().includes(q))?'':'none'})}
+ else if(key==='skills'){const f=FIL.skills;[...$('list-skills').children].forEach(d=>{const it=d._it;if(it)d.style.display=f.l<0||it.l===f.l?'':'none'})}
+}
+function initFilters(){
+ ['income','expenses','assets','debts'].forEach(k=>fRender('f-'+k,FIL[k],F_ROWS[k],false,()=>applyFil(k)));
+ fRender('f-wishlist',FIL.wishlist,F_ROWS.wishlist,true,()=>applyFil('wishlist'));
+ fRender('f-skills',FIL.skills,F_ROWS.skills,false,()=>applyFil('skills'));
+ fRender('f-ach',FIL.ach,F_ROWS.ach,true,renderAchEditor);
 }
 function renderAll(){
  const ro=S.cur==='USD';
+ initFilters();
  renderAchCard();renderAchEditor();
  ['income','expenses','assets','debts','skills','wishlist'].forEach(renderList);
  ['income','expenses','debts','wishlist'].forEach(k=>$('add-'+k).classList.toggle('hide',ro));
@@ -920,6 +963,7 @@ function renderAll(){
 }
 function addItem(key){
  const t={income:{n:'',v:0,f:'m',k:1},expenses:{n:'',v:0,f:'m',k:1},assets:{n:'',v:0,u:0,q:0,pr:0},debts:{n:'',v:0,r:0,p:0},skills:{n:'',l:0},wishlist:{n:'',v:0,c:0}};
+ if(key==='wishlist'){FIL.wishlist={c:-1,q:''};initFilters()}if(key==='skills'){FIL.skills={l:-1};initFilters()}
  S[key].push(t[key]);save(true);renderList(key);calc();
 }
 function toggleCur(){S.cur=S.cur==='USD'?'IDR':'USD';save(false);renderAll();calc()}
@@ -1232,7 +1276,8 @@ function achItemH(a,i){
 }
 function renderAchEditor(){
  const box=$('list-ach');if(!box)return;
- box.innerHTML=S.ach.map(achItemH).join('');
+ const f=FIL.ach,q=f.q.trim().toLowerCase();
+ box.innerHTML=S.ach.map((a,i)=>({a,i})).filter(({a})=>(f.s==='all'||(f.s==='un')===!!a.d)&&(f.t<0||a.t===f.t)&&(!q||(a.n||'').toLowerCase().includes(q))).map(({a,i})=>achItemH(a,i)).join('');
  $('achEmpty').classList.toggle('hide',S.ach.length>0);
 }
 function achChanged(){checkAch()}
@@ -1247,7 +1292,7 @@ function achSkill(i,v){S.ach[i].sk=v;save(false);achChanged();renderAchEditor()}
 function achUnlock(i){const a=S.ach[i];a.d=new Date().toISOString();a.h=false;a.z=true;save(false);toastAch(a);renderAchCard();renderAchEditor()}
 function achCancel(i){const a=S.ach[i];a.d=null;a.z=true;if(a.m==='dn'){a.s=new Date().toISOString();a.b=LAST.D}else{a.s=null;if(a.m)a.h=true}save(false);renderAchCard();renderAchEditor()}
 function achDel(i){S.ach.splice(i,1);if(ACH_OPEN===i)ACH_OPEN=-1;else if(ACH_OPEN>i)ACH_OPEN--;save(false);renderAchCard();renderAchEditor()}
-function achAdd(){S.ach.push({n:'',ic:'star',c:0,t:0,m:'',o:'>=',v:0,hm:0,sk:'',d:null,s:null,b:0,z:false,h:false});ACH_OPEN=S.ach.length-1;save(false);renderAchCard();renderAchEditor()}
+function achAdd(){FIL.ach={s:'all',t:-1,q:''};initFilters();S.ach.push({n:'',ic:'star',c:0,t:0,m:'',o:'>=',v:0,hm:0,sk:'',d:null,s:null,b:0,z:false,h:false});ACH_OPEN=S.ach.length-1;save(false);renderAchCard();renderAchEditor()}
 function achToggle(i){ACH_OPEN=ACH_OPEN===i?-1:i;renderAchEditor()}
 const achSay=(t,bad)=>{const e=$('achStatus');e.textContent=t;e.style.color=bad?'var(--r)':'var(--g)'};
 function achExport(){
