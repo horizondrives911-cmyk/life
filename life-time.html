@@ -378,9 +378,10 @@ h2 .q{margin-left:8px;text-transform:none}
     <h2>Wishlist: buy calculator</h2>
     <div class="ronote ronote-el hide">USD view: switch to IDR to edit amounts.</div>
     <div id="f-wishlist"></div>
+    <div class="mini hide" id="wFilt" style="margin:0 0 12px"><span class="lab" id="wFiltLab"></span><b id="wFiltV">-</b><span class="s2" id="wFiltLife"></span></div>
     <div id="list-wishlist"></div>
     <button class="add" id="add-wishlist" onclick="addItem('wishlist')">+ Add item</button>
-    <div class="mini"><span class="lab">Total</span><b id="wTot">-</b><span class="s2" id="wTotLife"></span><div id="wTotV" style="margin-top:6px"></div></div>
+    <div class="mini"><span class="lab" id="wTotLab">Total</span><b id="wTot">-</b><span class="s2" id="wTotLife"></span><div id="wTotV" style="margin-top:6px"></div></div>
     <div class="note" id="wNote" style="margin-top:8px"></div>
   </div>
 
@@ -827,11 +828,22 @@ function verdict(v,A,E,lim){
  const share=A>0?(pct<1000?pct.toFixed(1)+'% of assets':'999+% of assets'):'no assets';
  return `<span class="badge s-${s}">${lab}</span><span class="note">${life}${share} · unlock at ${fmt(v/(b[0]/100))} in assets</span>`;
 }
+const WCN=['Consumptive','Productive','Growth'];
+function wFilt(){
+ const f=FIL.wishlist,q=f.q.trim().toLowerCase(),act=f.c>=0||!!q,box=$('wFilt');if(!box)return;
+ const L=S.wishlist.filter(it=>(f.c<0||(it.c||0)===f.c)&&(!q||(it.n||'').toLowerCase().includes(q)));
+ let tot=0;L.forEach(it=>tot+=it.v);const E=expTotal();
+ box.classList.toggle('hide',!act);$('wTotLab').textContent=act?'Total (all items)':'Total';
+ if(!act)return;
+ $('wFiltLab').textContent=`${f.c>=0?WCN[f.c]:'All categories'}${q?' · "'+f.q.trim()+'"':''} · ${L.length} item${L.length===1?'':'s'}`;
+ $('wFiltV').textContent=fmt(tot);$('wFiltLife').textContent=E&&tot?dur(tot/E)+' of life':'';
+ if(typeof fitText==='function')fitText($('wFiltV'));
+}
 function updateWish(){
  const A=sumV(S.assets),E=expTotal(),cl=S.settings.th.cat;let tot=0;
  S.wishlist.forEach((it,i)=>{tot+=it.v;const el=$('wv-'+i);if(el)el.innerHTML=verdict(it.v,A,E,cl[it.c||0])});
  if($('wNote'))$('wNote').textContent=`The rule: buy only when the price stays within the limit of its category, as a share of your assets. Consumptive up to ${cl[0]}%, Productive up to ${cl[1]}%, Growth (skills, courses, investing in yourself) up to ${cl[2]}%. Raise income and assets to unlock bigger things.`;
- $('wTot').textContent=fmt(tot);
+ $('wTot').textContent=fmt(tot);wFilt();
  $('wTotLife').textContent=E&&tot?dur(tot/E)+' of life':'';
  $('wTotV').innerHTML=tot&&A>0?`<span class="note">${(tot/A*100<1000?(tot/A*100).toFixed(1):'999+')}% of assets</span>`:'';
 }
@@ -942,7 +954,7 @@ function applyFil(key){
  if(key==='income'||key==='expenses'||key==='debts')sortBox($('list-'+key),key);
  else if(key==='assets')['g','c','l'].forEach(x=>sortBox($('list-assets-'+x),'assets'));
  else
- if(key==='wishlist'){const f=FIL.wishlist,q=f.q.trim().toLowerCase();sortBox($('list-wishlist'),'wishlist');[...$('list-wishlist').children].forEach(d=>{const it=d._it;if(it)d.style.display=(f.c<0||(it.c||0)===f.c)&&(!q||(it.n||'').toLowerCase().includes(q))?'':'none'})}
+ if(key==='wishlist'){const f=FIL.wishlist,q=f.q.trim().toLowerCase();sortBox($('list-wishlist'),'wishlist');wFilt();[...$('list-wishlist').children].forEach(d=>{const it=d._it;if(it)d.style.display=(f.c<0||(it.c||0)===f.c)&&(!q||(it.n||'').toLowerCase().includes(q))?'':'none'})}
  else if(key==='skills'){const f=FIL.skills;[...$('list-skills').children].forEach(d=>{const it=d._it;if(it)d.style.display=f.l<0||it.l===f.l?'':'none'})}
 }
 function initFilters(){
