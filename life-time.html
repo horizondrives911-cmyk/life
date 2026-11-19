@@ -367,7 +367,7 @@ h2 .q{margin-left:8px;text-transform:none}
     <div id="list-wishlist"></div>
     <button class="add" id="add-wishlist" onclick="addItem('wishlist')">+ Add item</button>
     <div class="mini"><span class="lab">Total</span><b id="wTot">-</b><span class="s2" id="wTotLife"></span><div id="wTotV" style="margin-top:6px"></div></div>
-    <div class="note" style="margin-top:8px">The rule: buy only when the price stays within your limit as a share of assets. Raise income and assets to unlock bigger things.</div>
+    <div class="note" id="wNote" style="margin-top:8px"></div>
   </div>
 
   <div id="p6" class="card hide">
@@ -426,12 +426,12 @@ h2 .q{margin-left:8px;text-transform:none}
       <div class="fld"><span class="t">Life Time (months): red under, yellow under</span><div class="in"><input id="sLt0" type="text" inputmode="decimal"><input id="sLt1" type="text" inputmode="decimal"></div></div>
       <div class="fld"><span class="t">Financial Freedom (%): red under, yellow under</span><div class="in"><input id="sFf0" type="text" inputmode="decimal"><input id="sFf1" type="text" inputmode="decimal"></div></div>
       <div class="fld"><span class="t">Net worth (% of freedom target): red under, yellow under</span><div class="in"><input id="sNw0" type="text" inputmode="decimal"><input id="sNw1" type="text" inputmode="decimal"></div></div>
-      <div class="fld"><span class="t">Buy limit (% of assets): green up to, yellow up to, red up to</span><div class="in"><input id="sB0" type="text" inputmode="decimal" style="width:56px"><input id="sB1" type="text" inputmode="decimal" style="width:56px"><input id="sB2" type="text" inputmode="decimal" style="width:56px"></div></div>
+      <div class="fld"><span class="t">Buy limit (% of assets): Consumptive, Productive, Growth</span><div class="in"><input id="sB0" type="text" inputmode="decimal" style="width:56px"><input id="sB1" type="text" inputmode="decimal" style="width:56px"><input id="sB2" type="text" inputmode="decimal" style="width:56px"></div></div>
       <div class="fld" style="flex-wrap:wrap"><span class="t" style="flex-basis:100%">Inflation points (%): each debuff gets 0-5 points. Easy up to, Normal up to, Hard up to, Very Hard up to, Nightmare up to</span><div class="in"><input id="sIn0" type="text" inputmode="decimal" style="width:48px"><input id="sIn1" type="text" inputmode="decimal" style="width:48px"><input id="sIn2" type="text" inputmode="decimal" style="width:48px"><input id="sIn3" type="text" inputmode="decimal" style="width:48px"><input id="sIn4" type="text" inputmode="decimal" style="width:48px"></div></div>
       <div class="fld" style="flex-wrap:wrap"><span class="t" style="flex-basis:100%">Tax points (%): same steps</span><div class="in"><input id="sTa0" type="text" inputmode="decimal" style="width:48px"><input id="sTa1" type="text" inputmode="decimal" style="width:48px"><input id="sTa2" type="text" inputmode="decimal" style="width:48px"><input id="sTa3" type="text" inputmode="decimal" style="width:48px"><input id="sTa4" type="text" inputmode="decimal" style="width:48px"></div></div>
       <div class="fld" style="flex-wrap:wrap"><span class="t" style="flex-basis:100%">Mode by pressure (% of the maximum): Easy up to, Normal up to, Hard up to, Very Hard up to, Nightmare up to (Hell above)</span><div class="in"><input id="sLv0" type="text" inputmode="decimal" style="width:48px"><input id="sLv1" type="text" inputmode="decimal" style="width:48px"><input id="sLv2" type="text" inputmode="decimal" style="width:48px"><input id="sLv3" type="text" inputmode="decimal" style="width:48px"><input id="sLv4" type="text" inputmode="decimal" style="width:48px"></div></div>
       <div class="fld" style="flex-wrap:wrap"><span class="t" style="flex-basis:100%">Debuff weights: local inflation, corruption, tax, crime (1 each = equal)</span><div class="in"><input id="sW0" type="text" inputmode="decimal" style="width:48px"><input id="sW1" type="text" inputmode="decimal" style="width:48px"><input id="sW2" type="text" inputmode="decimal" style="width:48px"><input id="sW3" type="text" inputmode="decimal" style="width:48px"></div></div>
-      <div class="note">Above the last buy limit, an item is LOCKED. Keep numbers ascending.</div>
+      <div class="note">Each wishlist item is ALLOWED up to its category limit, THINK TWICE up to 1.5× the limit, NOT YET up to 2×, and LOCKED above that.</div>
     </div>
 
     <div class="sec"><h3>AI Doomsday</h3>
@@ -580,7 +580,7 @@ const svg=(n,s=20)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="n
 
 /* ---------- state ---------- */
 const DEFAULT=()=>({app:'life-time',version:3,cur:'IDR',
- settings:{rate:16000,growth:4,infLocal:15,infIntl:3,corr:1,corrV:2,tax:0,theme:'dungeon',th:{sp:10,lt:[6,12],ff:[10,50],nw:[0,50],buy:[10,15,20],inf:[3,5,9,12,14],tax:[0,10,20,30,39],lvl:[1,4,7,10,14],lvlp:[10,30,50,70,90],w:[1,1,1,1]},crime:1,doom:'2030-01-01'},
+ settings:{rate:16000,growth:4,infLocal:15,infIntl:3,corr:1,corrV:2,tax:0,theme:'dungeon',th:{sp:10,lt:[6,12],ff:[10,50],nw:[0,50],cat:[10,25,50],inf:[3,5,9,12,14],tax:[0,10,20,30,39],lvl:[1,4,7,10,14],lvlp:[10,30,50,70,90],w:[1,1,1,1]},crime:1,doom:'2030-01-01'},
  name:'',dis:{yt:0,ig:0,tt:0,extra:[]},income:[],expenses:[],assets:[],debts:[],skills:[],wishlist:[],history:[],achV:4,first:null,ach:ACH_PRESETS(),updated:null});
 
 function cleanAch(i){
@@ -604,14 +604,14 @@ function clean(r){
   cur:r.cur==='USD'?'USD':'IDR',
   settings:{rate,growth,corr:(()=>{const v=Number(s.corr);return Number(s.corrV)===2?([0,1,2,3].includes(v)?v:1):([0,1,2].includes(v)?v+1:1)})(),corrV:2,tax:pc(s.tax,0,100),infLocal:pc(s.infLocal,15,1000),infIntl:pc(s.infIntl,3,1000),
    theme:'dungeon',
-   th:{sp:pc(th.sp,10,1000),lt:pair(th.lt,[6,12]),ff:pair(th.ff,[10,50]),nw:pair(th.nw,[0,50]),buy:pair(th.buy,[10,15,20]),inf:pair(th.inf,[3,5,9,12,14]),tax:pair(th.tax,[0,10,20,30,39]),lvl:pair(th.lvl,[1,4,7,10,14]),lvlp:pair(th.lvlp,[10,30,50,70,90]),w:pair(th.w,[1,1,1,1])},crime:[0,1,2,3].includes(Number(s.crime))?Number(s.crime):1,doom:/^\d{4}-\d{2}-\d{2}$/.test(String(s.doom))?String(s.doom):'2030-01-01'},
+   th:{sp:pc(th.sp,10,1000),lt:pair(th.lt,[6,12]),ff:pair(th.ff,[10,50]),nw:pair(th.nw,[0,50]),cat:pair(th.cat,[10,25,50]),inf:pair(th.inf,[3,5,9,12,14]),tax:pair(th.tax,[0,10,20,30,39]),lvl:pair(th.lvl,[1,4,7,10,14]),lvlp:pair(th.lvlp,[10,30,50,70,90]),w:pair(th.w,[1,1,1,1])},crime:[0,1,2,3].includes(Number(s.crime))?Number(s.crime):1,doom:/^\d{4}-\d{2}-\d{2}$/.test(String(s.doom))?String(s.doom):'2030-01-01'},
   name:String(r.name==null?'':r.name).slice(0,24),
   dis:(()=>{const d=r.dis&&typeof r.dis==='object'?r.dis:{},lv=v=>Math.max(0,Math.min(4,parseInt(v)||0));return {yt:lv(d.yt),ig:lv(d.ig),tt:lv(d.tt),extra:arr(d.extra).slice(0,10).map(i=>({n:nm(i.n),l:lv(i.l)}))}})(),
   income:fr(r.income),expenses:fr(r.expenses),
   assets:arr(r.assets).map(i=>{const q=Math.max(0,Math.min(1e12,Number(i.q)||0)),pr=nv(i.pr),u=i.u&&(q>0||pr>0)?1:0;return {n:nm(i.n),v:u?nv(q*pr):nv(i.v),t:['g','c','l'].includes(i.t)?i.t:'g',u,q:u?q:0,pr:u?pr:0}}),
   debts:arr(r.debts).map(i=>({n:nm(i.n),v:nv(i.v),r:pc(i.r,0,1000),p:nv(i.p)})),
   skills:arr(r.skills).map(i=>({n:nm(i.n),l:Math.max(0,Math.min(3,parseInt(i.l)||0))})),
-  wishlist:arr(r.wishlist).map(i=>({n:nm(i.n),v:nv(i.v)})),
+  wishlist:arr(r.wishlist).map(i=>({n:nm(i.n),v:nv(i.v),c:Math.max(0,Math.min(2,parseInt(i.c)||0))})),
   history:arr(r.history).filter(h=>typeof h.t==='string'&&!isNaN(new Date(h.t))).slice(-120).map(h=>({t:h.t.slice(0,40),I:nv(h.I),E:nv(h.E),A:nv(h.A),D:nv(h.D),sp:sv(h.sp),nw:sv(h.nw)})),
   achV:4,first:typeof r.first==='string'&&!isNaN(new Date(r.first))?r.first.slice(0,40):null,
   ach:(()=>{if(!(Number(r.achV)>=3&&Array.isArray(r.ach)))return ACH_PRESETS();const L=arr(r.ach).slice(0,120).map(cleanAch);
@@ -798,7 +798,9 @@ function calc(){
 }
 
 /* ---------- wishlist ---------- */
-function verdict(v,A,E,b){
+const WCAT=[['Consumptive (wants)'],['Productive (tools that earn)'],['Growth (skills, courses)']];
+function verdict(v,A,E,lim){
+ const b=[lim,lim*1.5,lim*2];
  if(!v)return '<span class="note">Enter a price.</span>';
  const pct=A>0?v/A*100:Infinity;
  let s,lab;
@@ -811,11 +813,12 @@ function verdict(v,A,E,b){
  return `<span class="badge s-${s}">${lab}</span><span class="note">${life}${share} · unlock at ${fmt(v/(b[0]/100))} in assets</span>`;
 }
 function updateWish(){
- const A=sumV(S.assets),E=expTotal(),b=S.settings.th.buy;let tot=0;
- S.wishlist.forEach((it,i)=>{tot+=it.v;const el=$('wv-'+i);if(el)el.innerHTML=verdict(it.v,A,E,b)});
+ const A=sumV(S.assets),E=expTotal(),cl=S.settings.th.cat;let tot=0;
+ S.wishlist.forEach((it,i)=>{tot+=it.v;const el=$('wv-'+i);if(el)el.innerHTML=verdict(it.v,A,E,cl[it.c||0])});
+ if($('wNote'))$('wNote').textContent=`The rule: buy only when the price stays within the limit of its category, as a share of your assets. Consumptive up to ${cl[0]}%, Productive up to ${cl[1]}%, Growth (skills, courses, investing in yourself) up to ${cl[2]}%. Raise income and assets to unlock bigger things.`;
  $('wTot').textContent=fmt(tot);
  $('wTotLife').textContent=E&&tot?dur(tot/E)+' of life':'';
- $('wTotV').innerHTML=tot?verdict(tot,A,E,b):'';
+ $('wTotV').innerHTML=tot&&A>0?`<span class="note">${(tot/A*100<1000?(tot/A*100).toFixed(1):'999+')}% of assets</span>`:'';
 }
 
 /* ---------- lists ---------- */
@@ -885,7 +888,9 @@ function renderList(key){
   }else if(key==='wishlist'){
    d.appendChild(moneyInput(it,ro));
    const r3=document.createElement('div');r3.className='r3';r3.id='wv-'+i;d.appendChild(r3);
-   r2.appendChild(Object.assign(document.createElement('span'),{className:'mo'}));r2.appendChild(del);
+   const cs=document.createElement('select');cs.innerHTML=WCAT.map((x,j)=>`<option value="${j}">${x[0]}</option>`).join('');cs.value=it.c||0;
+   cs.onchange=()=>{it.c=parseInt(cs.value)||0;save(true);calc()};
+   r2.appendChild(cs);r2.appendChild(del);
    d.appendChild(r2);
    r3.style.order='0';
   }else if(key==='skills'){
@@ -910,7 +915,7 @@ function renderAll(){
  $('cIDR').classList.toggle('on',!ro);$('cUSD').classList.toggle('on',ro);
 }
 function addItem(key){
- const t={income:{n:'',v:0,f:'m',k:1},expenses:{n:'',v:0,f:'m',k:1},assets:{n:'',v:0,u:0,q:0,pr:0},debts:{n:'',v:0,r:0,p:0},skills:{n:'',l:0},wishlist:{n:'',v:0}};
+ const t={income:{n:'',v:0,f:'m',k:1},expenses:{n:'',v:0,f:'m',k:1},assets:{n:'',v:0,u:0,q:0,pr:0},debts:{n:'',v:0,r:0,p:0},skills:{n:'',l:0},wishlist:{n:'',v:0,c:0}};
  S[key].push(t[key]);save(true);renderList(key);calc();
 }
 function toggleCur(){S.cur=S.cur==='USD'?'IDR':'USD';save(false);renderAll();calc()}
@@ -1307,7 +1312,7 @@ const FIELDS=[
  ['sLt0',()=>S.settings.th.lt[0],v=>{S.settings.th.lt[0]=v}],['sLt1',()=>S.settings.th.lt[1],v=>{S.settings.th.lt[1]=v}],
  ['sFf0',()=>S.settings.th.ff[0],v=>{S.settings.th.ff[0]=v}],['sFf1',()=>S.settings.th.ff[1],v=>{S.settings.th.ff[1]=v}],
  ['sNw0',()=>S.settings.th.nw[0],v=>{S.settings.th.nw[0]=v}],['sNw1',()=>S.settings.th.nw[1],v=>{S.settings.th.nw[1]=v}],
- ['sB0',()=>S.settings.th.buy[0],v=>{S.settings.th.buy[0]=v}],['sB1',()=>S.settings.th.buy[1],v=>{S.settings.th.buy[1]=v}],['sB2',()=>S.settings.th.buy[2],v=>{S.settings.th.buy[2]=v}]
+ ['sB0',()=>S.settings.th.cat[0],v=>{S.settings.th.cat[0]=v}],['sB1',()=>S.settings.th.cat[1],v=>{S.settings.th.cat[1]=v}],['sB2',()=>S.settings.th.cat[2],v=>{S.settings.th.cat[2]=v}]
 ];
 function syncSettings(){FIELDS.forEach(([id,get])=>{$(id).value=id==='sRate'?Number(get()).toLocaleString('id-ID'):get()});$('sDoom').value=S.settings.doom;$('sName').value=S.name||''}
 $('sName').oninput=()=>{S.name=$('sName').value.slice(0,24);save(false);calc()};
