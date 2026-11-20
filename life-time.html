@@ -856,7 +856,7 @@ function verdict(v,A,E,lim){
 }
 const WCN=['Consumptive','Productive','Growth'];
 function fitWn(){document.querySelectorAll('.wn').forEach(el=>{el.style.fontSize='';if(!el.clientWidth)return;let fs=parseFloat(getComputedStyle(el).fontSize);while(el.scrollWidth>el.clientWidth+1&&fs>8.5){fs-=.5;el.style.fontSize=fs+'px'}})}
-function cmpMoney(v){if(S.cur==='USD')return fmt(v);const t=(x,u)=>'Rp '+String(+x.toFixed(x>=100?0:x>=10?1:2)).replace('.',',')+' '+u;return v>=1e9?t(v/1e9,'M'):v>=1e6?t(v/1e6,'jt'):fmt(v)}
+function cmpMoney(v){if(S.cur==='USD')return fmt(v);const t=(x,u)=>'Rp '+String(+x.toFixed(x>=100?0:x>=10?1:2))+' '+u;return v>=1e9?t(v/1e9,'bn'):v>=1e6?t(v/1e6,'mn'):fmt(v)}
 function wFilt(){
  const f=FIL.wishlist,q=f.q.trim().toLowerCase(),act=f.c>=0||!!q,box=$('wFilt');if(!box)return;
  const L=S.wishlist.filter(it=>(f.c<0||(it.c||0)===f.c)&&(!q||(it.n||'').toLowerCase().includes(q)));
