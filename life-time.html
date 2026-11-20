@@ -225,6 +225,8 @@ input[readonly]{opacity:.7}
 .ronote{font-size:13px;color:var(--y);margin-bottom:10px}
 .donut{display:block;margin:4px auto 12px;width:200px;height:200px}
 .dnt{font-family:var(--display)}
+.lg .wla{display:block;font-size:12px;white-space:nowrap;overflow:hidden;line-height:1.35;margin-top:2px}
+#wLeg .lg{padding:9px 8px}.wn{font-size:11.5px;font-weight:600;white-space:nowrap;overflow:hidden;margin-bottom:2px}
 .legend{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px}
 .lg{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:10px;min-width:0}
 .lg .dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}
@@ -376,7 +378,10 @@ h2 .q{margin-left:8px;text-transform:none}
 
   <div id="p5" class="card hide">
     <h2>Wishlist: buy calculator</h2>
-    <div class="tot"><div class="mini"><span class="lab" id="wTotLab">Total</span><b id="wTot">-</b><span class="s2" id="wTotLife"></span><div id="wTotV" style="margin-top:6px"></div></div></div>
+    <div class="tot"><div class="mini"><span class="lab" id="wTotLab">Total</span>
+      <svg class="donut" viewBox="0 0 200 200" role="img" aria-label="Wishlist by category"><circle cx="100" cy="100" r="70" fill="none" stroke="var(--bg)" stroke-width="24"/><circle id="wd-0" cx="100" cy="100" r="70" fill="none" stroke="#FF7A66" stroke-width="24" stroke-dasharray="0 439.8" transform="rotate(-90 100 100)"/><circle id="wd-1" cx="100" cy="100" r="70" fill="none" stroke="#5B9DFF" stroke-width="24" stroke-dasharray="0 439.8" transform="rotate(-90 100 100)"/><circle id="wd-2" cx="100" cy="100" r="70" fill="none" stroke="#5BE3A0" stroke-width="24" stroke-dasharray="0 439.8" transform="rotate(-90 100 100)"/><text id="wTot" class="dnt" x="100" y="107" text-anchor="middle" fill="var(--txt)" font-weight="650" font-size="18">-</text></svg>
+      <div class="legend" id="wLeg" style="margin-bottom:8px"><div class="lg"><div class="wn" style="color:#FF7A66">Consumptive</div><b id="wlp-0">0%</b><span class="s2 wla" id="wla-0">-</span><span class="s2 wla" id="wlm-0"></span></div><div class="lg"><div class="wn" style="color:#5B9DFF">Productive</div><b id="wlp-1">0%</b><span class="s2 wla" id="wla-1">-</span><span class="s2 wla" id="wlm-1"></span></div><div class="lg"><div class="wn" style="color:#5BE3A0">Growth</div><b id="wlp-2">0%</b><span class="s2 wla" id="wla-2">-</span><span class="s2 wla" id="wlm-2"></span></div></div>
+      <span class="s2" id="wTotLife"></span><div id="wTotV" style="margin-top:6px"></div></div></div>
     <div class="ronote ronote-el hide">USD view: switch to IDR to edit amounts.</div>
     <div id="f-wishlist"></div>
     <div class="mini hide" id="wFilt" style="margin:0 0 12px"><span class="lab" id="wFiltLab"></span><b id="wFiltV">-</b><span class="s2" id="wFiltLife"></span></div>
@@ -829,6 +834,7 @@ function verdict(v,A,E,lim){
  return `<span class="badge s-${s}">${lab}</span><span class="note">${life}${share} · unlock at ${fmt(v/(b[0]/100))} in assets</span>`;
 }
 const WCN=['Consumptive','Productive','Growth'];
+function cmpMoney(v){if(S.cur==='USD')return fmt(v);const t=(x,u)=>'Rp '+String(+x.toFixed(x>=100?0:x>=10?1:2)).replace('.',',')+' '+u;return v>=1e9?t(v/1e9,'M'):v>=1e6?t(v/1e6,'jt'):fmt(v)}
 function wFilt(){
  const f=FIL.wishlist,q=f.q.trim().toLowerCase(),act=f.c>=0||!!q,box=$('wFilt');if(!box)return;
  const L=S.wishlist.filter(it=>(f.c<0||(it.c||0)===f.c)&&(!q||(it.n||'').toLowerCase().includes(q)));
@@ -843,7 +849,11 @@ function updateWish(){
  const A=sumV(S.assets),E=expTotal(),cl=S.settings.th.cat;let tot=0;
  S.wishlist.forEach((it,i)=>{tot+=it.v;const el=$('wv-'+i);if(el)el.innerHTML=verdict(it.v,A,E,cl[it.c||0])});
  if($('wNote'))$('wNote').textContent=`The rule: buy only when the price stays within the limit of its category, as a share of your assets. Consumptive up to ${cl[0]}%, Productive up to ${cl[1]}%, Growth (skills, courses, investing in yourself) up to ${cl[2]}%. Raise income and assets to unlock bigger things.`;
- $('wTot').textContent=fmt(tot);wFilt();
+ const wsub=[0,0,0];S.wishlist.forEach(it=>{wsub[it.c||0]+=it.v});let woff=0;
+ wsub.forEach((v,k)=>{const p=tot?v/tot:0,len=p*DONUT_C,seg=$('wd-'+k);seg.setAttribute('stroke-dasharray',`${len} ${DONUT_C-len}`);seg.setAttribute('stroke-dashoffset',-woff);woff+=len;
+  $('wlp-'+k).textContent=(tot?Math.round(p*100):0)+'%';$('wla-'+k).textContent=v?cmpMoney(v):'-';$('wlm-'+k).textContent=E&&v?dur(v/E).replace(' months',' mo'):''});
+ {const txt=tot?fmt(tot):'-',ct=$('wTot');ct.textContent=txt;ct.setAttribute('font-size',Math.max(10,Math.min(20,100/(txt.length*0.6))))}
+ wFilt();
  $('wTotLife').textContent=E&&tot?dur(tot/E)+' of life':'';
  $('wTotV').innerHTML=tot&&A>0?`<span class="note">${(tot/A*100<1000?(tot/A*100).toFixed(1):'999+')}% of assets</span>`:'';
 }
