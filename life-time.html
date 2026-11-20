@@ -132,6 +132,12 @@ h1 .c,h1 svg{color:var(--acc)}
 .irow .chev{position:absolute;top:12px;right:0}
 .card h2 .chev,.av .chev{position:static}
 .av .nm{font:650 16px var(--display);color:var(--txt);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dstk{display:block;margin-top:3px;font-size:12px}
+.dst{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:12px;margin:0 0 10px}
+.dst .big2{font:700 30px var(--display);letter-spacing:-.02em}
+.dst .row{display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap}
+.dbar{height:10px;border-radius:6px;background:var(--bg);border:1px solid var(--line2);margin:8px 0 6px;overflow:hidden}
+.dbar i{display:block;height:100%;border-radius:6px;background:var(--g)}
 .dpanel{background:var(--bg);border:1px solid var(--line2);border-radius:10px;padding:10px;margin-top:8px}
 .drow{border-top:1px solid var(--line2);padding:10px 0;cursor:pointer}
 .drow:first-child{border-top:0}
@@ -302,13 +308,15 @@ h2 .q{margin-left:8px;text-transform:none}
   <div class="hint hide" id="hint-df" style="margin-top:8px">Months until every debt is gone. Each debt gets its own installment, and your surplus goes to the highest interest first. "Never" means your Saving Power is not positive and no installments are set.</div>
 
   <div class="grid2" style="margin-top:12px">
-    <div class="mini" id="m-dis" data-acc="disBody" onclick="acc('disBody')"><span class="lab">Distraction</span><span class="chev">▾</span><b>-</b><span class="pips"></span><span class="s2"></span></div>
+    <div class="mini" id="m-dis" data-acc="disBody" onclick="acc('disBody')"><span class="lab">Distraction</span><span class="chev">▾</span><b>-</b><span class="pips"></span><span class="s2"></span><span class="s2 dstk"></span></div>
     <div class="mini s-p" id="m-ai" data-acc="hint-ai" onclick="acc('hint-ai')"><span class="lab">AI Doomsday</span><span class="chev">▾</span><b>-</b><span class="s2"></span></div>
   </div>
   <div class="hint hide" id="hint-ai" style="margin-top:8px"></div>
   <div class="dpanel hide" id="disBody">
     <div class="note" style="margin:0 0 8px">How hooked are you? 0 Focused, 1 Distracted, 2 Hooked, 3 Brain-rotted, 4 Zombie. Your worst one sets the level. It does not change the Mode.</div>
+    <div id="dStreak"></div>
     <div id="sDis"></div>
+    <div id="disSave" class="hide" style="margin-top:10px"></div>
     <button class="btn" onclick="addDis()" style="min-height:40px;margin-top:8px">+ Add your own (game, etc.)</button>
   </div>
 
@@ -470,7 +478,7 @@ h2 .q{margin-left:8px;text-transform:none}
       <button class="btn" onclick="achExport()">⬇ Export achievements (.json)</button>
       <label class="btn" for="achImp" style="margin-bottom:0">⬆ Import achievements (.json)</label>
       <input type="file" id="achImp" accept=".json,application/json" class="hide" onchange="achImport(this)">
-      <button class="btn" onclick="achResetStarters()">Reset to 34 starter achievements</button>
+      <button class="btn" onclick="achResetStarters()">Reset to 39 starter achievements</button>
       <button class="btn danger" onclick="achDeleteAll()">Delete all achievements</button>
       <div class="status" id="achStatus"></div>
     </div>
@@ -563,6 +571,12 @@ const ACH_NEW4=()=>[
  {n:"Emergency fund",ic:'shield',c:4,t:0,m:'gm',o:'>=',v:6,hm:0},
  {n:"Balanced fortress",ic:'tower',c:5,t:1,m:'gc',o:'>=',v:6,hm:0},
  {n:"Ironclad portfolio",ic:'mountain',c:6,t:2,m:'gz',o:'>=',v:12,hm:0}];
+const ACH_NEW5=()=>[
+ {n:"Focus 7 days",ic:'target',c:4,t:0,m:'ds',o:'<=',v:0,hm:7/30.4375,d:null},
+ {n:"Focus 30 days",ic:'compass',c:5,t:1,m:'ds',o:'<=',v:0,hm:30/30.4375},
+ {n:"Focus 90 days",ic:'key',c:0,t:1,m:'ds',o:'<=',v:0,hm:90/30.4375},
+ {n:"Focus 6 months",ic:'brain',c:6,t:2,m:'ds',o:'<=',v:0,hm:6},
+ {n:"Focus 1 year",ic:'sun',c:1,t:2,m:'ds',o:'<=',v:0,hm:12}];
 const ACH_PRESETS=()=>[
  {n:"First month",ic:'hourglass',c:1,t:0,m:'lt',o:'>=',v:1,hm:0},
  {n:"3 months of life",ic:'hourglass',c:1,t:0,m:'lt',o:'>=',v:3,hm:0},
@@ -594,7 +608,7 @@ const ACH_PRESETS=()=>[
  {n:"Master of one",ic:'brain',c:6,t:1,m:'sm',o:'>=',v:1,hm:0},
  {n:"Tracking for 3 months",ic:'calendar',c:1,t:0,m:'tk',o:'>=',v:3,hm:0},
  {n:"Tracking for 12 months",ic:'calendar',c:4,t:1,m:'tk',o:'>=',v:12,hm:0},
- ...ACH_NEW4(),
+ ...ACH_NEW4(),...ACH_NEW5(),
  {n:"Gave to charity",ic:'heart',c:6,t:0,m:'',o:'>=',v:0,hm:0}
 ].map(a=>Object.assign({sk:'',d:null,h:false,s:null,b:0,z:false},a));
 const svg=(n,s=20)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[n]}</svg>`;
@@ -602,11 +616,11 @@ const svg=(n,s=20)=>`<svg width="${s}" height="${s}" viewBox="0 0 24 24" fill="n
 /* ---------- state ---------- */
 const DEFAULT=()=>({app:'life-time',version:3,cur:'IDR',
  settings:{rate:16000,growth:4,infLocal:15,infIntl:3,corr:1,corrV:2,tax:0,theme:'dungeon',th:{sp:10,lt:[6,12],ff:[10,50],nw:[0,50],cat:[5,25,50],inf:[3,5,9,12,14],tax:[0,10,20,30,39],lvl:[1,4,7,10,14],lvlp:[10,30,50,70,90],w:[1,1,1,1]},crime:1,doom:'2030-01-01'},
- name:'',dis:{yt:0,ig:0,tt:0,extra:[]},income:[],expenses:[],assets:[],debts:[],skills:[],wishlist:[],history:[],achV:4,first:null,ach:ACH_PRESETS(),updated:null});
+ name:'',dis:{yt:0,ig:0,tt:0,extra:[],fs:null,best:0},income:[],expenses:[],assets:[],debts:[],skills:[],wishlist:[],history:[],achV:5,first:null,ach:ACH_PRESETS(),updated:null});
 
 function cleanAch(i){
  const x=Number(i.v),iso=v=>typeof v==='string'&&!isNaN(new Date(v))?v.slice(0,40):null;
- return {n:String(i.n==null?'':i.n).slice(0,40),ic:ACH_ICONS.includes(i.ic)?i.ic:'star',c:Math.max(0,Math.min(7,parseInt(i.c)||0)),t:Math.max(0,Math.min(2,parseInt(i.t)||0)),m:ACH_KEYS.includes(i.m)?i.m:'',o:i.o==='<='?'<=':'>=',v:isFinite(x)?Math.max(-1e13,Math.min(1e13,x)):0,hm:Math.max(0,Math.min(600,parseInt(i.hm)||0)),sk:String(i.sk==null?'':i.sk).slice(0,60),d:iso(i.d),s:iso(i.s),b:Math.max(0,Math.min(1e13,Number(i.b)||0)),z:!!i.z,h:!!i.h};
+ return {n:String(i.n==null?'':i.n).slice(0,40),ic:ACH_ICONS.includes(i.ic)?i.ic:'star',c:Math.max(0,Math.min(7,parseInt(i.c)||0)),t:Math.max(0,Math.min(2,parseInt(i.t)||0)),m:ACH_KEYS.includes(i.m)?i.m:'',o:i.o==='<='?'<=':'>=',v:isFinite(x)?Math.max(-1e13,Math.min(1e13,x)):0,hm:Math.max(0,Math.min(600,Math.round((Number(i.hm)||0)*1000)/1000)),sk:String(i.sk==null?'':i.sk).slice(0,60),d:iso(i.d),s:iso(i.s),b:Math.max(0,Math.min(1e13,Number(i.b)||0)),z:!!i.z,h:!!i.h};
 }
 function clean(r){
  r=r&&typeof r==='object'?r:{};
@@ -627,17 +641,18 @@ function clean(r){
    theme:'dungeon',
    th:{sp:pc(th.sp,10,1000),lt:pair(th.lt,[6,12]),ff:pair(th.ff,[10,50]),nw:pair(th.nw,[0,50]),cat:(c=>c[0]===10&&c[1]===25&&c[2]===50?[5,25,50]:c)(pair(th.cat,[5,25,50])),inf:pair(th.inf,[3,5,9,12,14]),tax:pair(th.tax,[0,10,20,30,39]),lvl:pair(th.lvl,[1,4,7,10,14]),lvlp:pair(th.lvlp,[10,30,50,70,90]),w:pair(th.w,[1,1,1,1])},crime:[0,1,2,3].includes(Number(s.crime))?Number(s.crime):1,doom:/^\d{4}-\d{2}-\d{2}$/.test(String(s.doom))?String(s.doom):'2030-01-01'},
   name:String(r.name==null?'':r.name).slice(0,24),
-  dis:(()=>{const d=r.dis&&typeof r.dis==='object'?r.dis:{},lv=v=>Math.max(0,Math.min(4,parseInt(v)||0));return {yt:lv(d.yt),ig:lv(d.ig),tt:lv(d.tt),extra:arr(d.extra).slice(0,10).map(i=>({n:nm(i.n),l:lv(i.l)}))}})(),
+  dis:(()=>{const d=r.dis&&typeof r.dis==='object'?r.dis:{},lv=v=>Math.max(0,Math.min(4,parseInt(v)||0));return {yt:lv(d.yt),ig:lv(d.ig),tt:lv(d.tt),extra:arr(d.extra).slice(0,10).map(i=>({n:nm(i.n),l:lv(i.l)})),fs:typeof d.fs==='string'&&!isNaN(new Date(d.fs))?d.fs.slice(0,40):null,best:Math.max(0,Math.min(1e5,Number(d.best)||0))}})(),
   income:fr(r.income),expenses:fr(r.expenses),
   assets:arr(r.assets).map(i=>{const q=Math.max(0,Math.min(1e12,Number(i.q)||0)),pr=nv(i.pr),u=i.u&&(q>0||pr>0)?1:0;return {n:nm(i.n),v:u?nv(q*pr):nv(i.v),t:['g','c','l'].includes(i.t)?i.t:'g',u,q:u?q:0,pr:u?pr:0}}),
   debts:arr(r.debts).map(i=>({n:nm(i.n),v:nv(i.v),r:pc(i.r,0,1000),p:nv(i.p)})),
   skills:arr(r.skills).map(i=>({n:nm(i.n),l:Math.max(0,Math.min(3,parseInt(i.l)||0))})),
   wishlist:arr(r.wishlist).map(i=>({n:nm(i.n),v:nv(i.v),c:Math.max(0,Math.min(2,parseInt(i.c)||0))})),
   history:arr(r.history).filter(h=>typeof h.t==='string'&&!isNaN(new Date(h.t))).slice(-120).map(h=>({t:h.t.slice(0,40),I:nv(h.I),E:nv(h.E),A:nv(h.A),D:nv(h.D),sp:sv(h.sp),nw:sv(h.nw)})),
-  achV:4,first:typeof r.first==='string'&&!isNaN(new Date(r.first))?r.first.slice(0,40):null,
+  achV:5,first:typeof r.first==='string'&&!isNaN(new Date(r.first))?r.first.slice(0,40):null,
   ach:(()=>{if(!(Number(r.achV)>=3&&Array.isArray(r.ach)))return ACH_PRESETS();const L=arr(r.ach).slice(0,120).map(cleanAch);
    if(!(Number(r.achV)>=4)){const N=ACH_NEW4().map(cleanAch),has=n=>L.some(a=>a.n===n),i=L.findIndex(a=>a.n==='Written budget'&&!a.m&&!a.d);
     if(i>=0)L.splice(i,1);N.forEach(a=>{if(!has(a.n)&&L.length<120)L.push(a)})}
+   if(!(Number(r.achV)>=5)){ACH_NEW5().map(cleanAch).forEach(a=>{if(!L.some(x=>x.n===a.n)&&L.length<120)L.push(a)})}
    return L})(),
   updated:typeof r.updated==='string'?r.updated.slice(0,40):null};
 }
@@ -1186,7 +1201,7 @@ const icoSvg=n=>`<svg viewBox="0 0 24 24" aria-hidden="true">${IC[n]||IC.star}</
 function badgeH(a,locked,size){return `<span class="ab t${a.t}${locked?' lk':''}" style="${achStyle(a)};--s:${size||44}px">${icoSvg(a.ic)}${locked?`<span class="lkb">${icoSvg('lock')}</span>`:''}</span>`}
 function achCond(a){
  if(!a.m)return 'Manual: you mark it done.';
- const M=ACH_M[a.m],op=a.o==='<='?'≤':'≥',hold=a.hm>0?` for ${a.hm} month${a.hm>1?'s':''}`:'';
+ const M=ACH_M[a.m],op=a.o==='<='?'≤':'≥',hold=a.hm>0?' for '+holdTxt(a.hm):'';
  if(a.m==='dn')return 'Total debts do not rise'+hold;
  return `${a.m==='sk'?(a.sk||'Skill'):M.l} ${op} ${M.f(a.v)}${hold}`;
 }
@@ -1198,10 +1213,12 @@ function achEval(a){
  const ge=a.o!=='<=',t=a.v,met=ge?cur>=t:cur<=t;
  return {met,cur,curTxt:M.f(cur),pct:met?1:ge?(t>0?Math.max(0,Math.min(1,cur/t)):0):null};
 }
+function holdTxt(hm){const d=hm*30.4375;if(hm<3.5){const n=Math.round(d);return n+' day'+(n===1?'':'s')}const m=Math.round(hm*10)/10;return m+' month'+(m===1?'':'s')}
 function holdInfo(a,r){
  if(!(a.m==='dn'||a.hm>0)||!r)return null;
  const need=a.hm||1,el=a.s&&r.met?(Date.now()-new Date(a.s))/MS_MONTH:0;
- return {pct:Math.min(1,el/need),txt:`${el.toFixed(1)} / ${need} months`,el};
+ const dayU=need<3.5,k=dayU?30.4375:1;
+ return {pct:Math.min(1,el/need),txt:`${(el*k).toFixed(dayU?0:1)} / ${holdTxt(need).replace(/ (days?|months?)$/,'')} ${dayU?'days':'months'}`,el};
 }
 function histVal(m,h){
  const E=h.E,I=h.I,g=S.settings.growth;
@@ -1273,7 +1290,7 @@ function achItemH(a,i){
  const btn=a.d?`<button class="x" onclick="achCancel(${i})">Cancel unlock</button>`:`<button class="x" onclick="achUnlock(${i})">${a.m?'Unlock now':'Mark done'}</button>`;
  let cond='';
  if(a.m){
-  const hr=`<div class="crow"><span class="u">Hold for</span><input type="text" inputmode="numeric" value="${a.hm||0}" oninput="achHold(${i},this.value)"><span class="u">months${a.m==='dn'?'':' (0 = no wait)'}</span></div>`;
+  const hr=`<div class="crow"><span class="u">Hold for</span><input type="text" inputmode="decimal" value="${a.hm||0}" oninput="achHold(${i},this.value)"><span class="u">months${a.m==='dn'?'':' (0 = no wait)'}</span></div>`;
   if(M.k==='none')cond=hr;
   else{
    let val='';
@@ -1307,7 +1324,7 @@ function achChanged(){checkAch()}
 function achSet(i,k,v){S.ach[i][k]=v;save(false);achChanged();renderAchEditor()}
 function achName(i,v){S.ach[i].n=v.slice(0,40);save(false);renderAchCard()}
 function achMetric(i,m){const a=S.ach[i];a.m=m;a.hm=0;a.s=null;a.b=0;a.z=false;if(m){const M=ACH_M[m];a.v=M.d;a.o=M.o||'>=';a.hm=M.hm||0;a.sk=m==='sk'?((S.skills[0]||{}).n||''):''}a.h=false;save(false);achChanged();renderAchEditor()}
-function achHold(i,v){const a=S.ach[i];a.hm=Math.max(a.m==='dn'?1:0,Math.min(600,numI(v)));save(false);achChanged()}
+function achHold(i,v){const a=S.ach[i];a.hm=Math.max(a.m==='dn'?1:0,Math.min(600,Math.round(numF(v)*1000)/1000||0));save(false);achChanged()}
 function achSetOp(i,o){S.ach[i].o=o==='<='?'<=':'>=';save(false);achChanged();renderAchEditor()}
 function achNum(i,v){S.ach[i].v=numF(v);save(false);achChanged()}
 function achMoney(i,el){const v=numI(el.value);S.ach[i].v=v;el.value=v?v.toLocaleString('id-ID'):'';save(false);achChanged()}
@@ -1352,7 +1369,7 @@ function resetStart(){
  const e=$('startStatus');if(e)e.textContent='Done. Today is now day one.'
 }
 function achResetStarters(){
- if(!confirm('Replace your whole list with the 34 starter achievements? Your own achievements and unlock dates will be lost. Export first if you want a backup.'))return;
+ if(!confirm('Replace your whole list with the 39 starter achievements? Your own achievements and unlock dates will be lost. Export first if you want a backup.'))return;
  S.ach=ACH_PRESETS();ACH_OPEN=-1;ACH_READY=false;save(false);checkAch();ACH_READY=true;renderAchEditor();achSay('Starter achievements restored.')
 }
 function achDeleteAll(){
@@ -1392,23 +1409,43 @@ $('sDoom').oninput=()=>{const v=$('sDoom').value;if(/^\d{4}-\d{2}-\d{2}$/.test(v
 const DIS_L=['Focused','Distracted','Hooked','Brain-rotted','Zombie'];
 const DIS_SRC=[['yt','YouTube Shorts'],['ig','Instagram Reels'],['tt','TikTok']];
 const disOpts=l=>DIS_L.map((x,i)=>`<option value="${i}"${i===l?' selected':''}>${i} · ${x}</option>`).join('');
+let DD=null;
+const ddFresh=()=>({yt:S.dis.yt,ig:S.dis.ig,tt:S.dis.tt,x:S.dis.extra.map(e=>e.l)});
+const ddDirty=()=>DD&&(DD.yt!==S.dis.yt||DD.ig!==S.dis.ig||DD.tt!==S.dis.tt||DD.x.some((l,i)=>S.dis.extra[i]&&l!==S.dis.extra[i].l));
 function renderDisSettings(){
+ if(!DD||DD.x.length!==S.dis.extra.length)DD=ddFresh();
  const box=$('sDis');box.innerHTML='';
  DIS_SRC.forEach(([k,n])=>{
   const r=document.createElement('div');r.className='fld';
-  r.innerHTML=`<span class="t">${n}</span><div class="in"><select style="width:150px;text-align:left">${disOpts(S.dis[k])}</select></div>`;
-  r.querySelector('select').onchange=e=>{S.dis[k]=+e.target.value;save(false);calc()};
+  r.innerHTML=`<span class="t">${n}</span><div class="in"><select style="width:150px;text-align:left">${disOpts(DD[k])}</select></div>`;
+  r.querySelector('select').onchange=e=>{DD[k]=+e.target.value;disBar()};
   box.appendChild(r)});
  S.dis.extra.forEach((x,i)=>{
   const r=document.createElement('div');r.className='fld';
-  r.innerHTML=`<input type="text" placeholder="Name (e.g. Game)" style="flex:1;text-align:left;width:auto;min-width:0"><div class="in"><select style="width:130px;text-align:left">${disOpts(x.l)}</select><button class="x" aria-label="Remove">✕</button></div>`;
+  r.innerHTML=`<input type="text" placeholder="Name (e.g. Game)" style="flex:1;text-align:left;width:auto;min-width:0"><div class="in"><select style="width:130px;text-align:left">${disOpts(DD.x[i])}</select><button class="x" aria-label="Remove">✕</button></div>`;
   const [nm,rest]=r.children,sel=rest.children[0],del=rest.children[1];
   nm.value=x.n;nm.oninput=()=>{x.n=nm.value;save(false);calc()};
-  sel.onchange=()=>{x.l=+sel.value;save(false);calc()};
-  del.onclick=()=>{S.dis.extra.splice(i,1);save(false);renderDisSettings();calc()};
+  sel.onchange=()=>{DD.x[i]=+sel.value;disBar()};
+  del.onclick=()=>{S.dis.extra.splice(i,1);DD.x.splice(i,1);save(false);renderDisSettings();calc()};
   box.appendChild(r)});
+ disBar();
 }
-function addDis(){if(S.dis.extra.length>=10)return;S.dis.extra.push({n:'',l:0});save(false);renderDisSettings();calc()}
+function disBar(){
+ const el=$('disSave');if(!el)return;
+ if(!ddDirty()){el.classList.add('hide');el.innerHTML='';return}
+ const newLv=Math.max(DD.yt,DD.ig,DD.tt,...DD.x),cur=disState().lv,n=Math.floor(disDays());
+ let msg='';
+ if(newLv>0&&cur===0)msg=S.dis.fs?`Saving will reset your focus streak (${n} day${n===1?'':'s'}) to 0. Your best record stays.`:'Saving will keep your focus streak at 0.';
+ else if(newLv===0&&cur>0)msg='Saving will start your focus streak from today.';
+ else msg='Saving will update your distraction levels.';
+ el.classList.remove('hide');
+ el.innerHTML=`<div class="note" style="margin:0 0 8px;color:${newLv>0&&cur===0?'var(--y)':'var(--mut)'}">${msg}</div><div style="display:flex;gap:8px"><button class="btn" style="flex:1;min-height:42px;margin:0" onclick="disApply()">Save changes</button><button class="btn" style="flex:1;min-height:42px;margin:0" onclick="disDiscard()">Discard</button></div>`;
+}
+function disApply(){if(!DD)return;S.dis.yt=DD.yt;S.dis.ig=DD.ig;S.dis.tt=DD.tt;S.dis.extra.forEach((x,i)=>{x.l=DD.x[i]});save(false);DD=null;renderDisSettings();calc()}
+function disDiscard(){DD=null;renderDisSettings()}
+function addDis(){if(S.dis.extra.length>=10)return;S.dis.extra.push({n:'',l:0});if(DD)DD.x.push(0);save(false);renderDisSettings();calc()}
+function disDays(){return S.dis.fs?Math.max(0,(Date.now()-new Date(S.dis.fs))/864e5):0}
+const DIS_T=[7,30,90,183,365];
 function disState(){
  const src=[...DIS_SRC.map(([k,n])=>({n,l:S.dis[k]})),...S.dis.extra.map(x=>({n:x.n||'Other',l:x.l}))];
  return {lv:Math.max(0,...src.map(x=>x.l)),src:src.filter(x=>x.l>0).sort((a,b)=>b.l-a.l)};
@@ -1421,6 +1458,21 @@ function updateDis(){
  const sub=d.src.length?d.src.slice(0,2).map(x=>`${x.n} ${x.l}`).join(' · ')+(d.src.length>2?` +${d.src.length-2}`:''):'No distraction';
  el.querySelector('.s2').textContent=sub;
  LAST.dis={lv:d.lv,text:DIS_L[d.lv],sub};
+ updateStreak(d.lv);
+}
+function updateStreak(lv){
+ const D=S.dis,now=Date.now();let ch=false;
+ if(lv===0){if(!D.fs){D.fs=new Date(now).toISOString();ch=true}const dd=disDays();if(dd>D.best+0.001){D.best=dd;ch=true}}
+ else if(D.fs){D.best=Math.max(D.best,(now-new Date(D.fs))/864e5);D.fs=null;ch=true}
+ if(ch)save(false);
+ const dd=lv===0?disDays():0,n=Math.floor(dd),b=Math.floor(D.best),dayS=x=>x+' day'+(x===1?'':'s');
+ const nx=DIS_T.find(t=>t>dd),pc=nx?Math.min(1,dd/nx):1;
+ const stk=document.querySelector('#m-dis .dstk');if(stk)stk.textContent=`Streak ${n}d · best ${b}d`;
+ const box=$('dStreak');if(!box)return;
+ box.innerHTML=`<div class="dst"><div class="row"><span class="s2">Focus streak</span><span class="s2">Best: ${dayS(b)}</span></div>
+  <div class="big2" style="color:${lv===0?'var(--g)':'var(--r)'}">${dayS(n)}</div>
+  <div class="dbar"><i style="width:${Math.round(pc*100)}%"></i></div>
+  <div class="s2">${lv>0?'Resets to 0 while any distraction is on. It restarts when everything is back to Focused.':nx?`Next: ${dayS(nx===183?183:nx)} (${dayS(Math.max(1,Math.ceil(nx-dd)))} to go)`:'All focus targets reached.'}</div></div>`;
 }
 function updateDoom(){
  const [y,m,d]=S.settings.doom.split('-').map(Number),t=new Date(y,m-1,d).getTime();
