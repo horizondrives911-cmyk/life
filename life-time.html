@@ -132,6 +132,8 @@ h1 .c,h1 svg{color:var(--acc)}
 .irow .chev{position:absolute;top:12px;right:0}
 .card h2 .chev,.av .chev{position:static}
 .av .nm{font:650 16px var(--display);color:var(--txt);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tot .sline{margin-bottom:-5px;padding-bottom:3px;line-height:20px;min-height:20px}
+.sline{display:flex;flex-wrap:wrap;gap:2px 14px;align-items:baseline}.sline .note{margin:0;font-size:13px}
 .dstk{display:block;margin-top:3px;font-size:12px}
 .dst{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:12px;margin:0 0 10px}
 .dst .big2{font:700 30px var(--display);letter-spacing:-.02em}
@@ -182,9 +184,9 @@ h1 .c,h1 svg{color:var(--acc)}
 .mini .s2{font-size:12.5px;color:var(--mut)}
 .deb{border-color:rgba(169,139,255,.35)}
 .deb h2{color:var(--deb);display:flex;align-items:center;gap:6px}
-.fbar{display:flex;flex-direction:column;gap:6px;margin:0 0 12px}
-.frow{display:flex;gap:6px;flex-wrap:wrap}
-.fchip{border:1px solid var(--line);background:transparent;color:var(--mut);border-radius:99px;padding:5px 12px;font:600 13px var(--body);min-height:32px;cursor:pointer}
+.fbar{display:flex;flex-direction:column;gap:5px;margin:0 0 10px}
+.frow{display:flex;gap:4px;flex-wrap:wrap}
+.fchip{border:1px solid var(--line);background:transparent;color:var(--mut);border-radius:99px;padding:5px 8px;font:600 12px var(--body);min-height:32px;cursor:pointer}
 .fchip.on{color:var(--ink);background:var(--acc);border-color:var(--acc)}
 .fbar input.fq{width:100%;font:15px var(--body);color:var(--txt);background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 14px;min-width:0}
 .chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
@@ -360,8 +362,12 @@ h2 .q{margin-left:8px;text-transform:none}
   <div id="p2" class="card hide">
     <h2>Assets<button class="q" onclick="tgl('hint-assets')" aria-label="Hint">?</button></h2>
     <div class="hint hide" id="hint-assets">Count what you can turn into cash. Do not count the bike you work with.</div>
-    <div id="f-assets"></div>
+    <div class="tot"><div class="mini"><span class="lab">Total</span>
+      <svg class="donut" viewBox="0 0 200 200" role="img" aria-label="Asset allocation"><circle cx="100" cy="100" r="70" fill="none" stroke="var(--bg)" stroke-width="24"/><circle id="dn-g" cx="100" cy="100" r="70" fill="none" stroke="#71E6F2" stroke-width="24" stroke-dasharray="0 439.8" transform="rotate(-90 100 100)"/><circle id="dn-c" cx="100" cy="100" r="70" fill="none" stroke="#8CA9FF" stroke-width="24" stroke-dasharray="0 439.8" transform="rotate(-90 100 100)"/><circle id="dn-l" cx="100" cy="100" r="70" fill="none" stroke="#A98BFF" stroke-width="24" stroke-dasharray="0 439.8" transform="rotate(-90 100 100)"/><text id="dnTxt" class="dnt" x="100" y="107" text-anchor="middle" fill="var(--txt)" font-weight="650" font-size="18">-</text></svg>
+      <div class="legend" id="aLeg" style="margin-bottom:28px"><div class="lg"><div class="wn" style="color:#71E6F2">Guard</div><b id="lgp-g">0%</b><span class="s2 wla" id="la-g">-</span><span class="s2 wla" id="lm-g"></span></div><div class="lg"><div class="wn" style="color:#8CA9FF">Garrison</div><b id="lgp-c">0%</b><span class="s2 wla" id="la-c">-</span><span class="s2 wla" id="lm-c"></span></div><div class="lg"><div class="wn" style="color:#A98BFF">Legion</div><b id="lgp-l">0%</b><span class="s2 wla" id="la-l">-</span><span class="s2 wla" id="lm-l"></span></div></div>
+      <div class="sline"><span class="s2" id="aTotLife"></span></div></div></div>
     <div class="ronote ronote-el hide">USD view: switch to IDR to edit amounts.</div>
+    <div id="f-assets"></div>
     <div id="tiers"></div>
   </div>
 
@@ -388,8 +394,8 @@ h2 .q{margin-left:8px;text-transform:none}
     <h2>Wishlist: buy calculator</h2>
     <div class="tot"><div class="mini"><span class="lab" id="wTotLab">Total</span>
       <svg class="donut" viewBox="0 0 200 200" role="img" aria-label="Wishlist by category"><circle cx="100" cy="100" r="70" fill="none" stroke="var(--bg)" stroke-width="24"/><circle id="wd-0" cx="100" cy="100" r="70" fill="none" stroke="#FF7A66" stroke-width="24" stroke-dasharray="0 439.8" transform="rotate(-90 100 100)"/><circle id="wd-1" cx="100" cy="100" r="70" fill="none" stroke="#5B9DFF" stroke-width="24" stroke-dasharray="0 439.8" transform="rotate(-90 100 100)"/><circle id="wd-2" cx="100" cy="100" r="70" fill="none" stroke="#5BE3A0" stroke-width="24" stroke-dasharray="0 439.8" transform="rotate(-90 100 100)"/><text id="wTot" class="dnt" x="100" y="107" text-anchor="middle" fill="var(--txt)" font-weight="650" font-size="18">-</text></svg>
-      <div class="legend" id="wLeg" style="margin-bottom:8px"><div class="lg"><div class="wn" style="color:#FF7A66">Consumptive</div><b id="wlp-0">0%</b><span class="s2 wla" id="wla-0">-</span><span class="s2 wla" id="wlm-0"></span></div><div class="lg"><div class="wn" style="color:#5B9DFF">Productive</div><b id="wlp-1">0%</b><span class="s2 wla" id="wla-1">-</span><span class="s2 wla" id="wlm-1"></span></div><div class="lg"><div class="wn" style="color:#5BE3A0">Growth</div><b id="wlp-2">0%</b><span class="s2 wla" id="wla-2">-</span><span class="s2 wla" id="wlm-2"></span></div></div>
-      <span class="s2" id="wTotLife"></span><div id="wTotV" style="margin-top:6px"></div></div></div>
+      <div class="legend" id="wLeg" style="margin-bottom:27px"><div class="lg"><div class="wn" style="color:#FF7A66">Consumptive</div><b id="wlp-0">0%</b><span class="s2 wla" id="wla-0">-</span><span class="s2 wla" id="wlm-0"></span></div><div class="lg"><div class="wn" style="color:#5B9DFF">Productive</div><b id="wlp-1">0%</b><span class="s2 wla" id="wla-1">-</span><span class="s2 wla" id="wlm-1"></span></div><div class="lg"><div class="wn" style="color:#5BE3A0">Growth</div><b id="wlp-2">0%</b><span class="s2 wla" id="wla-2">-</span><span class="s2 wla" id="wlm-2"></span></div></div>
+      <div class="sline"><span class="s2" id="wTotLife"></span><span id="wTotV"></span></div></div></div>
     <div class="ronote ronote-el hide">USD view: switch to IDR to edit amounts.</div>
     <div id="f-wishlist"></div>
     <div class="mini hide" id="wFilt" style="margin:0 0 12px"><span class="lab" id="wFiltLab"></span><b id="wFiltV">-</b><span class="s2" id="wFiltLife"></span></div>
@@ -732,7 +738,7 @@ function fitText(el){
  let fs=parseFloat(getComputedStyle(el).fontSize);
  while(el.scrollWidth>el.clientWidth+1&&fs>11){fs-=1;el.style.fontSize=fs+'px'}
 }
-function fitAll(){document.querySelectorAll('.mini b,.big').forEach(fitText)}
+function fitAll(){document.querySelectorAll('.mini b,.big').forEach(fitText);if(typeof fitWn==='function')fitWn()}
 window.addEventListener('resize',()=>{fitAll();try{renderAchCard()}catch(e){}});
 function setMini(id,text,st,sub){
  LAST.mini[id]={text,st,sub};
@@ -849,6 +855,7 @@ function verdict(v,A,E,lim){
  return `<span class="badge s-${s}">${lab}</span><span class="note">${life}${share} · unlock at ${fmt(v/(b[0]/100))} in assets</span>`;
 }
 const WCN=['Consumptive','Productive','Growth'];
+function fitWn(){document.querySelectorAll('.wn').forEach(el=>{el.style.fontSize='';if(!el.clientWidth)return;let fs=parseFloat(getComputedStyle(el).fontSize);while(el.scrollWidth>el.clientWidth+1&&fs>8.5){fs-=.5;el.style.fontSize=fs+'px'}})}
 function cmpMoney(v){if(S.cur==='USD')return fmt(v);const t=(x,u)=>'Rp '+String(+x.toFixed(x>=100?0:x>=10?1:2)).replace('.',',')+' '+u;return v>=1e9?t(v/1e9,'M'):v>=1e6?t(v/1e6,'jt'):fmt(v)}
 function wFilt(){
  const f=FIL.wishlist,q=f.q.trim().toLowerCase(),act=f.c>=0||!!q,box=$('wFilt');if(!box)return;
@@ -868,7 +875,7 @@ function updateWish(){
  wsub.forEach((v,k)=>{const p=tot?v/tot:0,len=p*DONUT_C,seg=$('wd-'+k);seg.setAttribute('stroke-dasharray',`${len} ${DONUT_C-len}`);seg.setAttribute('stroke-dashoffset',-woff);woff+=len;
   $('wlp-'+k).textContent=(tot?Math.round(p*100):0)+'%';$('wla-'+k).textContent=v?cmpMoney(v):'-';$('wlm-'+k).textContent=E&&v?dur(v/E).replace(' months',' mo'):''});
  {const txt=tot?fmt(tot):'-',ct=$('wTot');ct.textContent=txt;ct.setAttribute('font-size',Math.max(10,Math.min(20,100/(txt.length*0.6))))}
- wFilt();
+ wFilt();fitWn();
  $('wTotLife').textContent=E&&tot?dur(tot/E)+' of life':'';
  $('wTotV').innerHTML=tot&&A>0?`<span class="note">${(tot/A*100<1000?(tot/A*100).toFixed(1):'999+')}% of assets</span>`:'';
 }
@@ -1015,13 +1022,7 @@ const TIERS=[
 const TCOL={g:'#71E6F2',c:'#8CA9FF',l:'#A98BFF'},SHORT={g:'Guard',c:'Garrison',l:'Legion'};
 const DONUT_C=2*Math.PI*70;
 const tgl=id=>$(id).classList.toggle('hide');
-$('tiers').innerHTML=`<svg class="donut" viewBox="0 0 200 200" role="img" aria-label="Asset allocation">
- <circle cx="100" cy="100" r="70" fill="none" stroke="var(--bg)" stroke-width="24"/>
- ${TIERS.map(([k])=>`<circle id="dn-${k}" cx="100" cy="100" r="70" fill="none" stroke="${TCOL[k]}" stroke-width="24" stroke-dasharray="0 ${DONUT_C}" transform="rotate(-90 100 100)"/>`).join('')}
- <text id="dnTxt" class="dnt" x="100" y="107" text-anchor="middle" fill="var(--txt)" font-weight="650" font-size="18">-</text>
-</svg>
-<div class="legend">${TIERS.map(([k])=>`<div class="lg"><span class="dot" style="background:${TCOL[k]}"></span><span class="s2">${SHORT[k]}</span><b id="lgp-${k}">0%</b></div>`).join('')}</div>
-${TIERS.map(([k,name,ic,desc])=>`<div class="tier">
+$('tiers').innerHTML=`${TIERS.map(([k,name,ic,desc])=>`<div class="tier">
  <div class="th"><span class="ti" style="--c:${TCOL[k]}">${svg(ic,20)}</span><b>${name}</b><button class="q" onclick="tgl('hint-${k}')" aria-label="Hint">?</button><span class="tsub" id="tsub-${k}">-</span></div>
  <div class="note tt" id="tt-${k}"></div>
  <div class="hint hide" id="hint-${k}">${desc}</div>
@@ -1037,11 +1038,11 @@ function updateTiers(){
   const p=T?sub[k]/T:0,len=p*DONUT_C,seg=$('dn-'+k);
   seg.setAttribute('stroke-dasharray',`${len} ${DONUT_C-len}`);seg.setAttribute('stroke-dashoffset',-off);off+=len;
   $('tsub-'+k).textContent=fmt(sub[k]);
-  $('lgp-'+k).textContent=(T?Math.round(p*100):0)+'%';
+  $('lgp-'+k).textContent=(T?Math.round(p*100):0)+'%';$('la-'+k).textContent=sub[k]?cmpMoney(sub[k]):'-';$('lm-'+k).textContent=E&&sub[k]?dur(sub[k]/E).replace(' months',' mo'):'';
   $('tt-'+k).textContent=E&&sub[k]?'≈ '+dur(sub[k]/E)+' of life':'';
  });
  const txt=T?fmt(T):'-',ct=$('dnTxt');ct.textContent=txt;
- ct.setAttribute('font-size',Math.max(11,Math.min(22,112/(txt.length*0.6))));
+ ct.setAttribute('font-size',Math.max(10,Math.min(20,100/(txt.length*0.6))));$('aTotLife').textContent=E&&T?dur(T/E)+' of life':'';fitWn();
  $('lgp-l').style.color=T&&sub.l/T>0.05?'var(--r)':'';
  let h=TIERS[0][3];
  if(E){const need=th.lt[0]*E;h+=` Emergency target: ${fmt(need)} (${th.lt[0]} months of expenses), ${sub.g>=need?'reached':'short by '+fmt(need-sub.g)}.`}
@@ -1051,7 +1052,7 @@ function updateTiers(){
 /* ---------- tabs ---------- */
 const TABS=[['Income','coin'],['Expenses','scroll'],['Assets','chest'],['Debts','skull'],['Skills','book'],['Wishlist','bag'],['Goals','target']];
 $('tabs').innerHTML=TABS.map(([l,ic],i)=>`<button id="t${i}" onclick="tab(${i})">${svg(ic,18)}${l}</button>`).join('');
-function tab(n){TABS.forEach((_,i)=>{$('p'+i).classList.toggle('hide',i!==n);$('t'+i).classList.toggle('on',i===n)});if(n===6)renderAchEditor()}
+function tab(n){TABS.forEach((_,i)=>{$('p'+i).classList.toggle('hide',i!==n);$('t'+i).classList.toggle('on',i===n)});if(n===6)renderAchEditor();if(typeof fitWn==='function')fitWn()}
 function goGoals(){tab(6);$('tabs').scrollIntoView({behavior:'smooth',block:'start'})}
 
 /* ---------- indicator cards ---------- */
